@@ -1,0 +1,79 @@
+<head>
+	<style>
+		body{
+			color: green;
+			background-color: black;
+			margin-left: 20%;
+			margin-top: 10%
+		}
+		h1{
+			font-weight: bold;
+			position: center;
+		}
+		.text {
+			background-color: black;
+			border: none;
+			color: green;
+			padding: 0px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			cursor: pointer;
+		}
+		#game_output {
+			width: 65%;
+			height:40%;
+			color: green;
+			background-color: black;
+			border-color: green;
+		}
+		.game_output {
+			width: 30px;
+			height:30px;
+			color: green;
+			background-color: black;
+			border:1px;
+			border-color: green;
+		}
+		#game_input {
+			color: green;
+			background-color: black;
+			border-color: green;
+		}
+		.game_input {
+			width: 30px;
+			height:30px;
+			color: green;
+			background-color: black;
+			border:1px;
+			border-color: green;
+		}
+		.game_input > input {
+			width: 60%;
+			alignment: left;
+			text-align: left;
+			border:1px;
+			border-color: green;
+		}
+		.game_input > button {
+			width: 0%;
+			alignment: right;
+			border:1px;
+			border-color: green;
+		}
+	</style>
+	<title>Homicide Detective</title>
+	<link rel="icon" href="./favicon.ico">
+</head>
+<body>
+	<h1>homicide detective</h1>
+	<span class="game_output"><input readonly id="game_output" type="textarea"></span>
+	<p/>
+	<span class="game_input">
+		><input type="text" class="text" id="game_input"></input>
+		<button class="text">Enter</button>
+	</span>
+	<span id="help_text">
+		
+	</span>
+</body>
