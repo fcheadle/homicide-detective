@@ -1,0 +1,42 @@
+{
+	"person_name":"",
+	"person_type":"witness/relative/etc",
+	"is_person_of_interest":true,
+	"is_primary_suspect":true,
+	"physical_description":{
+		"height":6.1,
+		"weight":200,
+		"race":"",
+		"hair_color":"",
+		"eye_color":"",
+		"rough_description":"a medium-sized creature prone to great ambition",
+		"tattoos":[
+			{
+				"location_on_body":"",
+				"design":"a squid",
+				"design_similarities":[
+					"octopus",
+					"tentacles"
+				],
+			}
+		],
+	},
+	"personality":{
+		"warmth":0.1,
+		"extroversion":0.1,
+		"book_smart":0.1,
+		"street_smart":0.1,
+		"honesty":0.1,
+		"empathy":0.1,
+		"flirtatiousness":0.1
+		...
+	},
+	"relationships":{
+		"friends":[],
+		"family":[],
+		"colleagues":[],
+		"subordinates":[],
+		"superiors":[],
+		...
+	}
+}

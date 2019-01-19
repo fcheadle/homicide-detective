@@ -1,0 +1,14 @@
+{
+	"item_name":"",
+	"item_description":"",
+	"item_size": 0.00013,
+	"item_is_evidence":true,
+	"evidence_strength":0.5,
+	"probability_of_contained_items":0.5,
+	"contains_items":[
+		"item_name"
+	],
+	"hides_items":[
+		"item_name"
+	]
+}

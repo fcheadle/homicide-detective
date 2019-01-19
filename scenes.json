@@ -1,0 +1,21 @@
+{
+	"scene_name": "",
+	"scene_description": "",
+	"scene_category":[
+		"murder",
+		"body_found",
+		"room",
+		"outside"
+	],
+	"items_in_scene": [
+		"item_name"
+	],
+	"scene_size":100000, 
+	"evidence_in_scene": "",
+	"connected_scenes":[
+		"scene_name"
+	],
+	"conected_people":[
+		"person_name"
+	],
+}
