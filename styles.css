@@ -1,0 +1,56 @@
+body{
+	color: green;
+	background-color: black;
+	margin-left: 20%;
+	margin-top: 10%;
+	font-family: "Courier New";
+}
+h1{
+	font-weight: bold;
+	position: center;
+}
+p{
+	padding:-10px;
+}
+table,table>td{
+	background-color:#161616;
+	border-color: green;
+	border: 1px;
+	border-right: 10px;
+}
+.text {
+	background-color: black;
+	border: none;
+	color: green;
+	padding: 0px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	cursor: pointer;
+}
+#game_output {
+	width: 99%;
+	height:100%;
+	color: green;
+	background-color: black;
+	border-color: green;
+}
+
+#game_input {
+	color: green;
+	background-color: black;
+	border: 1px;
+	border-color: green;
+	font-family: "Courier New";
+	text-align: left;
+	width: 85%;
+	height:100%;
+	border:1px;
+}
+
+#submit_button {
+	width: 12%;
+	border:none;
+	text-align: right;
+	font-family:"Courier New";
+}

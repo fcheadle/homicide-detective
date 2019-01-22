@@ -1,79 +1,65 @@
+<!DOCTYPE html>
+<html>
 <head>
-	<style>
-		body{
-			color: green;
-			background-color: black;
-			margin-left: 20%;
-			margin-top: 10%
-		}
-		h1{
-			font-weight: bold;
-			position: center;
-		}
-		.text {
-			background-color: black;
-			border: none;
-			color: green;
-			padding: 0px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			cursor: pointer;
-		}
-		#game_output {
-			width: 65%;
-			height:40%;
-			color: green;
-			background-color: black;
-			border-color: green;
-		}
-		.game_output {
-			width: 30px;
-			height:30px;
-			color: green;
-			background-color: black;
-			border:1px;
-			border-color: green;
-		}
-		#game_input {
-			color: green;
-			background-color: black;
-			border-color: green;
-		}
-		.game_input {
-			width: 30px;
-			height:30px;
-			color: green;
-			background-color: black;
-			border:1px;
-			border-color: green;
-		}
-		.game_input > input {
-			width: 60%;
-			alignment: left;
-			text-align: left;
-			border:1px;
-			border-color: green;
-		}
-		.game_input > button {
-			width: 0%;
-			alignment: right;
-			border:1px;
-			border-color: green;
-		}
-	</style>
-	<title>Homicide Detective</title>
+	<link rel="stylesheet" type="text/css" href="./styles.css">
+	<title>homicide detective</title>
 	<link rel="icon" href="./favicon.ico">
 </head>
 <body>
-	<h1>homicide detective</h1>
-	<span class="game_output"><input readonly id="game_output" type="textarea"></span>
-	<p/>
-	<span class="game_input">
-		><input type="text" class="text" id="game_input"></input>
-		<button class="text">Enter</button>
+	<span>
+		<table class="help_text">
+		<tr>
+			<td><h1>homicide</h1></td>
+			<td style="text-align:right;"><h1>detective</h1></td>
+		</tr>
+		<tr rowspan="3">
+			<td colspan="2">
+				<textarea readonly id="game_output" rows="12"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				><input type="text" class="text" id="game_input"></input><button class="text" id="submit_button">| Enter</button>
+			</td>
+		</tr>
+		<tr>
+			<td>look at (item)</td>
+			<td style="text-align:right;">photograph scene</td>
+		</tr>
+		<tr>
+			<td>look under (item)</td>
+			<td style="text-align:right;">photograph (item)</td>
+		</tr>
+		<tr>
+			<td>look inside of (item)</td>
+			<td style="text-align:right;">take note</td>
+		</tr>
+		<tr>
+			<td>look on top of (item)</td>
+			<td style="text-align:right;">take (item) as evidence</td>
+		</tr>
+		<tr>
+			<td>look behind (item)</td>
+			<td style="text-align:right;">dust (item) for prints</td>
+		</tr>
+		<tr>
+			<td>leave</td>
+			<td style="text-align:right;">check notes</td>
+		</tr>
+		<tr>
+			<td>leave through (which) door</td>
+			<td style="text-align:right;">check photographs</td>
+		</tr>
+		<tr>
+			<td>open (which) door</td>
+			<td style="text-align:right;">analyze evidence</td>
+		</tr>
+			<tr>
+			<td>close (which) door</td>
+			<td style="text-align:right;">record conversation</td>
+		</tr>
+		</table>
 	</span>
-	<span id="help_text">
-		
-	</span>
+	<script src="./homicide_detective.js"></script>
 </body>
+</html>
