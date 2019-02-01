@@ -1,5 +1,10 @@
 //game.js
-	
+
+var murderer;
+var victim;
+var causeOfDeath;
+var crimeScene;
+
 function gameLog(outputText){
 	var log = document.getElementById("game_output").innerHTML;
 	log = log + "\n" + outputText;
@@ -122,16 +127,16 @@ document.getElementById("game_input").addEventListener("keypress", function (e) 
 	}
 });
 
-var homicide = function generateHomicide(){
-	var murderer = "generic murderer";
-	var victim = "generic victim";
-	var causeOfDeath = "generic cause of death";
-	var crimeScene = "scene of the crime";
+function generateHomicide(){
+	murderer = "generic murderer";
+	victim = "generic victim";
+	causeOfDeath = "generic cause of death";
+	crimeScene = "scene of the crime";
 	saveGame();
 }
 
 if(localStorage.getItem("game") != "inProgress"){
-	var homicide = generateHomicide();
+	generateHomicide();
 	localStorage.setItem("game", "inProgress");
 	saveGame();
 }
