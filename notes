@@ -1,0 +1,23 @@
+pseudocode:
+
+
+
+Start with muders:
+ - [murderer] killed [victim] by [causeOfDeath] at [crimeScene]
+
+The murder scene and the scene where the body is found will be the same until a later iteration. Each scene has certain things in common:
+
+a floor (with materials), one or more items (with details, child items, and materials), zero or more walls, and one or more clues
+
+Broad categories can determine specific rules for sub-scenes that are connected to the crime scene
+Offices / Warehouses / Factories / Houses / Apartments / Outdoor Urban / Outdoor Natural
+
+houses:
+ - A house is a collectiion of rooms:
+	Front door leads from foyer to front_yard
+	foyer leads to either living_room or main_hallway
+	main_hallway connects living room to one or more bedrooms, one bathroom, and one dining room
+		A Bedroom is a room that connects to a hallway, it has a 50% chance of connecting to a closet and a 20% of connecting to a bathroom.
+		A Living room connects to a main hallway, it has a 35% chance of connecting to a kitchen and 35% chance of connecting to a dining room
+		A dining room contains a table and several chairs, possibly a china cabinet. 35% chance of connecting to living room, connects to kitchen.
+		A kitchen contains

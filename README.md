@@ -18,6 +18,8 @@ Good luck, stay sexy, and don't get murdered.
 
 #### How it works:
 
+All types of objects, murders, people, relationships, so forth are defined in the .json filed in their respective folders
+
 _Gazing too closely upon the .json files may spoil some of the fun of the game_
 
 scenes.json - areas in the game, i.e. where the body was found, where the murder happened, so on and so forth.	
