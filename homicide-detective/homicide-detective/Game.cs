@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,38 +7,36 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class UserInterface
+    class Game
     {
-
-        private string characterName;
-
-        public UserInterface()
-        {
-
-        }
+        //make this whole class static
+        static string characterName = "";
+        static string command = "";
+        static bool gameInSession = false;
+        //static Save save = new Save();
 
         //MainMenu returns a true if the game is in session, and false if the game should quit
-        public bool MainMenu()
+        public static bool MainMenu()
         {
-            string command = "";
-            bool gameInSession = false;
 
             Console.WriteLine("Homicide Detective");
             Console.WriteLine("Whenever two objects interact, some evidence of that interaction can be found and verified.");
             Console.WriteLine("-Theory of Transfer");
             Console.WriteLine("new | load | exit");
+            Console.WriteLine("at any time, press ? for help.");
 
             command = Console.ReadLine();
+            command = command.ToLower();
 
             switch (command)
             {
                 case "new":
                     gameInSession = true;
-                    this.NewGame();
+                    NewGame();
                     break;
                 case "load":
                     gameInSession = true;
-                    this.LoadGame();
+                    LoadGame();
                     break;
                 case "exit":
                     return gameInSession;
@@ -50,19 +49,38 @@ namespace homicide_detective
             return gameInSession;
         }
 
-        void NewGame()
+        static void NewGame()
         {
+
+            //TODO: finish this section
+            //I left off partway through because I needed to make dinner
+            //Not exactly a good stopping point
+
             Console.WriteLine("What is your name, Detective?");
-            this.characterName = Console.ReadLine();
+            characterName = Console.ReadLine();
             Console.WriteLine("It's nice you meet you, Detective " + characterName + ".");
+
+            string root = @"D:\homicide-detective\";
+            string extension = ".json";
+            string path = root + characterName + extension;
+
+            if (!File.Exists(path))
+            {
+                File.WriteAllText(path, "HERE is my test text from the first IF");
+            }
+            else if (File.Exists(path))
+            {
+                File.WriteAllText(path, "Here is a test line from the ELSE IF");
+            }
+
         }
 
-        void SaveGame()
+        static void SaveGame()
         {
             throw new NotImplementedException();
         }
 
-        void LoadGame()
+        static void LoadGame()
         {
             throw new NotImplementedException();
         }
@@ -127,35 +145,36 @@ namespace homicide_detective
             throw new NotImplementedException();
         }
 
-        private static void RecordConversation()
+        static void RecordConversation()
         {
             throw new NotImplementedException();
         }
 
-        private static void CheckEvidence()
+        static void CheckEvidence()
         {
             throw new NotImplementedException();
         }
 
-        private static void CheckPhotographs()
+        static void CheckPhotographs()
         {
             throw new NotImplementedException();
         }
 
-        private static void CheckNotes()
+        static void CheckNotes()
         {
             throw new NotImplementedException();
         }
 
-        private static void CloseDoor(string v)
+        static void CloseDoor(string v)
         {
             throw new NotImplementedException();
         }
 
-        private static void OpenDoor(string v)
+        static void OpenDoor(string v)
         {
             throw new NotImplementedException();
         }
+
         static void EvaluateCommand(string input_string)
         {
             var command = input_string.Split(' ');
