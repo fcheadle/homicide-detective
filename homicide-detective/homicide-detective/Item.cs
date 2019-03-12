@@ -11,5 +11,8 @@ namespace homicide_detective
         //different pieces of evidence
         //or furniture or red herrings
         //or murder weapons
+        public Item(int seed)
+        {
+        }
     }
 }

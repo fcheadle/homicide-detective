@@ -1,16 +1,13 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace homicide_detective
 {
     class Game
     {
         //make this whole class static
-        static string characterName = "";
+        static string detective = "";
         static string command = "";
         static bool gameInSession = false;
         //static Save save = new Save();
@@ -18,7 +15,7 @@ namespace homicide_detective
         //MainMenu returns a true if the game is in session, and false if the game should quit
         public static bool MainMenu()
         {
-
+            
             Console.WriteLine("Homicide Detective");
             Console.WriteLine("Whenever two objects interact, some evidence of that interaction can be found and verified.");
             Console.WriteLine("-Theory of Transfer");
@@ -51,26 +48,23 @@ namespace homicide_detective
 
         static void NewGame()
         {
-
-            //TODO: finish this section
-            //I left off partway through because I needed to make dinner
-            //Not exactly a good stopping point
-
             Console.WriteLine("What is your name, Detective?");
-            characterName = Console.ReadLine();
-            Console.WriteLine("It's nice you meet you, Detective " + characterName + ".");
-
+            detective = Console.ReadLine();
+            detective = detective.ToLower();
+            Console.WriteLine("It's nice you meet you, Detective " + detective + ".");
+            
             string root = @"D:\homicide-detective\";
             string extension = ".json";
-            string path = root + characterName + extension;
+            string path = root + detective + extension;
+            Save newGame = new Save(detective);
 
             if (!File.Exists(path))
             {
-                File.WriteAllText(path, "HERE is my test text from the first IF");
+                File.WriteAllText(path, JsonConvert.SerializeObject(newGame));
             }
             else if (File.Exists(path))
             {
-                File.WriteAllText(path, "Here is a test line from the ELSE IF");
+                File.WriteAllText(path, JsonConvert.SerializeObject(newGame));
             }
 
         }
@@ -84,6 +78,20 @@ namespace homicide_detective
         {
             throw new NotImplementedException();
         }
+
+        public static string SanitizeDetective(string detectiveName)
+        {
+            char[] separator = { ' ', '-' };
+            string[] afterSplit = detectiveName.Split(separator);
+            string returnString = "";
+            foreach(string s in afterSplit)
+            {
+                returnString = returnString + s; 
+            }
+
+            return returnString;
+        }
+
 
         static void LookAt(string item)
         {

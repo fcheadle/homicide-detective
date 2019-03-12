@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace homicide_detective
 {
     class Save
     {
         //non-static
-        string characterName;
-        Case activeCase;
-        Case[] solvedCases;
-        Case[] coldCases;
+        public string detective;
+        public int seed;
+        public Case activeCase;
+        public Case[] solvedCases;
+        public Case[] coldCases;
 
+        public Save(string detectiveName)
+        {
+            detective = detectiveName;
+            seed = Base36.Decode(Game.SanitizeDetective(detective));
+            activeCase = new Case(1, seed);
+        }
     }
 }

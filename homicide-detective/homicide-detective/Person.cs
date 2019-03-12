@@ -10,5 +10,9 @@ namespace homicide_detective
     {
         //define people physiologically
         //and psychologically
+        public Person(int seed)
+        {
+
+        }
     }
 }

@@ -13,5 +13,8 @@ namespace homicide_detective
         //where the body was found
         //victim's place of work
         //so on
+        public Scene(int seed)
+        {
+        }
     }
 }
