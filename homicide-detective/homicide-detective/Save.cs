@@ -13,9 +13,12 @@ namespace homicide_detective
 
         public Save(string detectiveName)
         {
-            detective = detectiveName;
-            seed = Base36.Decode(Game.SanitizeDetective(detective));
-            activeCase = new Case(1, seed);
+            if (detectiveName != null)
+            {
+                detective = detectiveName;
+                seed = Base36.Decode(Game.SanitizeDetective(detective));
+            }
+
         }
     }
 }

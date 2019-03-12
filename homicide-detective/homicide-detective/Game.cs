@@ -31,10 +31,19 @@ namespace homicide_detective
                     gameInSession = true;
                     NewGame();
                     break;
+
                 case "load":
                     gameInSession = true;
+
+                    //Get the detective's name
+                    Console.WriteLine("What is your name, Detective?");
+                    detective = Console.ReadLine();
+                    Console.WriteLine("It's nice you meet you, Detective " + detective + ".");
+
+                    //Try to load the game based on the detective's name
                     LoadGame();
                     break;
+
                 case "exit":
                     return gameInSession;
                 default:
@@ -48,23 +57,37 @@ namespace homicide_detective
 
         static void NewGame()
         {
+            //Name the Detective
             Console.WriteLine("What is your name, Detective?");
             detective = Console.ReadLine();
-            detective = detective.ToLower();
             Console.WriteLine("It's nice you meet you, Detective " + detective + ".");
             
+            //Location of the game save
             string root = @"D:\homicide-detective\";
             string extension = ".json";
-            string path = root + detective + extension;
+            string path = root + detective.ToLower() + extension;
+
             Save newGame = new Save(detective);
 
+            //create a new save file
             if (!File.Exists(path))
             {
+                detective = detective.ToLower();
                 File.WriteAllText(path, JsonConvert.SerializeObject(newGame));
             }
             else if (File.Exists(path))
             {
-                File.WriteAllText(path, JsonConvert.SerializeObject(newGame));
+                Console.WriteLine("Warning! There is already a detective named " + detective + ". Would you like to load that game instead?");
+                string answer = Console.ReadLine();
+
+                if((answer == "no") || (answer == "No") || (answer == "NO"))
+                {
+                    File.WriteAllText(path, JsonConvert.SerializeObject(newGame)); 
+                }
+                else
+                {
+                    LoadGame();
+                }
             }
 
         }
@@ -76,7 +99,14 @@ namespace homicide_detective
 
         static void LoadGame()
         {
-            throw new NotImplementedException();
+            //Location of the save game
+            string root = @"D:\homicide-detective\";
+            string extension = ".json";
+            string path = root + detective.ToLower() + extension;
+
+            //Deserialize the save file contents to a Save object
+            string saveFileContents = File.ReadAllText(path);
+            Save save = JsonConvert.DeserializeObject<Save>(saveFileContents);
         }
 
         public static string SanitizeDetective(string detectiveName)
@@ -199,6 +229,7 @@ namespace homicide_detective
                         case "behind": LookBehind(command[2]); break;
                     }
                     break;
+
                 case "photograph":
                     switch (command[1])
                     {
@@ -206,6 +237,7 @@ namespace homicide_detective
                         default: PhotographItem(command[1]); break;
                     }
                     break;
+
                 case "take":
                     switch (command[1])
                     {
@@ -213,7 +245,11 @@ namespace homicide_detective
                         default: TakeEvidence(command[1]); break;
                     }
                     break;
-                case "dust": DustForPrints(command[1]); break;
+
+                case "dust":
+                    DustForPrints(command[1]);
+                    break;
+
                 case "leave":
                     switch (command[1])
                     {
@@ -221,8 +257,15 @@ namespace homicide_detective
                         default: LeaveScene(); break;
                     }
                     break;
-                case "open": OpenDoor(command[1]); break;
-                case "close": CloseDoor(command[1]); break;
+
+                case "open":
+                    OpenDoor(command[1]);
+                    break;
+
+                case "close":
+                    CloseDoor(command[1]);
+                    break;
+
                 case "check":
                     switch (command[1])
                     {
@@ -231,8 +274,14 @@ namespace homicide_detective
                         case "evidence": CheckEvidence(); break;
                     }
                     break;
-                case "record": RecordConversation(); break;
-                default: Console.WriteLine("?"); break;
+
+                case "record":
+                    RecordConversation();
+                    break;
+
+                default:
+                    Console.WriteLine("?");
+                    break;
             }
         }
     }
