@@ -10,6 +10,7 @@ namespace homicide_detective
         static string detective = "";
         static string command = "";
         static bool gameInSession = false;
+        static string rootDirectory = Directory.GetCurrentDirectory();
         //static Save save = new Save();
 
         //MainMenu returns a true if the game is in session, and false if the game should quit
@@ -61,9 +62,16 @@ namespace homicide_detective
             Console.WriteLine("What is your name, Detective?");
             detective = Console.ReadLine();
             Console.WriteLine("It's nice you meet you, Detective " + detective + ".");
-            
+
             //Location of the game save
-            string root = @"D:\homicide-detective\";
+            // Get current directory of binary and create a data directory if it doesn't exist.
+            string root = rootDirectory + @"\homicide-detective\";
+
+            if (!Directory.Exists(root))
+            {
+                Directory.CreateDirectory(root);
+            }
+
             string extension = ".json";
             string path = root + detective.ToLower() + extension;
 
@@ -100,7 +108,7 @@ namespace homicide_detective
         static void LoadGame()
         {
             //Location of the save game
-            string root = @"D:\homicide-detective\";
+            string root = rootDirectory + @"\homicide-detective\";
             string extension = ".json";
             string path = root + detective.ToLower() + extension;
 
