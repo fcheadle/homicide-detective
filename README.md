@@ -4,32 +4,24 @@
 
 _"When two objects meet, some evidence of that meeting can later be found and verified."_
 
-Homicide Detective is a text-based game where you are a detective who investigates homicides. These homicides are generated from the ranges given in the json files. 
+Homicide Detective is a text-based game where you are a detective who investigates homicides. These homicides are generated from the ranges given in the .json files. 
 
 ### Installation:
 
-Unfortunately, the game must be hosted in iis for the time being. As my node.js skills improve, this method will hopefully simplify.
-
-Go ahead and start iis and change the directory of your default website to the working directory.
-
-Then, navigate to localhost:80 and interact with the prompt given there.
+The game is not yet at a point where it can be installed. To run it, you must open it in visual studio and run the debugger (f5).
 
 Good luck, stay sexy, and don't get murdered.
 
 #### How it works:
 
-All types of objects, murders, people, relationships, so forth are defined in the .json filed in their respective folders
+All types of objects, murders, people, relationships, so forth are defined in the .json filed in their respective folders.
 
 _Gazing too closely upon the .json files may spoil some of the fun of the game_
 
-scenes.json - areas in the game, i.e. where the body was found, where the murder happened, so on and so forth.	
+scenes - a scene is a place where something happened, or a place where you can go to talk to witnesses or other persons of interest. Scenes contain items and connect to other scenes.
 
-murders.json - ways the victims could be killed, and the evidence each.
+persons - A person requires certain tissues to be functional and a certain amount of bodily fluids to keep from dying. They must also be kept at a decent temperature, or they can die from exposure.
 
-hiding_the_body.json - defines ways in which a victim's corpse might be hidden,	destroyed, or otherwise "gotten rid of", and the evidence that doing so might leave behind
+conversations - defines the things that people can say and tells that might indicate that someone is lying. Every spoken statement should be accompanied by one or more facial expressions and speech affectations.
 
-people.json - defines people and their many variations
-
-conversations.json - defines the things that people can say and tells that people might have
-
-items.json - the types of items in the game, from furniture and murder weapons to signs of struggle and blood spatter
+items - the types of items in the game, from furniture and murder weapons to signs of struggle and blood spatter

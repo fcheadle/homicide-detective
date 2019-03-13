@@ -13,6 +13,8 @@ namespace homicide_detective
         static string rootDirectory = Directory.GetCurrentDirectory();
         //static Save save = new Save();
 
+        
+
         //MainMenu returns a true if the game is in session, and false if the game should quit
         public static bool MainMenu()
         {
@@ -39,7 +41,7 @@ namespace homicide_detective
                     //Get the detective's name
                     Console.WriteLine("What is your name, Detective?");
                     detective = Console.ReadLine();
-                    Console.WriteLine("It's nice you meet you, Detective " + detective + ".");
+                    Console.WriteLine("It's nice to see you again, Detective " + detective + ".");
 
                     //Try to load the game based on the detective's name
                     LoadGame();
@@ -61,7 +63,7 @@ namespace homicide_detective
             //Name the Detective
             Console.WriteLine("What is your name, Detective?");
             detective = Console.ReadLine();
-            Console.WriteLine("It's nice you meet you, Detective " + detective + ".");
+            Console.WriteLine("It's nice to meet you, Detective " + detective + ".");
 
             //Location of the game save
             // Get current directory of binary and create a data directory if it doesn't exist.
@@ -221,9 +223,9 @@ namespace homicide_detective
             throw new NotImplementedException();
         }
 
-        static void EvaluateCommand(string input_string)
+        static void EvaluateCommand(string inputString)
         {
-            var command = input_string.Split(' ');
+            var command = inputString.Split(' ');
 
             switch (command[0])
             {
