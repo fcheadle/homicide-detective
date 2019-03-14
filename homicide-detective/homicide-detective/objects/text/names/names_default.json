@@ -1,0 +1,82 @@
+﻿{
+  "given": {
+    "male": [
+      "Peter",
+      "Andrew",
+      "Samuel",
+      "Hector",
+      "Julien",
+      "David",
+      "Jeff",
+      "Christopher",
+      "Patrick",
+      "Virgil"
+    ],
+    "female": [
+      "Claire",
+      "Angelica",
+      "Cecelia",
+      "Jessica",
+      "Lucy",
+      "Samantha",
+      "Christina",
+      "Patricia",
+      "Virginia",
+      "Kayleigh"
+    ],
+    "andorgynous": [
+      "Pat",
+      "Sam",
+      "Chris",
+      "Alex",
+      "Jesse"
+    ]
+  },
+  "family": [
+    "Smith",
+    "Campden",
+    "Packham",
+    "Rodriguez",
+    "Adams",
+    "West",
+    "Simmons",
+    "McElroy",
+    "Fitzpatricks",
+    "O'neil",
+    "Jackson",
+    "Peterson",
+    "Franklin",
+    "Edison",
+    "Romanov",
+    "St. John",
+    "Lee",
+    "Wesley",
+    "Picard",
+    "de Lune",
+    "Espanoza",
+    "Jones"
+  ],
+  "title": {
+    "male": [
+      "Senor",
+      "Mister"
+    ],
+    "female": [
+      "Miss",
+      "Missus",
+      "Senora",
+      "Senorita",
+      "Madam"
+    ],
+    "professional": [
+      "Doctor",
+      "Professor",
+      "Officer"
+    ],
+    "status": [
+      "Mayor",
+      "General",
+      "President""
+    ]
+  }
+}

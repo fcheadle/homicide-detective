@@ -10,6 +10,7 @@ namespace homicide_detective
     {
         //non-static
         int caseNumber;                         //A short number that can be combined with the detective's name to regenerate the same case
+        string status;                          //active, solved, or closed
         Person victim;                          //The person who was murdered
         Person murderer;                        //The person who killed the victim
         Person[] personsOfInterest;             //Murderer, Family of victim, witnesses, etc
