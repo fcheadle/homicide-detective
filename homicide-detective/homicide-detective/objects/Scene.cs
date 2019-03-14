@@ -15,6 +15,7 @@ namespace homicide_detective
         //so on
         public Scene(int seed)
         {
+
         }
     }
 }
