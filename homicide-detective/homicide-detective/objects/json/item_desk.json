@@ -1,0 +1,34 @@
+﻿{
+  "name": "desk",
+  "description": "A mid-sized pieze of furniture used for writing.",
+  "size": {
+    "minimum": 350,
+    "maximum": 460,
+    "mean": 375,
+    "mode": 390
+  },
+  "item_classes": [
+    "furniture",
+    "container"
+  ],
+  "materials": [
+    "wood",
+    "steel",
+    "brass"
+  ],
+  "wieldable": true,
+  "containers": [
+    { "name": "drawer" },
+    { "name": "drawer" },
+    { "name": "drawer" }
+  ],
+  "lock_chance": 25,
+  "blocks_views": [
+    "behind",
+    "beside"
+  ],
+  "visible_sides": [
+    "on_top",
+    "under"
+  ]
+}

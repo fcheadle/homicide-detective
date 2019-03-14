@@ -11,17 +11,30 @@ namespace homicide_detective
          * This handles loading, saving, and how the pbjects interact with one another
          * 
          */
-        string detective;
-        int seed;
-        Case[] activeCases;
-        Case[] solvedCases;
-        Case[] coldCases;
+
+
+        //these variables need to be public so that JSONConvert can access them during static loadGame calls
+        public string detective;
+        public int seed;
+        public int caseIndex;
+        public Case[] activeCases;
+        public Case[] solvedCases;
+        public Case[] coldCases;
+
+        public Game()
+        {
+
+        }
 
         public Game(string name)
         {
             //set the new objects variables:
             detective = name;
-            seed = Base36.Decode(SanitizeDetective(name));
+
+            if (detective != null)
+            {
+                seed = Base36.Decode(SanitizeName(name));
+            }
 
             string rootDirectory = Directory.GetCurrentDirectory();
             string root = rootDirectory + @"\saves\";
@@ -55,7 +68,7 @@ namespace homicide_detective
             }
         }
 
-        public static string SanitizeDetective(string detectiveName)
+        public static string SanitizeName(string detectiveName)
         {
             char[] separator = { ' ', '-' };
             string[] afterSplit = detectiveName.Split(separator);
@@ -74,9 +87,8 @@ namespace homicide_detective
             string root = rootDirectory + @"\saves\";
             string extension = ".json";
             string path = root + detective.ToLower() + extension;
-            Game game = this;
-            string saveText = JsonConvert.SerializeObject(game);
-            File.WriteAllText(path, saveText);
+
+            File.WriteAllText(path, JsonConvert.SerializeObject(this));
         }
 
         public static Game LoadGame(string name)

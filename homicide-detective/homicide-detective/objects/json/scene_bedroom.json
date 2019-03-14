@@ -1,0 +1,33 @@
+﻿{
+  "name": "bedroom",
+  "description": "where {owner} sleeps.",
+  "contains_classes": [
+    "furniture",
+    "containers",
+    "sleeping_surface",
+    "sitting_surface"
+  ],
+  "must_contain": [
+    "sleeping_surface",
+    "furniture"
+  ],
+  "cannot_contain": [
+    "food_storage",
+    "vehicle",
+    "dining"
+  ]
+  "area": {
+    "width": {
+      "minimum": 2,
+      "maximum": 5,
+      "median": 2.75,
+      "mode": 2.75
+    },
+    "length": {
+      "minimum": 2,
+      "maximum": 5,
+      "median": 2.75,
+      "mode": 2.75
+    }
+  }
+}
