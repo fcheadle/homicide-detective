@@ -65,9 +65,8 @@
     <None Include="objects\text\names_default.json" />
     <None Include="objects\text\written_diary.json" />
     <None Include="packages.config" />
+    <None Include="saves\test.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="saves\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

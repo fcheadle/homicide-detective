@@ -1,0 +1,17 @@
+﻿{
+  "name": "suburbanite",
+  "description": "a small town person who is accustomed to town life.",
+  "personality_value_multiplier": {
+    "jealousy": 1,
+    "anger": 0.85,
+    "pride": 1.05,
+    "laziness": 1.15,
+    "ambition": 1.0,
+    "classiness": 1.15,
+    "creativity": 0.95,
+    "attention_to_detail": 0.8,
+    "intelligence": 0.7,
+    "wealth": 1.2,
+    "family_importance": 0.95
+  }
+}

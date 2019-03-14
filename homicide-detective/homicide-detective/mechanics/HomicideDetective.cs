@@ -1,16 +1,16 @@
 ﻿using homicide_detective.user_interface;
 using System;
 
-/*
- * Homicide Detective
- * by Forrest Cheadle
- * 03/11/2019 
- */
-
 namespace homicide_detective
 {
     class Program
     {
+        /*
+         * Homicide Detective
+         * by Forrest Cheadle
+         * 03/11/2019 
+         */
+
         static void Main()
         {
             bool gameInSession = false;

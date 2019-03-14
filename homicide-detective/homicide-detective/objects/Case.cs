@@ -11,6 +11,7 @@ namespace homicide_detective
         //non-static
         int caseNumber;                         //A short number that can be combined with the detective's name to regenerate the same case
         string status;                          //active, solved, or closed
+        Random random;                          //Must be idempotent
         Person victim;                          //The person who was murdered
         Person murderer;                        //The person who killed the victim
         Person[] personsOfInterest;             //Murderer, Family of victim, witnesses, etc
@@ -24,27 +25,31 @@ namespace homicide_detective
         public Case(int caseId, int seed)
         {
             caseNumber = caseId;
-            victim = new Person(caseNumber + seed);
-            murderer = new Person(caseNumber + seed);
-            murderScene = new Scene(caseNumber + seed);
-            whereTheyFoundTheBody = new Scene(caseNumber + seed);
-            murderWeapon = new Item(caseNumber + seed);
-            //personsOfInterest = GeneratePersonsOfInterest();
-            //placesOfInterest = GeneratePlacesOfInterest();
-            //allEvidence = GenerateAllEvidence();
+            random = new Random(caseNumber + seed);
+
+            victim = new Person(random.Next());
+            murderer = new Person(random.Next());
+            murderScene = new Scene(random.Next());
+
+            whereTheyFoundTheBody = new Scene(random.Next());
+            murderWeapon = new Item(random.Next());
+
+            personsOfInterest = GeneratePersonsOfInterest(random.Next());
+            placesOfInterest = GeneratePlacesOfInterest(random.Next());
+            allEvidence = GenerateAllEvidence(random.Next());
         }
 
-        private Item[] GenerateAllEvidence()
+        private Item[] GenerateAllEvidence(int seed)
         {
             throw new NotImplementedException();
         }
 
-        private Scene[] GeneratePlacesOfInterest()
+        private Scene[] GeneratePlacesOfInterest(int seed)
         {
             throw new NotImplementedException();
         }
 
-        private Person[] GeneratePersonsOfInterest()
+        private Person[] GeneratePersonsOfInterest(int seed)
         {
             throw new NotImplementedException();
         }

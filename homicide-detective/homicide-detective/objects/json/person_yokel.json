@@ -1,7 +1,6 @@
 ﻿{
   "name": "yokel",
   "description": "a country {pronoun} who isn't accustomed to city life.",
-  "dominant_personality_trait": "non-refinement",
   "personality_value_multiplier": {
     "jealousy": 0.95,
     "anger": 1.15,
@@ -10,7 +9,9 @@
     "ambition": 1.0,
     "classiness": 0.5,
     "creativity": 1.1,
-    "attentionToDetail": 1.0,
-    "intelligence": 0.7
+    "attention_to_detail": 1.0,
+    "intelligence": 0.7,
+    "wealth": 0.7,
+    "family_importance": 1.35
   }
 }

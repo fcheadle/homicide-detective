@@ -1,0 +1,17 @@
+﻿{
+  "name": "rural",
+  "description": "a very small town person who is accustomed to both town and farm life.",
+  "personality_value_multiplier": {
+    "jealousy": 0.8,
+    "anger": 0.95,
+    "pride": 1.1,
+    "laziness": 0.75,
+    "ambition": 0.9,
+    "classiness": 0.95,
+    "creativity": 1.0,
+    "attention_to_detail": 0.95,
+    "intelligence": 0.85,
+    "wealth": 1.0,
+    "family_importance": 1.15
+  }
+}

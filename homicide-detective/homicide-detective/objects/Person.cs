@@ -11,7 +11,6 @@ namespace homicide_detective
         //define people physiologically and psychologically
         string name;
         string description;
-        string dominantPersonalityTrait;
 
         //following are percents
         int jealousy; 
@@ -24,15 +23,12 @@ namespace homicide_detective
         int attentionToDetail;
         int intelligence;
         int wealth;
+        int importanceOfFamily;
 
-        string[] motives; //specific hardcoded values
-        string[] causeOfDeath;//specific hardcoded values
-        string[] witnesses; //people from json files
-        string[] murderWeapons;//items from json files
-        
-        Scene sceneOfTheCrime;
-        Scene locationBodyWasFound;
-        Scene victimsBedroom;
+        string[] motives;           //specific hardcoded values
+        string[] causeOfDeath;      //specific hardcoded values
+        string[] witnesses;         //people from json files
+        string[] murderWeapons;     //items from json files
 
         Person[] family;
         Person[] friends;

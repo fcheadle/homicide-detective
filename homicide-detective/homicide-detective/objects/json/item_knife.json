@@ -1,0 +1,45 @@
+﻿{
+  "name": "knife",
+  "description": "A blade used for many things, including self defense and bodily harm.",
+  "volume": {
+    "minimum": 10,
+    "maximum": 25,
+    "mean": 16,
+    "mode": 16
+  },
+  "mass": {
+    "minimum": 50,
+    "maximum": 350,
+    "mean": 125,
+    "mode": 175
+  },
+  "hollowness": 0,
+  "sharp_point_number": 1,
+  "sharpness_of_point_degree": 350,
+  "sharp_point_decription": "point",
+  "shapes": [
+    {
+      "name": "spike",
+      "value": 100
+    }
+  ],
+  "item_classes": [
+    "weapon",
+    "tool"
+  ],
+  "materials": [
+    "horn",
+    "metal",
+    "plastic",
+    "bone"
+  ],
+  "containers": [],
+  "lock_chance": 0,
+  "blocks_views": [],
+  "visible_sides": [
+    "on_top",
+    "under",
+    "behind",
+    "beside"
+  ]
+}

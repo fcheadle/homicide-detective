@@ -8,27 +8,28 @@ namespace homicide_detective
     {
         /*
          * One game object should be active when not on the main menu
-         * This handles loading, saving, and how the pbjects interact with one another
-         * 
+         * This handles loading, saving, and how the objects interact with one another
          */
-
-
+         
         //these variables need to be public so that JSONConvert can access them during static loadGame calls
-        public string detective;
-        public int seed;
-        public int caseIndex;
-        public Case[] activeCases;
-        public Case[] solvedCases;
-        public Case[] coldCases;
+        public string detective;        //name of the detective, stored with dashes, periods, and hyphens
+        public int seed;                //number generated from the detective's name
+        public int caseIndex;           //case currently being reviewed (always exactly one case in review)
+        public bool debugMode = false;  //for testing purposes
+        public Case[] activeCases;      //cases that are neither solved nor cold
+        public Case[] solvedCases;      //when a case is added to the solved array, it must be removed from the active array
+        public Case[] coldCases;        //when a case is added to the cold array, it must be removed from the active cases
+        public string[] gameLog;        //the entire game log is saved to the file
 
+        //need a blank constructor because JSONConvert instantiates the object with no arguments
         public Game()
         {
 
         }
 
+        //constructor
         public Game(string name)
         {
-            //set the new objects variables:
             detective = name;
 
             if (detective != null)
@@ -68,9 +69,10 @@ namespace homicide_detective
             }
         }
 
+        //get the detective's name ready to be converted to a base36 number for the seed
         public static string SanitizeName(string detectiveName)
         {
-            char[] separator = { ' ', '-' };
+            char[] separator = { ' ', '-', '\'', '.'};
             string[] afterSplit = detectiveName.Split(separator);
             string returnString = "";
             foreach(string s in afterSplit)
@@ -81,6 +83,7 @@ namespace homicide_detective
             return returnString;
         }
 
+        //saves the game to a file
         void SaveGame()
         {
             string rootDirectory = Directory.GetCurrentDirectory();
@@ -91,6 +94,7 @@ namespace homicide_detective
             File.WriteAllText(path, JsonConvert.SerializeObject(this));
         }
 
+        //loads the game from a file
         public static Game LoadGame(string name)
         {
             //Location of the save game
@@ -99,7 +103,7 @@ namespace homicide_detective
             string extension = ".json";
             string path = root + name.ToLower() + extension;
 
-            //Deserialize the save file contents to a Save object
+            //Deserialize the save file contents to a Game object
             string saveFileContents = File.ReadAllText(path);
             Game game = JsonConvert.DeserializeObject<Game>(saveFileContents);
 
