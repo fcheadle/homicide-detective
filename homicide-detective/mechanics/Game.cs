@@ -107,5 +107,29 @@ namespace homicide_detective
 
             return game;
         }
+
+        public string[] LoadPersonFiles()
+        {
+            string fileDirectory = rootDirectory + @"\objects\person\";
+            return Directory.GetFiles(fileDirectory);
+        }
+
+        public string[] LoadItemFiles()
+        {
+            string fileDirectory = rootDirectory + @"\objects\item\";
+            return Directory.GetFiles(fileDirectory);
+        }
+
+        public string[] LoadSceneFiles()
+        {
+            string fileDirectory = rootDirectory + @"\objects\scene\";
+            return Directory.GetFiles(fileDirectory);
+        }
+
+        public string[] LoadTextFiles()
+        {
+            string fileDirectory = rootDirectory + @"\objects\text\";
+            return Directory.GetFiles(fileDirectory);
+        }
     }
 }
