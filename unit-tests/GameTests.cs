@@ -66,9 +66,27 @@ namespace unit_tests
         }
 
         [TestMethod]
-        public void Base36Convert()
+        public void LoadPersonFiles()
         {
-            Assert.AreEqual(1432124733, Base36.Decode("marjorystjohnoneil"));
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void LoadSceneFiles()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void LoadItemFiles()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void LoadTextFiles()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,6 +8,10 @@ namespace homicide_detective
 {
     public class Scene
     {
+        public Scene()
+        {
+        }
+
         //different locations that are involved, such as
         //scene of the crime
         //where the body was found
