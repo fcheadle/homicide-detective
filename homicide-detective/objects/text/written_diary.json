@@ -3,7 +3,8 @@
     "Dear Diary,",
     "Dear Journal,",
     "{date}",
-    "Note - "
+    "Note - ",
+    ""
   ],
   "victim": [
     "I saw {murderer} staring at me again.",

@@ -10,7 +10,13 @@ namespace homicide_detective
          * One game object should be active when not on the main menu
          * This handles loading, saving, and how the objects interact with one another
          */
-         
+
+
+        //System Variables
+        string rootDirectory = Directory.GetCurrentDirectory();
+        string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
+        string extension = ".json";
+
         //these variables need to be public so that JSONConvert can access them during static loadGame calls
         public string detective;        //name of the detective, stored with dashes, periods, and hyphens
         public int seed;                //number generated from the detective's name
@@ -37,15 +43,12 @@ namespace homicide_detective
                 seed = Base36.Decode(SanitizeName(name));
             }
 
-            string rootDirectory = Directory.GetCurrentDirectory();
-            string root = rootDirectory + @"\saves\";
-            string extension = ".json";
-            string path = root + name.ToLower() + extension;
+            string path = saveFolder + name.ToLower() + extension;
             
             // Get current directory of binary and create a data directory if it doesn't exist.
-            if (!Directory.Exists(root))
+            if (!Directory.Exists(saveFolder))
             {
-                Directory.CreateDirectory(root);
+                Directory.CreateDirectory(saveFolder);
             }
 
             //create a new save file
@@ -86,10 +89,8 @@ namespace homicide_detective
         //saves the game to a file
         public void SaveGame()
         {
-            string rootDirectory = Directory.GetCurrentDirectory();
-            string root = rootDirectory + @"\saves\";
-            string extension = ".json";
-            string path = root + detective.ToLower() + extension;
+
+            string path = saveFolder + detective.ToLower() + extension;
 
             File.WriteAllText(path, JsonConvert.SerializeObject(this));
         }
@@ -97,11 +98,8 @@ namespace homicide_detective
         //loads the game from a file
         public static Game LoadGame(string name)
         {
-            //Location of the save game
-            string rootDirectory = Directory.GetCurrentDirectory();
-            string root = rootDirectory + @"\saves\";
-            string extension = ".json";
-            string path = root + name.ToLower() + extension;
+
+            string path = Directory.GetCurrentDirectory() + @"\saves\" + name.ToLower() + ".json";
 
             //Deserialize the save file contents to a Game object
             string saveFileContents = File.ReadAllText(path);

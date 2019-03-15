@@ -49,24 +49,46 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="mechanics\Base36.cs" />
-    <Compile Include="objects\Case.cs" />
+    <Compile Include="mechanics\Case.cs" />
     <Compile Include="mechanics\Game.cs" />
-    <Compile Include="objects\Item.cs" />
-    <Compile Include="objects\Person.cs" />
+    <Compile Include="mechanics\Item.cs" />
+    <Compile Include="mechanics\Person.cs" />
     <Compile Include="mechanics\HomicideDetective.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="objects\Scene.cs" />
+    <Compile Include="mechanics\Scene.cs" />
     <Compile Include="user-interface\Menu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="objects\json\item_desk.json" />
-    <None Include="objects\json\person_yokel.json" />
-    <None Include="objects\json\scene_bedroom.json" />
-    <None Include="objects\text\names_default.json" />
-    <None Include="objects\text\written_diary.json" />
+    <None Include="objects\item\item_desk.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\item\item_knife.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\person\person_rural.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\person\person_suburbanite.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\person\person_yokel.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\scene\scene_bedroom.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\scene\scene_garage.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\text\names_default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\text\written_diary.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="saves\test.json" />
   </ItemGroup>
@@ -80,4 +102,8 @@
     <Error Condition="!Exists('..\packages\MSTest.TestAdapter.1.4.0\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.1.4.0\build\net45\MSTest.TestAdapter.targets'))" />
   </Target>
   <Import Project="..\packages\MSTest.TestAdapter.1.4.0\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.4.0\build\net45\MSTest.TestAdapter.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

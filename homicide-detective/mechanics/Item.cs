@@ -24,7 +24,11 @@ namespace homicide_detective
         string[] containers;//must be valid items from json
         string[] blocksViews;//specific hardcoded values
         string[] visiblSides;//specific hardcoded values
-        
+
+        public Item()
+        {
+        }
+
         public Item(int seed)
         {
 
