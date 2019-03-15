@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class Person
+    public class Person
     {
         //define people physiologically and psychologically
         string name;

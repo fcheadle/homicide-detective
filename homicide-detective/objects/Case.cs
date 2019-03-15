@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class Case
+    public class Case
     {
         //non-static
         int caseNumber;                         //A short number that can be combined with the detective's name to regenerate the same case

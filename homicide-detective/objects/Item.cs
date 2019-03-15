@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class Item
+    public class Item
     {
         //different pieces of evidence
         //or furniture or red herrings
