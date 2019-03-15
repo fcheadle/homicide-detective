@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class Scene
+    public class Scene
     {
         //different locations that are involved, such as
         //scene of the crime

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace homicide_detective
 {
-    class Game
+    public class Game
     {
         /*
          * One game object should be active when not on the main menu
@@ -84,7 +84,7 @@ namespace homicide_detective
         }
 
         //saves the game to a file
-        void SaveGame()
+        public void SaveGame()
         {
             string rootDirectory = Directory.GetCurrentDirectory();
             string root = rootDirectory + @"\saves\";

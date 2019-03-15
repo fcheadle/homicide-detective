@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "homicide-detective", "homicide-detective\homicide-detective.csproj", "{52C17618-5995-497F-BDB3-09B2CDD7C801}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit-tests", "unit-tests\unit-tests.csproj", "{A49A06BE-63AC-4441-8628-4D7E88FA38B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{52C17618-5995-497F-BDB3-09B2CDD7C801}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52C17618-5995-497F-BDB3-09B2CDD7C801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52C17618-5995-497F-BDB3-09B2CDD7C801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A49A06BE-63AC-4441-8628-4D7E88FA38B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A49A06BE-63AC-4441-8628-4D7E88FA38B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A49A06BE-63AC-4441-8628-4D7E88FA38B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A49A06BE-63AC-4441-8628-4D7E88FA38B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
