@@ -64,16 +64,46 @@ namespace homicide_detective
             }
             else if (File.Exists(path))
             {
-                Console.WriteLine("Warning! There is already a detective named " + detective + ". Would you like to load that game instead?");
-                string answer = Console.ReadLine();
+                bool existConfirmation = false;
 
-                if ((answer == "no") || (answer == "No") || (answer == "NO"))
+                while (!existConfirmation)
                 {
-                    SaveGame();
-                }
-                else
-                {
-                    LoadGame(detective);
+                    Console.WriteLine("Warning! There is already a detective named " + detective + ". Would you like to load that game instead?");
+                    string answer = Console.ReadLine();
+
+                    try
+                    {
+                        List<string> No = new List<string>();
+                        No.Add("no");
+                        No.Add("nope");
+                        No.Add("nah");
+                        No.Add("oh hell no");
+                        List<string> Yes = new List<string>();
+                        Yes.Add("yes");
+                        Yes.Add("yep");
+                        Yes.Add("yeah");
+                        Yes.Add("oh hell yeah");
+                        if (No.Contains(answer.Trim().ToLower()))
+                        {
+                            SaveGame();
+                            existConfirmation = true;
+                            break;
+                        }
+                        else if (Yes.Contains(answer.Trim().ToLower()))
+                        {
+                            LoadGame(detective);
+                            existConfirmation = true;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Umm... That didn't make sense. Yes/No answers ony!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Holy Smokes! There was a problem: " + ex.Message);
+                    }
                 }
             }
         }
