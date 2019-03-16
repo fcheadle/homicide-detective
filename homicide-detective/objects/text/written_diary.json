@@ -9,7 +9,7 @@
   "victim": [
     "I saw {murderer} staring at me again.",
     "My {spouse} is going to kill me if I try to leave.",
-    "I got into an argument with {murderer} again today"
+    "I got into an argument with {murderer} again today."
   ],
   "murderer": [
     "I just can't control myself around {victim} any more.",
@@ -17,7 +17,7 @@
     "I feel so awful about you-know-what."
   ],
   "accomplice": [
-    "I don't know who else I can tell about this, but I think {murderer} did a bad thing",
+    "I don't know who else I can tell about this, but I think {murderer} did a bad thing.",
     "{victim} had it coming, {pronoun} knew {pronoun} did."
   ],
   "unrelated": [
