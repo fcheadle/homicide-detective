@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace homicide_detective.mechanics
+namespace homicide_detective
 {
     public class GameText
     {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using homicide_detective.mechanics;
 using System.Collections.Generic;
 
 namespace homicide_detective
@@ -13,21 +12,20 @@ namespace homicide_detective
          * This handles loading, saving, and how the objects interact with one another
          */
 
-
         //System Variables
         string rootDirectory = Directory.GetCurrentDirectory();
         string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
         string extension = ".json";
 
         //these variables need to be public so that JSONConvert can access them during static loadGame calls
-        public string detective;        //name of the detective, stored with dashes, periods, and hyphens
-        public int seed;                //number generated from the detective's name
-        public int caseIndex;           //case currently being reviewed (always exactly one case in review)
-        public bool debugMode = false;  //for testing purposes
-        public Case[] activeCases;      //cases that are neither solved nor cold
-        public Case[] solvedCases;      //when a case is added to the solved array, it must be removed from the active array
-        public Case[] coldCases;        //when a case is added to the cold array, it must be removed from the active cases
-        public string[] gameLog;        //the entire game log is saved to the file
+        public string detective;            //name of the detective, stored with dashes, periods, and hyphens
+        public int seed;                    //number generated from the detective's name
+        public int caseIndex;               //case currently being reviewed (always exactly one case in review)
+        public bool debugMode = false;      //for testing purposes
+        public List<Case> activeCases;      //cases that are neither solved nor cold
+        public List<Case> solvedCases;      //when a case is added to the solved array, it must be removed from the active array
+        public List<Case> coldCases;        //when a case is added to the cold array, it must be removed from the active cases
+        public string[] gameLog;            //the entire game log is saved to the file
 
         public List<Person> allPersons = new List<Person>();    //keep the persons from the person folder in memory
         public List<Item> allItems = new List<Item>();          //keep the items from the item folder in memory
@@ -97,19 +95,22 @@ namespace homicide_detective
         public void SaveGame()
         {
             //Delete these objects before saving so that they don't take up a whole lot of disk space
-            if (allItems != null) allItems = null;
-            if (allPersons != null) allItems = null;
-            if (allScenes != null) allItems = null;
-            if (allText != null) allItems = null;
+            if (allItems != null) allItems = new List<Item>();
+            if (allPersons != null) allPersons = new List<Person>();
+            if (allScenes != null) allScenes = new List<Scene>();
+            if (allText != null) allText = new GameText();
 
             string path = saveFolder + detective.ToLower() + extension;
             File.WriteAllText(path, JsonConvert.SerializeObject(this));
 
-            //Load these files back so that they are in memory again
-            LoadPersonFiles();
-            LoadItemFiles();
-            LoadSceneFiles();
-            LoadTextFiles();
+            if ((detective != null) && (detective != ""))
+            {
+                //Load these files back so that they are in memory again
+                LoadPersonFiles();
+                LoadItemFiles();
+                LoadSceneFiles();
+                LoadTextFiles();
+            }
         }
 
         //loads the game from a file

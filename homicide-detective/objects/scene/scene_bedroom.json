@@ -1,7 +1,16 @@
 ﻿{
   "name": "bedroom",
   "description": "where {owner} sleeps.",
-  "contains_classes": [
+  "scene_classes": [
+    "utility"
+  ],
+  "scene_connection_number": 2,
+  "scene_connection_classes": [
+    "exterior",
+    "utility",
+    "subterranean"
+  ],
+  "contains_item_classes": [
     "furniture",
     "containers",
     "sleeping_surface",
@@ -15,7 +24,7 @@
     "food_storage",
     "vehicle",
     "dining"
-  ]
+  ],
   "area": {
     "width": {
       "minimum": 2,

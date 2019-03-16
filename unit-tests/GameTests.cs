@@ -3,16 +3,36 @@ using homicide_detective;
 using Newtonsoft.Json;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 namespace unit_tests
 {
     [TestClass]
     public class GameTests
     {
+        List<Person> knownPersons;
+        List<Item> knownItems;
+        List<Scene> knownScenes;
+        List<Case> knownActiveCases;
+        List<Person> knownSolvedCases;
+        List<Person> knownColdCases;
+        List<Person> allPersons;
+        GameText knownText;
+
+        int knownCaseIndex;
+        int knownSeed;
+        string knownName;
+        string knownDescription;
+
+        public GameTests()
+        {
+
+        }
+
         [TestMethod]
         public void GameConstructorWithoutName()
         {
-            homicide_detective.Game game = new Game();
+            Game game = new Game();
             Assert.AreEqual(null, game.detective);
             Assert.AreEqual(0, game.seed);
             Assert.AreEqual(false, game.debugMode);
@@ -27,7 +47,7 @@ namespace unit_tests
         {
             Random random = new Random();
             string detectiveName = "test" + random.Next().ToString();
-            homicide_detective.Game game = new Game(detectiveName);
+            Game game = new Game(detectiveName);
 
             Assert.AreEqual(detectiveName, game.detective);
         }
@@ -37,8 +57,9 @@ namespace unit_tests
         {
             Random random = new Random();
             string detectiveName = "test" + random.Next().ToString();
-            homicide_detective.Game game = new Game(detectiveName);
+            Game game = new Game();
 
+            game.detective = detectiveName;
             game.SaveGame();
 
             string json = JsonConvert.SerializeObject(game);
@@ -53,7 +74,7 @@ namespace unit_tests
         public void LoadGame()
         {
             string detectiveName = "test";
-            homicide_detective.Game game = homicide_detective.Game.LoadGame(detectiveName);
+            Game game = Game.LoadGame(detectiveName);
 
             Assert.AreEqual(detectiveName, game.detective);
             Assert.AreEqual(1372205, game.seed);
@@ -62,31 +83,102 @@ namespace unit_tests
         [TestMethod]
         public void SanitizeDetective()
         {
-            Assert.AreEqual("MarjoryStJohnOneil", homicide_detective.Game.SanitizeName("Marjory St. John-O'neil"));
+            Assert.AreEqual("MarjoryStJohnOneil",Game.SanitizeName("Marjory St. John-O'neil"));
         }
 
+        //Not Implemented
         [TestMethod]
         public void LoadPersonFiles()
         {
-            throw new NotImplementedException();
-        }
+            Game game = new Game();
 
+            int i = 0;
+            int j = 0;
+            bool testResult = false;
+            foreach(Person person in game.allPersons)
+            {
+                foreach(Person personKnown in knownPersons)
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            game.detective = "test";
+            game.LoadItemFiles();
+
+            //Assert.AreEqual(, game.LoadItemFiles());
+         }
+
+        //not Implemented
         [TestMethod]
         public void LoadSceneFiles()
         {
-            throw new NotImplementedException();
+            Game game = new Game();
+
+            int i = 0;
+            int j = 0;
+            bool testResult = false;
+            foreach (Scene scene in game.allScenes)
+            {
+                foreach (Scene sceneKnown in knownScenes)
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            game.detective = "test";
+            game.LoadItemFiles();
+
+           // Assert.AreEqual(, game.LoadItemFiles());
         }
 
+        //Not Implemented
         [TestMethod]
         public void LoadItemFiles()
         {
-            throw new NotImplementedException();
+            Game game = new Game();
+
+            int i = 0;
+            int j = 0;
+            bool testResult = false;
+            foreach (Person person in game.allPersons)
+            {
+                foreach (Person personKnown in knownPersons)
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            game.detective = "test";
+            game.LoadItemFiles();
+
+            //Assert.AreEqual(, game.LoadItemFiles());
         }
 
+        //Not Impleneted
         [TestMethod]
         public void LoadTextFiles()
         {
-            throw new NotImplementedException();
+            Game game = new Game();
+
+            int i = 0;
+            int j = 0;
+            bool testResult = false;
+            foreach (Person person in game.allPersons)
+            {
+                foreach (Person personKnown in knownPersons)
+                {
+                    throw new NotImplementedException();
+                    testResult = (personKnown == game.allPersons[i]);
+
+                    if (testResult)
+                    {
+                        j += 1;
+                        testResult = false;
+                    }
+                }
+            }
+            
+
+            game.LoadTextFiles();
+
         }
     }
 }
