@@ -97,10 +97,10 @@ namespace homicide_detective
         public void SaveGame()
         {
             //Delete these objects before saving so that they don't take up a whole lot of disk space
-            if (allItems != null) allItems = null;
-            if (allPersons != null) allItems = null;
-            if (allScenes != null) allItems = null;
-            if (allText != null) allItems = null;
+            if (allItems != null) allItems = new List<Item>();
+            if (allPersons != null) allItems = new List<Item>();
+            if (allScenes != null) allItems = new List<Item>();
+            if (allText != null) allItems = new List<Item>();
 
             string path = saveFolder + detective.ToLower() + extension;
             File.WriteAllText(path, JsonConvert.SerializeObject(this));
