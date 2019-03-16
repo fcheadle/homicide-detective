@@ -12,21 +12,28 @@ namespace homicide_detective
         //or furniture or red herrings
         //or murder weapons
 
-        string name;        //freetext, and unique identifier
-        string Description; //freetext
-        float hollowness;   //in percent
-        int mass;           //in grams
-        int volume;         //in cm squared
+        public string name;             //freetext, and unique identifier
+        public string description;      //freetext
+        public float hollowness;        //in percent
+        public int mass;                //in grams
+        public int volume;              //in cm cubed
 
-        string[] shapes;    //hardcoded specific values
-        string[] classes;   //freetext
-        string[] materials; //freetext
-        string[] containers;//must be valid items from json
-        string[] blocksViews;//specific hardcoded values
-        string[] visiblSides;//specific hardcoded values
+        public PhysicalPropertyRange mass_ranges;  
+        public PhysicalPropertyRange volume_ranges;
+
+        public List<Shape> shapes = new List<Shape>();          //hardcoded specific values
+        public List<string> classes = new List<string>();       //freetext
+        public List<string> materials = new List<string>();     //freetext
+        public List<string> containers = new List<string>();    //must be valid items from json
+        public List<string> blocksViews = new List<string>();   //specific hardcoded values
+        public List<string> visiblSides = new List<string>();   //specific hardcoded values
 
         public Item()
         {
+            name = "";
+            description = "";
+            mass_ranges = new PhysicalPropertyRange();
+            volume_ranges = new PhysicalPropertyRange();
         }
 
         public Item(int seed)

@@ -6,13 +6,15 @@ _"When two objects meet, some evidence of that meeting can later be found and ve
 
 Homicide Detective is a text-based game where you are a detective who investigates homicides. These homicides are generated from the ranges given in the .json files. 
 
+[This project has a board on Trello for development](https://trello.com/invite/b/qngR0CGL/35e762327185af78bdd2959332b87e0d/homicide-detective)
+
 ### Installation:
 
 The game is not yet at a point where it can be installed. To run it, you must open it in visual studio and run the debugger (f5).
 
 Good luck, stay sexy, and don't get murdered.
 
-#### How it works:
+### How it works:
 
 All types of objects, murders, people, relationships, so forth are defined in the .json filed in their respective folders.
 
