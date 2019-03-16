@@ -101,6 +101,7 @@ namespace homicide_detective
                     }
                     catch (Exception ex)
                     {
+
                         Console.WriteLine("Holy Smokes! There was a problem: " + ex.Message);
                     }
                 }
@@ -207,7 +208,14 @@ namespace homicide_detective
 
             foreach(string text in texts)
             {
-                gameText.Add(JsonConvert.DeserializeObject<GameText>(File.ReadAllText(text)));
+                if(text.Contains("names"))
+                {
+                    gameText.AddNames(JsonConvert.DeserializeObject<GameText.Name>(File.ReadAllText(text)));
+                }                
+                if(text.Contains("written"))
+                {
+                    gameText.AddWrittenTexts(JsonConvert.DeserializeObject<GameText.WrittenText>(File.ReadAllText(text)));
+                }
             }
 
             return gameText;

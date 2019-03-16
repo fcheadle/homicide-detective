@@ -15,15 +15,45 @@ namespace homicide_detective
         //potential names of persons
         public class Name
         {
+            public Name()
+            {
+                givenMale = new List<string>();
+                givenFemale = new List<string>();
+                family = new List<string>();
+                title = new Titles();
+            }
             public List<string> givenMale;
             public List<string> givenFemale;
             public List<string> family;
-            public List<string> title;
+            public Titles title;
+        }
+
+        public class Titles
+        {
+            public Titles()
+            {
+                male = new List<string>();
+                female = new List<string>();
+                professional = new List<string>();
+                status = new List<string>();
+            }
+            public List<string> male;
+            public List<string> female;
+            public List<string> professional;
+            public List<string> status;
         }
 
         //things that have been written down
         public class WrittenText
         {
+            public WrittenText()
+            {
+                this.intro = new List<string>();
+                this.victim = new List<string>();
+                this.murderer = new List<string>();
+                this.accomplice = new List<string>();
+                this.unrelated = new List<string>();
+            }
             public List<string> intro;
             public List<string> victim;
             public List<string> murderer;
@@ -49,43 +79,18 @@ namespace homicide_detective
         //Constructor
         public GameText()
         {
-
+            this.name = new Name();
+            this.written = new WrittenText();
         }
 
         internal void AddNames(Name text)
         {
-            foreach (string maleGiven in text.givenMale)
-            {
-                name.givenMale.Add(maleGiven);
-            }
-
-            foreach (string femaleGiven in text.givenFemale)
-            {
-                name.givenFemale.Add(femaleGiven);
-            }
-
-            foreach (string familyName in text.family)
-            {
-                name.family.Add(familyName);
-            }
-
-            foreach (string importTitle in text.title)
-            {
-                name.title.Add(importTitle);
-            }
+            this.name = text;
         }
 
         internal void AddWrittenTexts(WrittenText text)
         {
-            foreach (string introText in text.intro)
-            {
-                written.intro.Add(introText);
-            }
-
-            foreach (string victimText in text.victim)
-            {
-                written.victim.Add(victimText);
-            }
+            this.written = text;
         }
 
         internal void AddDialogueText(DialogueText text)
@@ -109,6 +114,13 @@ namespace homicide_detective
 
                 i++;
             }
+        }
+
+        internal void Add(object gameText)
+        {
+            
+            //this.AddNames(gameText.name);
+            //this.AddDialogueText(gameText.dialogue);
         }
     }
 }
