@@ -106,10 +106,10 @@ namespace homicide_detective
             if ((detective != null) && (detective != ""))
             {
                 //Load these files back so that they are in memory again
-                LoadPersonFiles();
-                LoadItemFiles();
-                LoadSceneFiles();
-                LoadTextFiles();
+                allPersons = LoadPersonFiles();
+                allItems = LoadItemFiles();
+                allScenes = LoadSceneFiles();
+                allText = LoadTextFiles();
             }
         }
 
@@ -126,46 +126,61 @@ namespace homicide_detective
             return game;
         }
 
-        public void LoadPersonFiles()
+        public List<Person> LoadPersonFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\person\";
             string[] persons = Directory.GetFiles(fileDirectory);
             int i = 0;
+            List<Person> returnList = new List<Person>();
             foreach(string json in persons)
             {
-                allPersons.Add(JsonConvert.DeserializeObject<Person>(File.ReadAllText(persons[i])));
+                returnList.Add(JsonConvert.DeserializeObject<Person>(File.ReadAllText(persons[i])));
             }
+
+            return returnList;
         }
 
-        public void LoadItemFiles()
+        public List<Item> LoadItemFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\item\";
             string[] items = Directory.GetFiles(fileDirectory);
             int i = 0;
+            List<Item> returnList = new List<Item>();
             foreach (string json in items)
             {
-                allItems.Add(JsonConvert.DeserializeObject<Item>(File.ReadAllText(items[i])));
+                returnList.Add(JsonConvert.DeserializeObject<Item>(File.ReadAllText(items[i])));
             }
+
+            return returnList;
         }
 
-        public void LoadSceneFiles()
+        public List<Scene> LoadSceneFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\scene\";
             string[] scenes = Directory.GetFiles(fileDirectory);
             int i = 0;
+            List<Scene> returnList = new List<Scene>();
             foreach (string json in scenes)
             {
-                allScenes.Add(JsonConvert.DeserializeObject<Scene>(File.ReadAllText(scenes[i])));
+                returnList.Add(JsonConvert.DeserializeObject<Scene>(File.ReadAllText(scenes[i])));
             }
+            
+            return returnList;
         }
 
-        public void LoadTextFiles()
+        public GameText LoadTextFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\text\";
             string[] texts = Directory.GetFiles(fileDirectory);
 
-            //we only have one instance of allText
-            allText = new GameText(texts);
+            GameText gameText = new GameText();
+
+            foreach(string text in texts)
+            {
+                gameText.Add(JsonConvert.DeserializeObject<GameText>(File.ReadAllText(text)));
+            }
+
+            return gameText;
         }
     }
 }

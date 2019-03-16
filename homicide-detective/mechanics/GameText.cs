@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,31 +15,36 @@ namespace homicide_detective
         //potential names of persons
         public class Name
         {
-            public string[] givenMale;
-            public string[] givenFemale;
-            public string[] family;
-            public string[] title;
+            public List<string> givenMale;
+            public List<string> givenFemale;
+            public List<string> family;
+            public List<string> title;
         }
 
         //things that have been written down
         public class WrittenText
         {
-            public string[] intro;
-            public string[] victim;
-            public string[] murderer;
-            public string[] accomplice;
-            public string[] unrelated;
+            public List<string> intro;
+            public List<string> victim;
+            public List<string> murderer;
+            public List<string> accomplice;
+            public List<string> unrelated;
         }
 
         //things people can say
         public class DialogueText
         {
-            public string[] greetings;
-            public string[] justification;
-            public string[] argument;
-            public string[] defense;
-            public string[] deflection;
+            public List<string> greetings;
+            public List<string> justification;
+            public List<string> argument;
+            public List<string> defense;
+            public List<string> deflection;
+            public List<string> smallTalk;
         }
+
+        Name name;
+        WrittenText written;
+        DialogueText dialogue;
 
         //Constructor
         public GameText()
@@ -48,9 +54,12 @@ namespace homicide_detective
 
         public GameText(string[] texts)
         {
-            int i = 0;
 
-            foreach(string json in texts)
+        }
+
+        internal void Add(GameText gameText)
+        {
+            foreach(PropertyInfo propertyInfo in name.GetType().GetProperties())
             {
 
             }
