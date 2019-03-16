@@ -52,16 +52,62 @@ namespace homicide_detective
 
         }
 
-        public GameText(string[] texts)
+        internal void AddNames(Name text)
         {
+            foreach (string maleGiven in text.givenMale)
+            {
+                name.givenMale.Add(maleGiven);
+            }
 
+            foreach (string femaleGiven in text.givenFemale)
+            {
+                name.givenFemale.Add(femaleGiven);
+            }
+
+            foreach (string familyName in text.family)
+            {
+                name.family.Add(familyName);
+            }
+
+            foreach (string importTitle in text.title)
+            {
+                name.title.Add(importTitle);
+            }
         }
 
-        internal void Add(GameText gameText)
+        internal void AddWrittenTexts(WrittenText text)
         {
-            //foreach(PropertyInfo propertyInfo in name.GetType().GetProperties())
+            foreach (string introText in text.intro)
             {
+                written.intro.Add(introText);
+            }
 
+            foreach (string victimText in text.victim)
+            {
+                written.victim.Add(victimText);
+            }
+        }
+
+        internal void AddDialogueText(DialogueText text)
+        {
+            //Look through all the properties in dialogue
+            //and all the properties in text
+            //and add to the relevant list where the two properties match up
+            int i = 0;
+            int j = 0;
+            foreach (PropertyInfo property in dialogue.GetType().GetProperties())
+            {
+                j = 0;
+                foreach (PropertyInfo textProperty in dialogue.GetType().GetProperties())
+                {
+                    if(textProperty.Name == property.Name)
+                    {
+                        //add to the right variable
+                    }
+                    j++;
+                }
+
+                i++;
             }
         }
     }
