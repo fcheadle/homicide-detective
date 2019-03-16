@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using homicide_detective.mechanics;
 
 namespace unit_tests
 {
