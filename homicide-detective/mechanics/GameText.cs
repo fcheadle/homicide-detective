@@ -59,7 +59,7 @@ namespace homicide_detective
 
         internal void Add(GameText gameText)
         {
-            foreach(PropertyInfo propertyInfo in name.GetType().GetProperties())
+            //foreach(PropertyInfo propertyInfo in name.GetType().GetProperties())
             {
 
             }
