@@ -68,7 +68,9 @@ namespace unit_tests
         [TestMethod]
         public void LoadPersonFiles()
         {
-            throw new NotImplementedException();
+            string detectiveName = "test";
+            homicide_detective.Game game = homicide_detective.Game.LoadGame(detectiveName);
+
         }
 
         [TestMethod]

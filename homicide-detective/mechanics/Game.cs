@@ -13,7 +13,6 @@ namespace homicide_detective
          * This handles loading, saving, and how the objects interact with one another
          */
 
-
         //System Variables
         string rootDirectory = Directory.GetCurrentDirectory();
         string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
