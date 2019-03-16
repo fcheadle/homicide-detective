@@ -83,7 +83,9 @@ namespace unit_tests
         [TestMethod]
         public void SanitizeDetective()
         {
-            Assert.AreEqual("MarjoryStJohnOneil",Game.SanitizeName("Marjory St. John-O'neil"));
+
+            Assert.AreEqual("MarjoryStJohnOneil", Game.SanitizeName("Marjory St. John-O'neil"));
+
         }
 
         //Not Implemented
@@ -95,9 +97,10 @@ namespace unit_tests
             int i = 0;
             int j = 0;
             bool testResult = false;
-            foreach(Person person in game.allPersons)
+
+            foreach (Person person in game.allPersons)
             {
-                foreach(Person personKnown in knownPersons)
+                foreach (Person personKnown in knownPersons)
                 {
                     throw new NotImplementedException();
                 }
@@ -106,7 +109,7 @@ namespace unit_tests
             game.LoadItemFiles();
 
             //Assert.AreEqual(, game.LoadItemFiles());
-         }
+        }
 
         //not Implemented
         [TestMethod]
@@ -127,7 +130,6 @@ namespace unit_tests
             game.detective = "test";
             game.LoadItemFiles();
 
-           // Assert.AreEqual(, game.LoadItemFiles());
         }
 
         //Not Implemented
@@ -175,7 +177,6 @@ namespace unit_tests
                     }
                 }
             }
-            
 
             game.LoadTextFiles();
 
