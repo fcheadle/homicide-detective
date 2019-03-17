@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace homicide_detective
 {
-    public class Person
+    public class PersonTemplate
     {
         //define people physiologically and psychologically
         public string name;
@@ -29,36 +29,16 @@ namespace homicide_detective
         public string[] witnesses;         //people from json files
         public string[] murderWeapons;     //items from json files
          
-        public List<Person> family;
-        public List<Person> friends;
-        public List<Person> enemies;
+        public List<PersonTemplate> family;
+        public List<PersonTemplate> friends;
+        public List<PersonTemplate> enemies;
 
-        public Person()
+        public PersonTemplate()
         {
-            name = "";
-            description = "";
-            jealousy = 0;
-            anger = 0;
-            pride = 0;
-            laziness = 0;
-            ambition = 0;
-            classiness = 0;
-            creativity = 0;
-            attentionToDetail = 0;
-            intelligence = 0;
-            wealth = 0;
-            importanceOfFamily = 0;
+
         }
 
-        public Person(int seed)
-        {
-            Random random = new Random(seed);
-
-            //File[] files = Directory.GetFileSystemEntries();
-            //jealousy = GenerateAttribute(seed);
-        }
-
-        private int GenerateAttributes(int seed)
+        public int GenerateAttributes(int seed)
         {
             throw new NotImplementedException();
         }

@@ -11,20 +11,19 @@ namespace unit_tests
     public class GameTests
     {
         //system variables
-        string rootDirectory = Directory.GetCurrentDirectory();
         string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
         static string personFolder = Directory.GetCurrentDirectory() + @"\objects\person";
         static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\item";
         static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\scene";
-        string extension = ".json";
+
         string[] personPaths = Directory.GetFiles(personFolder);
         string[] itemPaths = Directory.GetFiles(itemFolder);
         string[] scenePaths = Directory.GetFiles(sceneFolder);
 
         //TODO: get an example file
-        List<Person> knownPersons = new List<Person>();
-        List<Item> knownItems = new List<Item>();
-        List<Scene> knownScenes = new List<Scene>();
+        List<PersonTemplate> knownPersons = new List<PersonTemplate>();
+        List<ItemTemplate> knownItems = new List<ItemTemplate>();
+        List<SceneTemplate> knownScenes = new List<SceneTemplate>();
         List<Case> knownActiveCases = new List<Case>();
         List<Case> knownSolvedCases = new List<Case>();
         List<Case> knownColdCases = new List<Case>();
@@ -40,17 +39,17 @@ namespace unit_tests
         {
             foreach (string person in personPaths)
             {
-                knownPersons.Add(JsonConvert.DeserializeObject<Person>(File.ReadAllText(person)));
+                knownPersons.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(person)));
             }
 
             foreach (string item in itemPaths)
             {
-                knownItems.Add(JsonConvert.DeserializeObject<Item>(File.ReadAllText(item)));
+                knownItems.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(item)));
             }
 
             foreach (string scene in scenePaths)
             {
-                knownScenes.Add(JsonConvert.DeserializeObject<Scene>(File.ReadAllText(scene)));
+                knownScenes.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scene)));
             }
 
             //knownItems = new List<Item>();
@@ -107,10 +106,10 @@ namespace unit_tests
             Game game = new Game();
 
             bool testResult = false;
-            game.allPersons = game.LoadPersonFiles();
-            foreach (Person person in game.allPersons)
+            game.personTemplates = game.LoadPersonFiles();
+            foreach (PersonTemplate person in game.personTemplates)
             {
-                foreach (Person knownPerson in knownPersons)
+                foreach (PersonTemplate knownPerson in knownPersons)
                 {
                     if (knownPerson.name == person.name)
                         if(knownPerson.description == person.description)
@@ -127,10 +126,10 @@ namespace unit_tests
             Game game = new Game();
 
             bool testResult = false;
-            game.allScenes = game.LoadSceneFiles();
-            foreach (Scene scene in game.allScenes)
+            game.sceneTemplates = game.LoadSceneFiles();
+            foreach (SceneTemplate scene in game.sceneTemplates)
             {
-                foreach (Scene knownScene in knownScenes)
+                foreach (SceneTemplate knownScene in knownScenes)
                 {
                     if (knownScene.name == scene.name)
                         if (knownScene.description == scene.description)
@@ -141,17 +140,16 @@ namespace unit_tests
             Assert.AreEqual(true, testResult);
         }
 
-        //Not Implemented
         [TestMethod]
         public void LoadItemFiles()
         {
             Game game = new Game();
 
             bool testResult = false;
-            game.allItems = game.LoadItemFiles();
-            foreach (Item item in game.allItems)
+            game.itemTemplates = game.LoadItemFiles();
+            foreach (ItemTemplate item in game.itemTemplates)
             {
-                foreach (Item knownItem in knownItems)
+                foreach (ItemTemplate knownItem in knownItems)
                 {
                     if (knownItem.name == item.name)
                         if (knownItem.description == item.description)
@@ -168,7 +166,6 @@ namespace unit_tests
             Game game = new Game();
             game.allText = game.LoadTextFiles();
             Assert.IsInstanceOfType(game.allText, knownText.GetType());
-            //Assert.AreEqual(knownText);
         }
     }
 }

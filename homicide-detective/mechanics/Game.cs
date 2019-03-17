@@ -27,9 +27,9 @@ namespace homicide_detective
         public List<Case> coldCases;        //when a case is added to the cold array, it must be removed from the active cases
         public string[] gameLog;            //the entire game log is saved to the file
 
-        public List<Person> allPersons = new List<Person>();    //keep the persons from the person folder in memory
-        public List<Item> allItems = new List<Item>();          //keep the items from the item folder in memory
-        public List<Scene> allScenes = new List<Scene>();       //keep the scenes from the scene folder in memory
+        public List<PersonTemplate> personTemplates = new List<PersonTemplate>();    //keep the persons from the person folder in memory
+        public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();          //keep the items from the item folder in memory
+        public List<SceneTemplate> sceneTemplates = new List<SceneTemplate>();       //keep the scenes from the scene folder in memory
         public GameText allText;                                //keep the text from the text folder in memory. There is only item for all game text 
 
         //need a blank constructor because JSONConvert instantiates the object with no arguments
@@ -83,9 +83,9 @@ namespace homicide_detective
         public void SaveGame()
         {
             //Delete these objects before saving so that they don't take up a whole lot of disk space
-            if (allItems != null) allItems = new List<Item>();
-            if (allPersons != null) allPersons = new List<Person>();
-            if (allScenes != null) allScenes = new List<Scene>();
+            if (itemTemplates != null) itemTemplates = new List<ItemTemplate>();
+            if (personTemplates != null) personTemplates = new List<PersonTemplate>();
+            if (sceneTemplates != null) sceneTemplates = new List<SceneTemplate>();
             if (allText != null) allText = new GameText();
 
             string path = saveFolder + detective.ToLower() + extension;
@@ -94,9 +94,9 @@ namespace homicide_detective
             if ((detective != null) && (detective != ""))
             {
                 //Load these files back so that they are in memory again
-                allPersons = LoadPersonFiles();
-                allItems = LoadItemFiles();
-                allScenes = LoadSceneFiles();
+                personTemplates = LoadPersonFiles();
+                itemTemplates = LoadItemFiles();
+                sceneTemplates = LoadSceneFiles();
                 allText = LoadTextFiles();
             }
         }
@@ -113,43 +113,43 @@ namespace homicide_detective
             return game;
         }
 
-        public List<Person> LoadPersonFiles()
+        public List<PersonTemplate> LoadPersonFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\person\";
             string[] persons = Directory.GetFiles(fileDirectory);
             int i = 0;
-            List<Person> returnList = new List<Person>();
+            List<PersonTemplate> returnList = new List<PersonTemplate>();
             foreach(string json in persons)
             {
-                returnList.Add(JsonConvert.DeserializeObject<Person>(File.ReadAllText(persons[i])));
+                returnList.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(persons[i])));
             }
 
             return returnList;
         }
 
-        public List<Item> LoadItemFiles()
+        public List<ItemTemplate> LoadItemFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\item\";
             string[] items = Directory.GetFiles(fileDirectory);
             int i = 0;
-            List<Item> returnList = new List<Item>();
+            List<ItemTemplate> returnList = new List<ItemTemplate>();
             foreach (string json in items)
             {
-                returnList.Add(JsonConvert.DeserializeObject<Item>(File.ReadAllText(items[i])));
+                returnList.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(items[i])));
             }
 
             return returnList;
         }
 
-        public List<Scene> LoadSceneFiles()
+        public List<SceneTemplate> LoadSceneFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\scene\";
             string[] scenes = Directory.GetFiles(fileDirectory);
             int i = 0;
-            List<Scene> returnList = new List<Scene>();
+            List<SceneTemplate> returnList = new List<SceneTemplate>();
             foreach (string json in scenes)
             {
-                returnList.Add(JsonConvert.DeserializeObject<Scene>(File.ReadAllText(scenes[i])));
+                returnList.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scenes[i])));
             }
             
             return returnList;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    public class Scene
+    public class SceneTemplate
     {
         //different locations that are involved, such as
         //scene of the crime
@@ -23,12 +23,7 @@ namespace homicide_detective
         public PhysicalPropertyRange lengthRange;
         public PhysicalPropertyRange widthRange;
 
-        public Scene()
-        {
-
-        }
-
-        public Scene(int seed)
+        public SceneTemplate()
         {
 
         }
