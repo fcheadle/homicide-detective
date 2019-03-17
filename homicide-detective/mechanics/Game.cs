@@ -13,9 +13,9 @@ namespace homicide_detective
          */
 
         //System Variables
-        string rootDirectory = Directory.GetCurrentDirectory();
-        string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
-        string extension = ".json";
+        static string rootDirectory = Directory.GetCurrentDirectory();
+        static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
+        static string extension = ".json";
 
         //these variables need to be public so that JSONConvert can access them during static loadGame calls
         public string detective;            //name of the detective, stored with dashes, periods, and hyphens
@@ -45,67 +45,10 @@ namespace homicide_detective
 
             if (detective != null)
             {
-                seed = Base36.Decode(SanitizeName(name));
+                seed = Base36.Decode(SanitizeName(name.ToLower()));
             }
 
-            string path = saveFolder + name.ToLower() + extension;
-            
-            // Get current directory of binary and create a data directory if it doesn't exist.
-            if (!Directory.Exists(saveFolder))
-            {
-                Directory.CreateDirectory(saveFolder);
-            }
-
-            //create a new save file
-            if (!File.Exists(path))
-            {
-                SaveGame();
-            }
-            else if (File.Exists(path))
-            {
-                bool existConfirmation = false;
-
-                while (!existConfirmation)
-                {
-                    Console.WriteLine("Warning! There is already a detective named " + detective + ". Would you like to load that game instead?");
-                    string answer = Console.ReadLine();
-
-                    try
-                    {
-                        List<string> No = new List<string>();
-                        No.Add("no");
-                        No.Add("nope");
-                        No.Add("nah");
-                        No.Add("oh hell no");
-                        List<string> Yes = new List<string>();
-                        Yes.Add("yes");
-                        Yes.Add("yep");
-                        Yes.Add("yeah");
-                        Yes.Add("oh hell yeah");
-                        if (No.Contains(answer.Trim().ToLower()))
-                        {
-                            SaveGame();
-                            existConfirmation = true;
-                            break;
-                        }
-                        else if (Yes.Contains(answer.Trim().ToLower()))
-                        {
-                            LoadGame(detective);
-                            existConfirmation = true;
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Umm... That didn't make sense. Yes/No answers ony!");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                        Console.WriteLine("Holy Smokes! There was a problem: " + ex.Message);
-                    }
-                }
-            }
+            SaveGame();
         }
 
         //get the detective's name ready to be converted to a base36 number for the seed
@@ -120,6 +63,20 @@ namespace homicide_detective
             }
 
             return returnString;
+        }
+
+        //Check to see if a saved game exists for this string
+        public static bool CheckFile(string name)
+        {
+            string path = saveFolder + name.ToLower() + extension;
+
+            // Get current directory of binary and create a save directory if it doesn't exist.
+            if (!Directory.Exists(saveFolder))
+            {
+                Directory.CreateDirectory(saveFolder);
+            }
+
+            return File.Exists(path);
         }
 
         //saves the game to a file
@@ -147,8 +104,7 @@ namespace homicide_detective
         //loads the game from a file
         public static Game LoadGame(string name)
         {
-
-            string path = Directory.GetCurrentDirectory() + @"\saves\" + name.ToLower() + ".json";
+            string path = Directory.GetCurrentDirectory() + @"\saves\" + name + ".json";
 
             //Deserialize the save file contents to a Game object
             string saveFileContents = File.ReadAllText(path);
@@ -208,11 +164,11 @@ namespace homicide_detective
 
             foreach(string text in texts)
             {
-                if(text.Contains("names"))
+                if(text.Contains("names_"))
                 {
                     gameText.AddNames(JsonConvert.DeserializeObject<GameText.Name>(File.ReadAllText(text)));
                 }                
-                if(text.Contains("written"))
+                if(text.Contains("written_"))
                 {
                     gameText.AddWrittenTexts(JsonConvert.DeserializeObject<GameText.WrittenText>(File.ReadAllText(text)));
                 }

@@ -11,16 +11,53 @@ namespace homicide_detective
          * 03/11/2019 
          */
 
+        static int gameState = 1;
+        //gameState = 0;        //turn off game
+        //gameState = 1;        //show main menu
+        //gameState = 2;        //show case menu
+        //gameState = 3;        //investigating a scene
+        //gameState = 4;        //talking to persons of interest
+        static int caseTaken;
+
         static void Main()
         {
-            bool gameInSession = false;
-
-            gameInSession = Menu.MainMenu();
-
-            while (gameInSession == true)
+            while (gameState != 0)
             {
-                int caseTaken = Menu.CaseMenu(1);
-                if (caseTaken == 0) gameInSession = false;
+                switch (gameState)
+                {
+                    case 0:
+                        break;
+
+                    case 1:
+                        gameState = Menu.MainMenu();
+                        break;
+
+                    case 2:
+                        caseTaken = Menu.CaseMenu(0);
+
+                        if (caseTaken == 0)
+                        {
+                            gameState = 0;
+                        }
+                        else
+                        {
+                            gameState = 3;
+                        }
+
+                        break;
+
+                    case 3:
+                        gameState = Menu.CrimeSceneMenu();
+                        break;
+
+                    case 4:
+                        gameState = Menu.WitnessDialogueMenu();
+                        break;
+
+                    default:
+                        gameState = 0;
+                        break;
+                }
             }
         }
     }

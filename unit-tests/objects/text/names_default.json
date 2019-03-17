@@ -1,0 +1,28 @@
+﻿{
+  "givenMale": ["bert"],
+  "givenFemale": ["Allie"],
+  "family": ["Sanchez"],
+  "title": {
+    "male": [
+      "Senor",
+      "Mister"
+    ],
+    "female": [
+      "Miss",
+      "Missus",
+      "Senora",
+      "Senorita",
+      "Madam"
+    ],
+    "professional": [
+      "Doctor",
+      "Professor",
+      "Officer"
+    ],
+    "status": [
+      "Mayor",
+      "General",
+      "President"
+    ]
+  }
+}

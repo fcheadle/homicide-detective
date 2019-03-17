@@ -1,0 +1,37 @@
+﻿{
+  "intro": [
+    "Dear Diary,",
+    "Dear Journal,",
+    "{date}",
+    "Note - ",
+    ""
+  ],
+  "victim": [
+    "I saw {murderer} staring at me again.",
+    "My {spouse} is going to kill me if I try to leave.",
+    "I got into an argument with {murderer} again today."
+  ],
+  "murderer": [
+    "I just can't control myself around {victim} any more.",
+    "Oh god, I was out and about the other day and {witness} was there. I think {pronoun} knows what I did.",
+    "I feel so awful about you-know-what."
+  ],
+  "accomplice": [
+    "I don't know who else I can tell about this, but I think {murderer} did a bad thing.",
+    "{victim} had it coming, {pronoun} knew {pronoun} did."
+  ],
+  "unrelated": [
+    "Remember to get onions at the store thursday.",
+    "I wonder what {person_of_interest} has been up to lately.",
+    "The new episode of Charlie's Angels was really good this week.",
+    "I have developed feelings for {person of interest} and am thinking of asking {pronoun} out.",
+    "I've definitely gained weight again.",
+    "I started practicing the guitar but the fingertips on my left hand are so sore.",
+    "What was the name of that one kid who always picked his nose again?",
+    "Dammit, {person of interest} figured out mine and {person of interest}'s secret.",
+    "This weekend we're driving up to see Grandma.",
+    "It is storming really hard and I find it so relaxing.",
+    "I can't sleep.",
+    "I miss {person of interest}."
+  ]
+}
