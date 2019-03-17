@@ -47,7 +47,7 @@ namespace homicide_detective
                         break;
 
                     case 3:
-                        gameState = Menu.CrimeSceneMenu();
+                        gameState = Menu.CrimeSceneMenu(caseTaken);
                         break;
 
                     case 4:

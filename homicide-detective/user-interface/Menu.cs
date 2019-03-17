@@ -17,7 +17,6 @@ namespace homicide_detective.user_interface
         //gameState = 3;        //investigating a scene
         //gameState = 4;        //talking to persons of interest
 
-
         #region menus
         //MainMenu returns an integer that correlates to gameState in Homicide-Detective.cs
         public static int MainMenu()
@@ -141,8 +140,10 @@ namespace homicide_detective.user_interface
         }
 
         //This is where the code for investigating a scene goes. Returns gameState
-        internal static int CrimeSceneMenu()
+        internal static int CrimeSceneMenu(int caseNumber)
         {
+            string[] gameLog;            //the entire game log is saved to the file
+            //print the crime scene
             throw new NotImplementedException();
         }
 

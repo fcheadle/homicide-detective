@@ -25,7 +25,6 @@ namespace homicide_detective
         public List<Case> activeCases;      //cases that are neither solved nor cold
         public List<Case> solvedCases;      //when a case is added to the solved array, it must be removed from the active array
         public List<Case> coldCases;        //when a case is added to the cold array, it must be removed from the active cases
-        public string[] gameLog;            //the entire game log is saved to the file
 
         public List<PersonTemplate> personTemplates = new List<PersonTemplate>();    //keep the persons from the person folder in memory
         public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();          //keep the items from the item folder in memory

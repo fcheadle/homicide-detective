@@ -11,7 +11,7 @@ namespace homicide_detective
         public string name;
         public string description;
 
-        //following are percents
+        //following are added to percents during person generation
         public int jealousy; 
         public int anger;
         public int pride;
@@ -24,23 +24,9 @@ namespace homicide_detective
         public int wealth;
         public int importanceOfFamily;
 
-        public string[] motives;           //specific hardcoded values
-        public string[] causeOfDeath;      //specific hardcoded values
-        public string[] witnesses;         //people from json files
-        public string[] murderWeapons;     //items from json files
-         
-        public List<PersonTemplate> family;
-        public List<PersonTemplate> friends;
-        public List<PersonTemplate> enemies;
-
         public PersonTemplate()
         {
 
-        }
-
-        public int GenerateAttributes(int seed)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -35,10 +35,5 @@ namespace homicide_detective
             mass_ranges = new PhysicalPropertyRange();
             volume_ranges = new PhysicalPropertyRange();
         }
-
-        public ItemTemplate(int seed)
-        {
-
-        }
     }
 }

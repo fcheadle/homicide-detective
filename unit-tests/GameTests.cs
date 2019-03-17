@@ -51,12 +51,6 @@ namespace unit_tests
             {
                 knownScenes.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scene)));
             }
-
-            //knownItems = new List<Item>();
-            //knownScenes = new List<Scene>();
-            //knownActiveCases = new List<Case>();
-            //knownSolvedCases = new List<Case>();
-            //knownColdCases = new List<Case>();
         }
 
         [TestMethod]
