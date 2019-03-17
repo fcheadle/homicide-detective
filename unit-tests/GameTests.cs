@@ -10,62 +10,72 @@ namespace unit_tests
     [TestClass]
     public class GameTests
     {
-        List<Person> knownPersons;
-        List<Item> knownItems;
-        List<Scene> knownScenes;
-        List<Case> knownActiveCases;
-        List<Person> knownSolvedCases;
-        List<Person> knownColdCases;
-        List<Person> allPersons;
-        GameText knownText;
+        //system variables
+        string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
+        static string personFolder = Directory.GetCurrentDirectory() + @"\objects\person";
+        static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\item";
+        static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\scene";
+
+        string[] personPaths = Directory.GetFiles(personFolder);
+        string[] itemPaths = Directory.GetFiles(itemFolder);
+        string[] scenePaths = Directory.GetFiles(sceneFolder);
+
+        //TODO: get an example file
+        List<PersonTemplate> knownPersons = new List<PersonTemplate>();
+        List<ItemTemplate> knownItems = new List<ItemTemplate>();
+        List<SceneTemplate> knownScenes = new List<SceneTemplate>();
+        List<Case> knownActiveCases = new List<Case>();
+        List<Case> knownSolvedCases = new List<Case>();
+        List<Case> knownColdCases = new List<Case>();
+        
+        GameText knownText = new GameText();
 
         int knownCaseIndex;
-        int knownSeed;
-        string knownName;
+        int knownSeed = 1372205;
+        string knownName = "test";
         string knownDescription;
 
         public GameTests()
         {
+            foreach (string person in personPaths)
+            {
+                knownPersons.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(person)));
+            }
 
+            foreach (string item in itemPaths)
+            {
+                knownItems.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(item)));
+            }
+
+            foreach (string scene in scenePaths)
+            {
+                knownScenes.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scene)));
+            }
         }
 
         [TestMethod]
-        public void GameConstructorWithoutName()
-        {
-            Game game = new Game();
-            Assert.AreEqual(null, game.detective);
-            Assert.AreEqual(0, game.seed);
-            Assert.AreEqual(false, game.debugMode);
-            Assert.AreEqual(0, game.caseIndex);
-            Assert.AreEqual(null, game.activeCases);
-            Assert.AreEqual(null, game.coldCases);
-            Assert.AreEqual(null, game.solvedCases);
-        }
-
-        [TestMethod]
-        public void GameConstructorWithName()
+        public void NewGameWithName()
         {
             Random random = new Random();
-            string detectiveName = "test" + random.Next().ToString();
-            Game game = new Game(detectiveName);
+            Game game = new Game(knownName);
 
-            Assert.AreEqual(detectiveName, game.detective);
+            Assert.AreEqual(knownName, game.detective);
         }
 
         [TestMethod]
         public void SaveGame()
         {
             Random random = new Random();
-            string detectiveName = "test" + random.Next().ToString();
             Game game = new Game();
 
-            game.detective = detectiveName;
+            game.detective = knownName;
+            game.seed = knownSeed;
             game.SaveGame();
 
             string json = JsonConvert.SerializeObject(game);
 
             //There is a file
-            string saveFileLocation = Directory.GetCurrentDirectory() + @"\saves\" + detectiveName + ".json";
+            string saveFileLocation = Directory.GetCurrentDirectory() + @"\saves\" + knownName + ".json";
 
             Assert.IsTrue(File.Exists(saveFileLocation));
         }
@@ -73,113 +83,83 @@ namespace unit_tests
         [TestMethod]
         public void LoadGame()
         {
-            string detectiveName = "test";
-            Game game = Game.LoadGame(detectiveName);
-
-            Assert.AreEqual(detectiveName, game.detective);
-            Assert.AreEqual(1372205, game.seed);
+            Game game = Game.LoadGame(knownName);
+            Assert.AreEqual(knownName, game.detective);
+            Assert.AreEqual(knownSeed, game.seed);
         }
 
         [TestMethod]
         public void SanitizeDetective()
         {
-
             Assert.AreEqual("MarjoryStJohnOneil", Game.SanitizeName("Marjory St. John-O'neil"));
-
         }
-
-        //Not Implemented
+        
         [TestMethod]
         public void LoadPersonFiles()
         {
             Game game = new Game();
 
-            int i = 0;
-            int j = 0;
             bool testResult = false;
-
-            foreach (Person person in game.allPersons)
+            game.personTemplates = game.LoadPersonFiles();
+            foreach (PersonTemplate person in game.personTemplates)
             {
-                foreach (Person personKnown in knownPersons)
+                foreach (PersonTemplate knownPerson in knownPersons)
                 {
-                    throw new NotImplementedException();
+                    if (knownPerson.name == person.name)
+                        if(knownPerson.description == person.description)
+                            testResult = true;
                 }
             }
-            game.detective = "test";
-            game.LoadItemFiles();
 
-            //Assert.AreEqual(, game.LoadItemFiles());
+            Assert.AreEqual(true, testResult);
         }
 
-        //not Implemented
         [TestMethod]
         public void LoadSceneFiles()
         {
             Game game = new Game();
 
-            int i = 0;
-            int j = 0;
             bool testResult = false;
-            foreach (Scene scene in game.allScenes)
+            game.sceneTemplates = game.LoadSceneFiles();
+            foreach (SceneTemplate scene in game.sceneTemplates)
             {
-                foreach (Scene sceneKnown in knownScenes)
+                foreach (SceneTemplate knownScene in knownScenes)
                 {
-                    throw new NotImplementedException();
+                    if (knownScene.name == scene.name)
+                        if (knownScene.description == scene.description)
+                            testResult = true;
                 }
             }
-            game.detective = "test";
-            game.LoadItemFiles();
 
+            Assert.AreEqual(true, testResult);
         }
 
-        //Not Implemented
         [TestMethod]
         public void LoadItemFiles()
         {
             Game game = new Game();
 
-            int i = 0;
-            int j = 0;
             bool testResult = false;
-            foreach (Person person in game.allPersons)
+            game.itemTemplates = game.LoadItemFiles();
+            foreach (ItemTemplate item in game.itemTemplates)
             {
-                foreach (Person personKnown in knownPersons)
+                foreach (ItemTemplate knownItem in knownItems)
                 {
-                    throw new NotImplementedException();
+                    if (knownItem.name == item.name)
+                        if (knownItem.description == item.description)
+                            testResult = true;
                 }
             }
-            game.detective = "test";
-            game.LoadItemFiles();
 
-            //Assert.AreEqual(, game.LoadItemFiles());
+            Assert.AreEqual(true, testResult);
         }
 
-        //Not Impleneted
         [TestMethod]
         public void LoadTextFiles()
         {
             Game game = new Game();
-
-            int i = 0;
-            int j = 0;
-            bool testResult = false;
-            foreach (Person person in game.allPersons)
-            {
-                foreach (Person personKnown in knownPersons)
-                {
-                    throw new NotImplementedException();
-                    testResult = (personKnown == game.allPersons[i]);
-
-                    if (testResult)
-                    {
-                        j += 1;
-                        testResult = false;
-                    }
-                }
-            }
-
-            game.LoadTextFiles();
-
+            game.allText = game.LoadTextFiles();
+            Assert.IsInstanceOfType(game.allText, knownText.GetType());
         }
     }
 }

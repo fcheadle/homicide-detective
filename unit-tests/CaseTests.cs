@@ -15,11 +15,11 @@ namespace unit_tests
 
             homicide_detective.Case testCase = new Case(caseId, seed);
 
-            homicide_detective.Person testVictim = new Person(); //get known values
+            homicide_detective.PersonTemplate testVictim = new PersonTemplate(); //get known values
             
-            homicide_detective.Scene testMurderScene = new Scene(); // get known value
+            homicide_detective.SceneTemplate testMurderScene = new SceneTemplate(); // get known value
 
-            homicide_detective.Item testMurderWeapon = new Item();
+            homicide_detective.ItemTemplate testMurderWeapon = new ItemTemplate();
 
             Assert.AreEqual(caseId, testCase.caseNumber);
             //Assert.AreEqual(testVictim, testCase.victim);

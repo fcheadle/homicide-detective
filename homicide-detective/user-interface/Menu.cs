@@ -9,17 +9,27 @@ namespace homicide_detective.user_interface
 {
     static class Menu
     {
-        //MainMenu returns a true if the game is in session, and false if the game should quit
-        public static bool MainMenu()
-        {
+        //The Menu class contains all call-response from the game to the user.
+        //when Menu is called, it will almost always return an integer gameState:
+        //gameState = 0;        //turn off game
+        //gameState = 1;        //show main menu
+        //gameState = 2;        //show case menu
+        //gameState = 3;        //investigating a scene
+        //gameState = 4;        //talking to persons of interest
 
+        #region menus
+        //MainMenu returns an integer that correlates to gameState in Homicide-Detective.cs
+        public static int MainMenu()
+        {
+            //TODO: load these strings from the JSON to support future translations
             Console.WriteLine("Homicide Detective");
             Console.WriteLine("Whenever two objects interact, some evidence of that interaction can be found and verified.");
             Console.WriteLine("-Theory of Transfer");
             Console.WriteLine("new | load | exit");
             Console.WriteLine("at any time, press ? for help.");
 
-            bool gameInSession = false;
+            Game game;
+            int gameState = 0;
             string command = Console.ReadLine();
             command = command.ToLower();
 
@@ -28,28 +38,75 @@ namespace homicide_detective.user_interface
                 case "new":
 
                     string detective = GetDetective();
-                    Game game = new Game(detective);
-                    gameInSession = true;
+                    if (Game.CheckFile(detective))
+                    {
 
+                        bool existConfirmation = false;
+                        while (!existConfirmation)
+                        {
+                            Console.WriteLine("There is already a detective named " + detective + ". Would you like to load that game instead?");
+                            string answer = Console.ReadLine();
+
+                            try
+                            {
+                                List<string> No = new List<string>();
+                                No.Add("no");
+                                No.Add("No");
+                                No.Add("nO");
+                                No.Add("NO");
+                                List<string> Yes = new List<string>();
+                                Yes.Add("yes");
+                                Yes.Add("Yes");
+                                Yes.Add("YES");
+
+                                if (No.Contains(answer.Trim().ToLower()))
+                                {
+                                    game = new Game(detective);
+                                    existConfirmation = true;
+                                    break;
+                                }
+                                else if (Yes.Contains(answer.Trim().ToLower()))
+                                {
+                                    Game.LoadGame(detective);
+                                    existConfirmation = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Umm... That didn't make sense. Yes/No answers ony!");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Holy Smokes! There was a problem: " + ex.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        game = new Game(detective);
+                    }
+
+                    gameState = 2;
                     break;
 
                 case "load":
                     
                     detective = GetDetective();
-                    gameInSession = true;
+                    gameState = 3;
                     game = Game.LoadGame(detective);
                     break;
 
                 case "exit":
-                    return gameInSession;
+                    return gameState;
 
                 default:
                     Console.WriteLine("Command not recognized.");
-                    gameInSession = MainMenu();
+                    gameState = MainMenu();
                     break;
             }
 
-            return gameInSession;
+            return gameState;
         }
 
         //GetDetective gets the name of the detective from the player
@@ -81,7 +138,23 @@ namespace homicide_detective.user_interface
                     return CaseMenu(caseNumber);
             }
         }
-        
+
+        //This is where the code for investigating a scene goes. Returns gameState
+        internal static int CrimeSceneMenu(int caseNumber)
+        {
+            string[] gameLog;            //the entire game log is saved to the file
+            //print the crime scene
+            throw new NotImplementedException();
+        }
+
+        //this is where the code for talking to witnesses belongs. Returns gameState
+        internal static int WitnessDialogueMenu()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion 
+
+        #region crime scene commands
         //EvaluateCommand reads the input during gameplay and figures out what method to call
         static void EvaluateCommand(string inputString)
         {
@@ -155,7 +228,6 @@ namespace homicide_detective.user_interface
             }
         }
 
-        #region active_commands
         static void LookAt(string item)
         {
             throw new NotImplementedException();
@@ -246,6 +318,5 @@ namespace homicide_detective.user_interface
             throw new NotImplementedException();
         }
         #endregion
-
     }
 }

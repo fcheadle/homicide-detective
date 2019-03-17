@@ -6,31 +6,18 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    public class Scene
+    class Scene
     {
-        //different locations that are involved, such as
-        //scene of the crime
-        //where the body was found
-        //victim's place of work
-        //so on
+        //this is an actual scene that is involved, somehow, in a case
 
-        public string name;
-        public string description;
-        public List<string> sceneClasses;
-        public List<string> sceneConnections;
-        public List<string> sceneContains;
-        public List<string> sceneMustContain;
-        public PhysicalPropertyRange lengthRange;
-        public PhysicalPropertyRange widthRange;
+        public string name;         //bedroom_001, living_room_002, etc
+        public string description;  //generated from properties
 
-        public Scene()
-        {
+        public int height;          //in centimeters
+        public int width;           //in centimeters
 
-        }
-
-        public Scene(int seed)
-        {
-
-        }
+        public List<string> connections;    //names of scenes that are connected to this scene
+        public List<string> contains;       //names of items contained within this scene
+        public List<string> owners;         //names of peoople associated with this scene
     }
 }

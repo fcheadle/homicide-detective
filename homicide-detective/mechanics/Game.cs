@@ -13,9 +13,9 @@ namespace homicide_detective
          */
 
         //System Variables
-        string rootDirectory = Directory.GetCurrentDirectory();
-        string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
-        string extension = ".json";
+        static string rootDirectory = Directory.GetCurrentDirectory();
+        static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
+        static string extension = ".json";
 
         //these variables need to be public so that JSONConvert can access them during static loadGame calls
         public string detective;            //name of the detective, stored with dashes, periods, and hyphens
@@ -25,11 +25,10 @@ namespace homicide_detective
         public List<Case> activeCases;      //cases that are neither solved nor cold
         public List<Case> solvedCases;      //when a case is added to the solved array, it must be removed from the active array
         public List<Case> coldCases;        //when a case is added to the cold array, it must be removed from the active cases
-        public string[] gameLog;            //the entire game log is saved to the file
 
-        public List<Person> allPersons = new List<Person>();    //keep the persons from the person folder in memory
-        public List<Item> allItems = new List<Item>();          //keep the items from the item folder in memory
-        public List<Scene> allScenes = new List<Scene>();       //keep the scenes from the scene folder in memory
+        public List<PersonTemplate> personTemplates = new List<PersonTemplate>();    //keep the persons from the person folder in memory
+        public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();          //keep the items from the item folder in memory
+        public List<SceneTemplate> sceneTemplates = new List<SceneTemplate>();       //keep the scenes from the scene folder in memory
         public GameText allText;                                //keep the text from the text folder in memory. There is only item for all game text 
 
         //need a blank constructor because JSONConvert instantiates the object with no arguments
@@ -45,36 +44,10 @@ namespace homicide_detective
 
             if (detective != null)
             {
-                seed = Base36.Decode(SanitizeName(name));
+                seed = Base36.Decode(SanitizeName(name.ToLower()));
             }
 
-            string path = saveFolder + name.ToLower() + extension;
-            
-            // Get current directory of binary and create a data directory if it doesn't exist.
-            if (!Directory.Exists(saveFolder))
-            {
-                Directory.CreateDirectory(saveFolder);
-            }
-
-            //create a new save file
-            if (!File.Exists(path))
-            {
-                SaveGame();
-            }
-            else if (File.Exists(path))
-            {
-                Console.WriteLine("Warning! There is already a detective named " + detective + ". Would you like to load that game instead?");
-                string answer = Console.ReadLine();
-
-                if ((answer == "no") || (answer == "No") || (answer == "NO"))
-                {
-                    SaveGame();
-                }
-                else
-                {
-                    LoadGame(detective);
-                }
-            }
+            SaveGame();
         }
 
         //get the detective's name ready to be converted to a base36 number for the seed
@@ -91,13 +64,27 @@ namespace homicide_detective
             return returnString;
         }
 
+        //Check to see if a saved game exists for this string
+        public static bool CheckFile(string name)
+        {
+            string path = saveFolder + name.ToLower() + extension;
+
+            // Get current directory of binary and create a save directory if it doesn't exist.
+            if (!Directory.Exists(saveFolder))
+            {
+                Directory.CreateDirectory(saveFolder);
+            }
+
+            return File.Exists(path);
+        }
+
         //saves the game to a file
         public void SaveGame()
         {
             //Delete these objects before saving so that they don't take up a whole lot of disk space
-            if (allItems != null) allItems = new List<Item>();
-            if (allPersons != null) allPersons = new List<Person>();
-            if (allScenes != null) allScenes = new List<Scene>();
+            if (itemTemplates != null) itemTemplates = new List<ItemTemplate>();
+            if (personTemplates != null) personTemplates = new List<PersonTemplate>();
+            if (sceneTemplates != null) sceneTemplates = new List<SceneTemplate>();
             if (allText != null) allText = new GameText();
 
             string path = saveFolder + detective.ToLower() + extension;
@@ -106,18 +93,17 @@ namespace homicide_detective
             if ((detective != null) && (detective != ""))
             {
                 //Load these files back so that they are in memory again
-                LoadPersonFiles();
-                LoadItemFiles();
-                LoadSceneFiles();
-                LoadTextFiles();
+                personTemplates = LoadPersonFiles();
+                itemTemplates = LoadItemFiles();
+                sceneTemplates = LoadSceneFiles();
+                allText = LoadTextFiles();
             }
         }
 
         //loads the game from a file
         public static Game LoadGame(string name)
         {
-
-            string path = Directory.GetCurrentDirectory() + @"\saves\" + name.ToLower() + ".json";
+            string path = Directory.GetCurrentDirectory() + @"\saves\" + name + ".json";
 
             //Deserialize the save file contents to a Game object
             string saveFileContents = File.ReadAllText(path);
@@ -126,46 +112,68 @@ namespace homicide_detective
             return game;
         }
 
-        public void LoadPersonFiles()
+        public List<PersonTemplate> LoadPersonFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\person\";
             string[] persons = Directory.GetFiles(fileDirectory);
             int i = 0;
+            List<PersonTemplate> returnList = new List<PersonTemplate>();
             foreach(string json in persons)
             {
-                allPersons.Add(JsonConvert.DeserializeObject<Person>(File.ReadAllText(persons[i])));
+                returnList.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(persons[i])));
             }
+
+            return returnList;
         }
 
-        public void LoadItemFiles()
+        public List<ItemTemplate> LoadItemFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\item\";
             string[] items = Directory.GetFiles(fileDirectory);
             int i = 0;
+            List<ItemTemplate> returnList = new List<ItemTemplate>();
             foreach (string json in items)
             {
-                allItems.Add(JsonConvert.DeserializeObject<Item>(File.ReadAllText(items[i])));
+                returnList.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(items[i])));
             }
+
+            return returnList;
         }
 
-        public void LoadSceneFiles()
+        public List<SceneTemplate> LoadSceneFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\scene\";
             string[] scenes = Directory.GetFiles(fileDirectory);
             int i = 0;
+            List<SceneTemplate> returnList = new List<SceneTemplate>();
             foreach (string json in scenes)
             {
-                allScenes.Add(JsonConvert.DeserializeObject<Scene>(File.ReadAllText(scenes[i])));
+                returnList.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scenes[i])));
             }
+            
+            return returnList;
         }
 
-        public void LoadTextFiles()
+        public GameText LoadTextFiles()
         {
             string fileDirectory = rootDirectory + @"\objects\text\";
             string[] texts = Directory.GetFiles(fileDirectory);
 
-            //we only have one instance of allText
-            allText = new GameText(texts);
+            GameText gameText = new GameText();
+
+            foreach(string text in texts)
+            {
+                if(text.Contains("names_"))
+                {
+                    gameText.AddNames(JsonConvert.DeserializeObject<GameText.Name>(File.ReadAllText(text)));
+                }                
+                if(text.Contains("written_"))
+                {
+                    gameText.AddWrittenTexts(JsonConvert.DeserializeObject<GameText.WrittenText>(File.ReadAllText(text)));
+                }
+            }
+
+            return gameText;
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿{
+  "name": "yokel",
+  "description": "a country {pronoun} who isn't accustomed to city life.",
+  "jealousy": -5,
+  "anger": 15,
+  "pride": 10,
+  "laziness": -10,
+  "ambition": 0,
+  "classiness": -25,
+  "creativity": 10,
+  "attention_to_detail": 0,
+  "intelligence": -15,
+  "wealth": -15,
+  "family_importance": 35
+}
