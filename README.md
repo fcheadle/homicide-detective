@@ -8,6 +8,8 @@ Homicide Detective is a text-based game where you are a detective who investigat
 
 [This project has a board on Trello for development](https://trello.com/invite/b/qngR0CGL/35e762327185af78bdd2959332b87e0d/homicide-detective)
 
+[Check us out on Reddit!](https://www.reddit.com/r/HomicideDetective)
+
 ### Installation:
 
 The game is not yet at a point where it can be installed. To run it, you must open it in visual studio and run the debugger (f5).
