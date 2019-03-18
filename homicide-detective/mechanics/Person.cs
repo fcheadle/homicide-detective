@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class Person
+    public class Person
     {
         public string name;         //John Doe, Nancy Reagan, Samuel Clemmons, etc
         public string description;  //generated

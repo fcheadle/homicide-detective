@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class Scene
+    public class Scene
     {
         //this is an actual scene that is involved, somehow, in a case
 

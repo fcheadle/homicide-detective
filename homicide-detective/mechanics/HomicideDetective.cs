@@ -10,52 +10,45 @@ namespace homicide_detective
          * by Forrest Cheadle
          * 03/11/2019 
          */
-
-        static int gameState = 1;
-        //gameState = 0;        //turn off game
-        //gameState = 1;        //show main menu
-        //gameState = 2;        //show case menu
-        //gameState = 3;        //investigating a scene
-        //gameState = 4;        //talking to persons of interest
-        static int caseTaken;
-
+         
         static void Main()
         {
-            while (gameState != 0)
+            Game game = new Game();
+            while (game.state != 0)
             {
-                switch (gameState)
+                switch (game.state)
                 {
                     case 0:
                         break;
 
                     case 1:
-                        gameState = Menu.MainMenu();
+                        game = Menu.MainMenu();
                         break;
 
                     case 2:
-                        caseTaken = Menu.CaseMenu(0);
+                        game.caseTaken = Menu.CaseMenu(game);
 
-                        if (caseTaken == 0)
+                        if (game.caseTaken == 0)
                         {
-                            gameState = 0;
+                            game.state = 0;
                         }
                         else
                         {
-                            gameState = 3;
+                            game.state = 3;
                         }
 
                         break;
 
                     case 3:
-                        gameState = Menu.CrimeSceneMenu(caseTaken);
+                        game = Menu.CrimeSceneMenu(game);
                         break;
 
                     case 4:
-                        gameState = Menu.WitnessDialogueMenu();
+                        game = Menu.WitnessDialogueMenu(game);
                         break;
 
                     default:
-                        gameState = 0;
+                        game.state = 0;
                         break;
                 }
             }

@@ -13,34 +13,80 @@ namespace homicide_detective
         public string status = "active";               //active, solved, or closed
         public Random random;                          //Must be idempotent
 
-        public PersonTemplate victim;                          //The person who was murdered
-        public PersonTemplate murderer;                        //The person who killed the victim
-        public PersonTemplate[] personsOfInterest;             //Murderer, Family of victim, witnesses, etc
+        public Person victim;                          //The person who was murdered
+        public Person murderer;                        //The person who killed the victim
+        //public Person[] personsOfInterest;             //Murderer, Family of victim, witnesses, etc
 
-        public SceneTemplate murderScene;                      //Where the person was killed
-        public SceneTemplate whereTheyFoundTheBody;            //The first scene the detective arrives at
-        public SceneTemplate[] placesOfInterest;               //All other relevant places
+        public Scene murderScene;                      //Where the person was killed
+        public Scene whereTheyFoundTheBody;            //The first scene the detective arrives at
+        //public SceneTemplate[] placesOfInterest;               //All other relevant places
 
-        public ItemTemplate murderWeapon;                      //The item that killed the victim; may be blunt force trauma or drowning...?
-        public ItemTemplate[] allEvidence;                     //Every item including furniture at the scenes, the murder weapon, tire marks, wall damage, etc
-        public ItemTemplate[] evidenceTaken;                   //When an item is taken as evidence, it gets copied from all evidence to evidence taken
+        public Item murderWeapon;                      //The item that killed the victim; may be blunt force trauma or drowning...?
+        public Item allEvidence;                     //Every item including furniture at the scenes, the murder weapon, tire marks, wall damage, etc
+        //public ItemTemplate[] evidenceTaken;                   //When an item is taken as evidence, it gets copied from all evidence to evidence taken
 
-        public Case(int caseId, int seed)
+        public Case()
+        {
+
+        }
+
+        public Case(int caseId, int seed, GameText text, List<SceneTemplate> scenes, List<ItemTemplate> items)
         {
             caseNumber = caseId;
             random = new Random(caseNumber + seed);
 
-            //victim = new PersonTemplate(random.Next());
-            //murderer = new PersonTemplate(random.Next());
-            //
-            //murderScene = new SceneTemplate(random.Next());
+            victim = GetPerson(text);
+            murderer = GetPerson(text);
+
+            murderScene = GetScene(scenes);
+
             //whereTheyFoundTheBody = new SceneTemplate(random.Next());
-            //
-            //murderWeapon = new ItemTemplate(random.Next());
+            murderWeapon = GetItem(items);
 
             //personsOfInterest = GeneratePersonsOfInterest(random.Next());
             //placesOfInterest = GeneratePlacesOfInterest(random.Next());
             //allEvidence = GenerateAllEvidence(random.Next());
+        }
+
+        private Person GetPerson(GameText text)
+        {
+            int gender = random.Next(0, 1);
+            int givenNameIndex;
+            if (gender == 0)
+            {
+                //female
+                givenNameIndex = random.Next(0, text.names.givenFemale.Count() - 1);
+            }
+            else
+            {
+                //male
+                givenNameIndex = random.Next(0, text.names.givenMale.Count() - 1);
+            }
+
+            int familyNameIndex = random.Next(0, text.names.family.Count() - 1);
+            Person person = new Person();
+            person.name = text.names.givenFemale[givenNameIndex].ToLower();
+            char.ToUpper(person.name[0]);
+            person.name = person.name + " " + text.names.family[familyNameIndex];
+            return person;
+        }
+
+        private Scene GetScene(List<SceneTemplate> scenes)
+        {
+            int sceneType = random.Next(0, scenes.Count() - 1);
+            
+            Scene scene = new Scene();
+            scene.name = scenes[sceneType].name;
+            return scene;
+        }
+
+        private Item GetItem(List<ItemTemplate> items)
+        {
+            int itemType = random.Next(0, items.Count() - 1);
+
+            Item item = new Item();
+            item.name = items[itemType].name;
+            return item;
         }
 
         private ItemTemplate[] GenerateAllEvidence(int seed)

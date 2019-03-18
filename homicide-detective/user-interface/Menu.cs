@@ -19,17 +19,17 @@ namespace homicide_detective.user_interface
 
         #region menus
         //MainMenu returns an integer that correlates to gameState in Homicide-Detective.cs
-        public static int MainMenu()
+        public static Game MainMenu()
         {
-            //TODO: load these strings from the JSON to support future translations
+            //TODO: load these strings from the JSON to support translation
             Console.WriteLine("Homicide Detective");
             Console.WriteLine("Whenever two objects interact, some evidence of that interaction can be found and verified.");
             Console.WriteLine("-Theory of Transfer");
             Console.WriteLine("new | load | exit");
             Console.WriteLine("at any time, press ? for help.");
 
-            Game game;
-            int gameState = 0;
+            Game game = new Game();
+            game.state = 0;
             string command = Console.ReadLine();
             command = command.ToLower();
 
@@ -62,12 +62,13 @@ namespace homicide_detective.user_interface
                                 if (No.Contains(answer.Trim().ToLower()))
                                 {
                                     game = new Game(detective);
+                                    game.state = 2;
                                     existConfirmation = true;
                                     break;
                                 }
                                 else if (Yes.Contains(answer.Trim().ToLower()))
                                 {
-                                    Game.LoadGame(detective);
+                                    game = Game.LoadGame(detective);
                                     existConfirmation = true;
                                     break;
                                 }
@@ -87,26 +88,26 @@ namespace homicide_detective.user_interface
                         game = new Game(detective);
                     }
 
-                    gameState = 2;
+                    game.state = 2;
                     break;
 
                 case "load":
                     
                     detective = GetDetective();
-                    gameState = 3;
+                    game.state = 3;
                     game = Game.LoadGame(detective);
                     break;
 
                 case "exit":
-                    return gameState;
+                    return game;
 
                 default:
                     Console.WriteLine("Command not recognized.");
-                    gameState = MainMenu();
+                    game = MainMenu();
                     break;
             }
 
-            return gameState;
+            return game;
         }
 
         //GetDetective gets the name of the detective from the player
@@ -117,38 +118,53 @@ namespace homicide_detective.user_interface
         }
 
         //CaseMenu asks the detective which case he wants to work on.
-        public static int CaseMenu(int caseNumber)
+        public static int CaseMenu(Game game)
         {
-            Console.WriteLine("The next case on the docket is number " + caseNumber +", VICTIM NAME");
+            game.GenerateCase(game, game.caseTaken);
+            if(game.activeCases[game.caseTaken] == null){
+                game.GenerateCase(game, game.caseTaken);
+            }
+            Console.WriteLine("The next case on the docket is number " + game.caseTaken +", " + game.activeCases[game.caseTaken].victim.name + ".");
             Console.WriteLine("take | next | exit");
             string command = Console.ReadLine();
             switch (command)
             {
                 case "take":
                     //return case number
-                    return caseNumber; 
+                    return game.caseTaken; 
 
                 case "next":
-                    return CaseMenu(caseNumber + 1);
+                    game.caseTaken++;
+                    return CaseMenu(game);
 
                 case "exit":
                     return 0; //return  0 to give the command to exit
 
                 default:
-                    return CaseMenu(caseNumber);
+                    return CaseMenu(game);
             }
         }
 
         //This is where the code for investigating a scene goes. Returns gameState
-        internal static int CrimeSceneMenu(int caseNumber)
+        internal static Game CrimeSceneMenu(Game game)
         {
-            string[] gameLog;            //the entire game log is saved to the file
-            //print the crime scene
-            throw new NotImplementedException();
+            //string[] gameLog;            //the entire game log is saved to the file
+            ////print the crime scene
+            //throw new NotImplementedException();
+            string caseDescription = game.activeCases[game.caseTaken].murderer.name;
+            caseDescription = caseDescription + " killed ";
+            caseDescription = caseDescription + game.activeCases[game.caseTaken].victim.name;
+            caseDescription = caseDescription + " with ";
+            caseDescription = caseDescription + game.activeCases[game.caseTaken].murderWeapon.name;
+            caseDescription = caseDescription + " at ";
+            caseDescription = caseDescription + game.activeCases[game.caseTaken].murderScene.name;
+            Console.WriteLine(caseDescription);
+            game.state = 0;
+            return game;
         }
 
         //this is where the code for talking to witnesses belongs. Returns gameState
-        internal static int WitnessDialogueMenu()
+        internal static Game WitnessDialogueMenu(Game game)
         {
             throw new NotImplementedException();
         }

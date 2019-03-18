@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    class Item
+    public class Item
     {
         //an item is specific to a case
         public string name;             //knife_003, bookshelf_005, etc
@@ -18,5 +18,10 @@ namespace homicide_detective
         public bool murderWeapon;       //if it murdered the victim
 
         public List<string> bloodSpatter;   //names of people whose blood is on the item;
+
+        public Item()
+        {
+
+        }
     }
 }

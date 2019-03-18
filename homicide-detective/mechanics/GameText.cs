@@ -72,20 +72,20 @@ namespace homicide_detective
             public List<string> smallTalk;
         }
 
-        Name name;
-        WrittenText written;
-        DialogueText dialogue;
+        public Name names;
+        public WrittenText written;
+        public DialogueText dialogue;
 
         //Constructor
         public GameText()
         {
-            this.name = new Name();
+            this.names = new Name();
             this.written = new WrittenText();
         }
 
         internal void AddNames(Name text)
         {
-            this.name = text;
+            this.names = text;
         }
 
         internal void AddWrittenTexts(WrittenText text)

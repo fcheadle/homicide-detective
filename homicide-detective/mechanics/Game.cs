@@ -16,15 +16,25 @@ namespace homicide_detective
         static string rootDirectory = Directory.GetCurrentDirectory();
         static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
         static string extension = ".json";
+        
+        public int state = 1;
+        //state = 0;        //turn off game
+        //state = 1;        //show main menu
+        //state = 2;        //show case menu
+        //state = 3;        //investigating a scene
+        //state = 4;        //talking to persons of interest
+
+        public int caseTaken = 0;
+        public List<string> gameLog;
 
         //these variables need to be public so that JSONConvert can access them during static loadGame calls
         public string detective;            //name of the detective, stored with dashes, periods, and hyphens
         public int seed;                    //number generated from the detective's name
         public int caseIndex;               //case currently being reviewed (always exactly one case in review)
         public bool debugMode = false;      //for testing purposes
-        public List<Case> activeCases;      //cases that are neither solved nor cold
-        public List<Case> solvedCases;      //when a case is added to the solved array, it must be removed from the active array
-        public List<Case> coldCases;        //when a case is added to the cold array, it must be removed from the active cases
+        public List<Case> activeCases = new List<Case>();      //cases that are neither solved nor cold
+        public List<Case> solvedCases = new List<Case>();      //when a case is added to the solved array, it must be removed from the active array
+        public List<Case> coldCases = new List<Case>();        //when a case is added to the cold array, it must be removed from the active cases
 
         public List<PersonTemplate> personTemplates = new List<PersonTemplate>();    //keep the persons from the person folder in memory
         public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();          //keep the items from the item folder in memory
@@ -34,7 +44,9 @@ namespace homicide_detective
         //need a blank constructor because JSONConvert instantiates the object with no arguments
         public Game()
         {
-
+            activeCases.Add(new Case());
+            solvedCases.Add(new Case());
+            coldCases.Add(new Case());
         }
 
         //constructor - new game
@@ -174,6 +186,11 @@ namespace homicide_detective
             }
 
             return gameText;
+        }
+        
+        internal void GenerateCase(Game game, int caseNumber)
+        {
+            game.activeCases.Add(new Case(caseNumber, game.seed, game.allText, sceneTemplates, itemTemplates));
         }
     }
 }
