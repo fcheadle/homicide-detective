@@ -44,9 +44,10 @@ namespace homicide_detective
         //need a blank constructor because JSONConvert instantiates the object with no arguments
         public Game()
         {
-            activeCases.Add(new Case());
-            solvedCases.Add(new Case());
-            coldCases.Add(new Case());
+            personTemplates = LoadPersonFiles();
+            itemTemplates = LoadItemFiles();
+            sceneTemplates = LoadSceneFiles();
+            allText = LoadTextFiles();
         }
 
         //constructor - new game
@@ -58,6 +59,11 @@ namespace homicide_detective
             {
                 seed = Base36.Decode(SanitizeName(name.ToLower()));
             }
+            
+            personTemplates = LoadPersonFiles();
+            itemTemplates = LoadItemFiles();
+            sceneTemplates = LoadSceneFiles();
+            allText = LoadTextFiles();
 
             SaveGame();
         }
@@ -93,34 +99,18 @@ namespace homicide_detective
         //saves the game to a file
         public void SaveGame()
         {
-            //Delete these objects before saving so that they don't take up a whole lot of disk space
-            if (itemTemplates != null) itemTemplates = new List<ItemTemplate>();
-            if (personTemplates != null) personTemplates = new List<PersonTemplate>();
-            if (sceneTemplates != null) sceneTemplates = new List<SceneTemplate>();
-            if (allText != null) allText = new GameText();
-
+            allText = new GameText();
             string path = saveFolder + detective.ToLower() + extension;
             File.WriteAllText(path, JsonConvert.SerializeObject(this));
-
-            if ((detective != null) && (detective != ""))
-            {
-                //Load these files back so that they are in memory again
-                personTemplates = LoadPersonFiles();
-                itemTemplates = LoadItemFiles();
-                sceneTemplates = LoadSceneFiles();
-                allText = LoadTextFiles();
-            }
+            allText = LoadTextFiles();
         }
 
         //loads the game from a file
         public static Game LoadGame(string name)
         {
             string path = Directory.GetCurrentDirectory() + @"\saves\" + name + ".json";
-
-            //Deserialize the save file contents to a Game object
             string saveFileContents = File.ReadAllText(path);
             Game game = JsonConvert.DeserializeObject<Game>(saveFileContents);
-
             return game;
         }
 
@@ -187,10 +177,15 @@ namespace homicide_detective
 
             return gameText;
         }
-        
+
+        internal void GenerateCase(Game game)
+        {
+            game.activeCases.Add(new Case(game));
+        }
+
         internal void GenerateCase(Game game, int caseNumber)
         {
-            game.activeCases.Add(new Case(caseNumber, game.seed, game.allText, sceneTemplates, itemTemplates));
+            game.activeCases.Add(new Case(game, caseNumber));
         }
     }
 }

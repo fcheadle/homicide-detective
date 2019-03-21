@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,131 +18,212 @@ namespace homicide_detective.user_interface
         //gameState = 3;        //investigating a scene
         //gameState = 4;        //talking to persons of interest
 
+        #region variables
+        static string textFolder = Directory.GetCurrentDirectory() + @"\objects\text\";
+        static string extension = ".json";
+
+        static string mainMenuPath = textFolder + "menu_main" + extension;
+        static string caseMenuPath = textFolder + "menu_case" + extension;
+        static string csiMenuPath = textFolder + "menu_csi" + extension;
+
+        static string mainMenuRaw = File.ReadAllText(mainMenuPath);
+        static string caseMenuRaw = File.ReadAllText(caseMenuPath);
+        static string csiMenuRaw = File.ReadAllText(csiMenuPath);
+
+        static MainMenuText mainMenuText = JsonConvert.DeserializeObject<MainMenuText>(mainMenuRaw);
+        static CaseMenuText caseMenuText = JsonConvert.DeserializeObject<CaseMenuText>(caseMenuRaw);
+        static CSIMenuText csiMenuText = JsonConvert.DeserializeObject<CSIMenuText>(csiMenuRaw);
+        
+        class MainMenuText
+        {
+            public string title;
+            public string subtitle;
+            public string newGame;
+            public string loadGame;
+            public string exitGame;
+            public string namePrompt;
+            public string yes;
+            public string no;
+            public string duplicateDetective;
+            public string yesNoOnly;
+            public string commandNotFound;
+        }
+
+        class CaseMenuText
+        {
+            public string caseDescription;
+            public string takeCase;
+            public string nextCase;
+            public string exitGame;
+        }
+
+        class CSIMenuText
+        {
+            public string look;
+            public string inside;
+            public string at;
+            public string behind;
+            public string under;
+            public string on;
+            public string photograph;
+            public string scene;
+            public string take;
+            public string note;
+            public string dust;
+            public string leave;
+            public string through;
+            public string open;
+            public string close;
+            public string record;
+            public string check;
+            public string evidence;
+        }
+        #endregion
+
         #region menus
         //MainMenu returns an integer that correlates to gameState in Homicide-Detective.cs
         public static Game MainMenu()
         {
-            //TODO: load these strings from the JSON to support translation
-            Console.WriteLine("Homicide Detective");
-            Console.WriteLine("Whenever two objects interact, some evidence of that interaction can be found and verified.");
-            Console.WriteLine("-Theory of Transfer");
-            Console.WriteLine("new | load | exit");
-            Console.WriteLine("at any time, press ? for help.");
-
+            Console.Write(mainMenuText.newGame);
+            Console.Write(" | ");
+            Console.Write(mainMenuText.loadGame);
+            Console.Write(" | ");
+            Console.WriteLine(mainMenuText.exitGame);
+            
             Game game = new Game();
             game.state = 0;
             string command = Console.ReadLine();
             command = command.ToLower();
 
-            switch (command)
+            if (command == mainMenuText.newGame)
             {
-                case "new":
+                string detective = GetDetective();
+                if (Game.CheckFile(detective))
+                {
+                    Console.WriteLine(mainMenuText.duplicateDetective, detective);
 
-                    string detective = GetDetective();
-                    if (Game.CheckFile(detective))
+                    bool existConfirmation = false;
+                    while (!existConfirmation)
                     {
-
-                        bool existConfirmation = false;
-                        while (!existConfirmation)
+                        string answer = Console.ReadLine();
+                        try
                         {
-                            Console.WriteLine("There is already a detective named " + detective + ". Would you like to load that game instead?");
-                            string answer = Console.ReadLine();
-
-                            try
+                            if (answer.Trim().ToLower() == mainMenuText.no)
                             {
-                                List<string> No = new List<string>();
-                                No.Add("no");
-                                No.Add("No");
-                                No.Add("nO");
-                                No.Add("NO");
-                                List<string> Yes = new List<string>();
-                                Yes.Add("yes");
-                                Yes.Add("Yes");
-                                Yes.Add("YES");
-
-                                if (No.Contains(answer.Trim().ToLower()))
-                                {
-                                    game = new Game(detective);
-                                    game.state = 2;
-                                    existConfirmation = true;
-                                    break;
-                                }
-                                else if (Yes.Contains(answer.Trim().ToLower()))
-                                {
-                                    game = Game.LoadGame(detective);
-                                    existConfirmation = true;
-                                    break;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Umm... That didn't make sense. Yes/No answers ony!");
-                                }
+                                game = new Game(detective);
+                                game.state = 2;
+                                existConfirmation = true;
+                                break;
                             }
-                            catch (Exception ex)
+                            else if (answer.Trim().ToLower() == mainMenuText.yes)
                             {
-                                Console.WriteLine("Holy Smokes! There was a problem: " + ex.Message);
+                                game = Game.LoadGame(detective);
+                                existConfirmation = true;
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine(mainMenuText.yesNoOnly);
                             }
                         }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                     }
-                    else
-                    {
-                        game = new Game(detective);
-                    }
+                }
+                else
+                {
+                    game = new Game(detective);
+                }
 
-                    game.state = 2;
-                    break;
-
-                case "load":
-                    
-                    detective = GetDetective();
-                    game.state = 3;
-                    game = Game.LoadGame(detective);
-                    break;
-
-                case "exit":
-                    return game;
-
-                default:
-                    Console.WriteLine("Command not recognized.");
-                    game = MainMenu();
-                    break;
+                game.state = 2;
+                return game;
             }
+            else if (command == mainMenuText.loadGame)
+            {
 
-            return game;
+                string detective = GetDetective();
+
+                try
+                {
+                    game = Game.LoadGame(detective);
+                    game.state = 3;
+                    return game;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return MainMenu();
+                }
+            }
+            else if (command == mainMenuText.exitGame)
+            {
+                return game;
+            }
+            else
+            {
+                Console.WriteLine(mainMenuText.commandNotFound);
+                return MainMenu();
+            }            
+        }
+
+        public static void PrintTitle()
+        {
+            //object menu;
+            Console.WriteLine(mainMenuText.title);
+            Console.WriteLine(mainMenuText.subtitle);
         }
 
         //GetDetective gets the name of the detective from the player
         private static string GetDetective()
         {
-            Console.WriteLine("What is your name, Detective?");
+            Console.WriteLine(mainMenuText.namePrompt);
             return Console.ReadLine();
         }
 
         //CaseMenu asks the detective which case he wants to work on.
         public static int CaseMenu(Game game)
         {
-            game.GenerateCase(game, game.caseTaken);
-            if(game.activeCases[game.caseTaken] == null){
-                game.GenerateCase(game, game.caseTaken);
-            }
-            Console.WriteLine("The next case on the docket is number " + game.caseTaken +", " + game.activeCases[game.caseTaken].victim.name + ".");
-            Console.WriteLine("take | next | exit");
-            string command = Console.ReadLine();
-            switch (command)
+            if ((game.activeCases == null) || (game.activeCases.Count() == 0))
             {
-                case "take":
-                    //return case number
-                    return game.caseTaken; 
+                game.GenerateCase(game);
+            }
+            
+            int i = 0;
+            while (game.activeCases.Count() <= game.caseTaken)
+            {
+                game.GenerateCase(game, game.caseTaken + i);
+                i++;
+            }
 
-                case "next":
-                    game.caseTaken++;
-                    return CaseMenu(game);
+            Console.WriteLine(caseMenuText.caseDescription, game.caseTaken, game.activeCases[game.caseTaken].victim.name);
+            Console.Write(caseMenuText.takeCase);
+            Console.Write(" | ");
+            Console.Write(caseMenuText.nextCase);
+            Console.Write(" | ");
+            Console.WriteLine(caseMenuText.exitGame);
 
-                case "exit":
-                    return 0; //return  0 to give the command to exit
-
-                default:
-                    return CaseMenu(game);
+            string command = Console.ReadLine();
+            if (command == caseMenuText.takeCase)
+            {
+                //return case number
+                game.SaveGame();
+                return game.caseTaken;
+            }
+            else if (command == caseMenuText.nextCase)
+            {
+                game.caseTaken++;
+                return CaseMenu(game);
+            }
+            else if (command == caseMenuText.exitGame)
+            {
+                return 0; //return 0 to give the command to exit
+            }
+            else
+            {
+                game.SaveGame();
+                return CaseMenu(game);
             }
         }
 

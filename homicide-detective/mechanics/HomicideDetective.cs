@@ -8,6 +8,7 @@ namespace homicide_detective
         /*
          * Homicide Detective
          * by Forrest Cheadle
+         * and Jeremiah Hamilton
          * 03/11/2019 
          */
          
@@ -22,6 +23,7 @@ namespace homicide_detective
                         break;
 
                     case 1:
+                        Menu.PrintTitle();
                         game = Menu.MainMenu();
                         break;
 

@@ -30,18 +30,29 @@ namespace homicide_detective
 
         }
 
-        public Case(int caseId, int seed, GameText text, List<SceneTemplate> scenes, List<ItemTemplate> items)
+        public Case(Game game)
+        {
+            caseNumber = game.caseTaken;
+            random = new Random(caseNumber + game.seed);
+            GenerateCase(game);
+        }
+
+        public Case(Game game, int caseId)
         {
             caseNumber = caseId;
-            random = new Random(caseNumber + seed);
+            random = new Random(caseNumber + game.seed);
+            GenerateCase(game);
+        }
 
-            victim = GetPerson(text);
-            murderer = GetPerson(text);
+        private void GenerateCase(Game game)
+        {
+            victim = GetPerson(game.allText);
+            murderer = GetPerson(game.allText);
 
-            murderScene = GetScene(scenes);
+            murderScene = GetScene(game.sceneTemplates);
 
             //whereTheyFoundTheBody = new SceneTemplate(random.Next());
-            murderWeapon = GetItem(items);
+            murderWeapon = GetItem(game.itemTemplates);
 
             //personsOfInterest = GeneratePersonsOfInterest(random.Next());
             //placesOfInterest = GeneratePlacesOfInterest(random.Next());
@@ -65,7 +76,7 @@ namespace homicide_detective
 
             int familyNameIndex = random.Next(0, text.names.family.Count() - 1);
             Person person = new Person();
-            person.name = text.names.givenFemale[givenNameIndex].ToLower();
+            person.name = text.names.givenFemale[givenNameIndex];
             char.ToUpper(person.name[0]);
             person.name = person.name + " " + text.names.family[familyNameIndex];
             return person;
