@@ -1,14 +1,16 @@
 # _Homicide Detective_
 
-## A game about a homicide detective in the 1980s
-
 _"When two objects meet, some evidence of that meeting can later be found and verified."_
+
+## A game about a homicide detective in the 1980s
 
 Homicide Detective is a text-based game where you are a detective who investigates homicides. These homicides are generated from the ranges given in the .json files. 
 
+[Check out our official website](https://homicide-detective.com)
+
 [This project has a board on Trello for development](https://trello.com/invite/b/qngR0CGL/35e762327185af78bdd2959332b87e0d/homicide-detective)
 
-[Check us out on Reddit!](https://www.reddit.com/r/HomicideDetective)
+[And a subreddit!](https://www.reddit.com/r/HomicideDetective)
 
 ### Installation:
 
