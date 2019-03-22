@@ -1,0 +1,52 @@
+﻿{
+  "name": "sofa",
+  "description": "A large piece of furniture used for sitting.",
+  "volume_ranges": {
+    "minimum": 400,
+    "maximum": 660,
+    "mean": 530,
+    "mode": 500
+  },
+  "mass_ranges": {
+    "minimum": 1250,
+    "maximum": 2000,
+    "mean": 1500,
+    "mode": 1750
+  },
+  "hollowness": 40,
+  "sharp_point_number": 0,
+  "sharpness_of_point_degree": 0,
+  "sharp_point_decription": "arm",
+  "shapes": [
+    {
+      "name": "rectangular_prism",
+      "value": 80
+    },
+    {
+      "name": "l-shape",
+      "value": 20
+    }
+  ],
+  "item_classes": [
+    "furniture",
+    "container",
+    "sitting_surface",
+    "sleeping_surface"
+  ],
+  "materials": [
+    "wood",
+    "cloth",
+    "suede",
+    "leather"
+  ],
+  "containers": [],
+  "lock_chance": 0,
+  "blocks_views": [
+    "behind",
+    "beside",
+    "under"
+  ],
+  "visible_sides": [
+    "on_top"
+  ]
+}

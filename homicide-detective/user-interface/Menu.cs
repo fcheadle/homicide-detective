@@ -185,12 +185,19 @@ namespace homicide_detective.user_interface
         //CaseMenu asks the detective which case he wants to work on.
         public static int CaseMenu(Game game)
         {
+            if(game.caseTaken == 0)
+            {
+                //case numbers start at 1
+                game.caseTaken++;
+            }
+
             if ((game.activeCases == null) || (game.activeCases.Count() == 0))
             {
                 game.GenerateCase(game);
             }
             
             int i = 0;
+
             while (game.activeCases.Count() <= game.caseTaken)
             {
                 game.GenerateCase(game, game.caseTaken + i);

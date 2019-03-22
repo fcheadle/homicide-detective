@@ -1,0 +1,44 @@
+﻿{
+  "name": "bed",
+  "description": "A large piece of furniture used for sleeping.",
+  "volume_ranges": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean":    4250000,
+    "mode":    5000000
+  },
+  "mass_ranges": {
+    "minimum": 20000,
+    "maximum": 70000,
+    "mean":    27500,
+    "mode":    30000
+  },
+  "hollowness": 80,
+  "sharp_point_number": 4,
+  "sharpness_of_point_degree": 90,
+  "sharp_point_decription": "corners",
+  "shapes": [
+    {
+      "name": "rectangular_prism",
+      "value": 100
+    }
+  ],
+  "item_classes": [
+    "furniture",
+    "sleeping_surface"
+  ],
+  "materials": [
+    "wood",
+    "metal"
+  ],
+  "containers": [],
+  "lock_chance": 0,
+  "blocks_views": [
+    "behind",
+    "beside",
+    "under"
+  ],
+  "visible_sides": [
+    "on_top"
+  ]
+}

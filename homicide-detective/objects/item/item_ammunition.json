@@ -1,0 +1,41 @@
+﻿{
+  "name": "ammunition",
+  "description": "A bullet meant to be launched from a firearm.",
+  "volume_ranges": {
+    "minimum": 1,
+    "maximum": 3,
+    "mean": 1,
+    "mode": 1
+  },
+  "mass_ranges": {
+    "minimum": 2,
+    "maximum": 6,
+    "mean": 3,
+    "mode": 2
+  },
+  "hollowness": 0,
+  "sharp_point_number": 1,
+  "sharpness_of_point_degree": 359,
+  "sharp_point_decription": "bullet",
+  "shapes": [
+    {
+      "name": "cylinder",
+      "value": 100
+    }
+  ],
+  "item_classes": [
+    "ammunition"
+  ],
+  "materials": [
+    "metal"
+  ],
+  "containers": [],
+  "lock_chance": 0,
+  "blocks_views": [],
+  "visible_sides": [
+    "on_top",
+    "under",
+    "behind",
+    "beside"
+  ]
+}

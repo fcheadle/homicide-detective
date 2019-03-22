@@ -2,16 +2,16 @@
   "name": "knife",
   "description": "A blade used for many things, including self defense and bodily harm.",
   "volume_ranges": {
-    "minimum": 10,
+    "minimum": 6,
     "maximum": 25,
-    "mean": 16,
-    "mode": 16
+    "mean": 10,
+    "mode": 10
   },
   "mass_ranges": {
-    "minimum": 50,
-    "maximum": 350,
-    "mean": 125,
-    "mode": 175
+    "minimum": 3,
+    "maximum": 80,
+    "mean": 20,
+    "mode": 25
   },
   "hollowness": 0,
   "sharp_point_number": 1,
