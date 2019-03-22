@@ -18,8 +18,6 @@ namespace homicide_detective
         
         public PhysicalPropertyRange mass_ranges;   //for determining mass of the object
         public PhysicalPropertyRange volume_ranges; //for determining volume of the object
-        public int mass;                            //in grams
-        public int volume;                          //in cm cubed
 
         public List<Shape> shapes = new List<Shape>();          //hardcoded specific values
         public List<string> classes = new List<string>();       //freetext

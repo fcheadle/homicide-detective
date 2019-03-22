@@ -19,6 +19,7 @@ namespace homicide_detective
 
         public Scene murderScene;                      //Where the person was killed
         public Scene whereTheyFoundTheBody;            //The first scene the detective arrives at
+        
         //public SceneTemplate[] placesOfInterest;               //All other relevant places
 
         public Item murderWeapon;                      //The item that killed the victim; may be blunt force trauma or drowning...?
@@ -49,11 +50,13 @@ namespace homicide_detective
             victim = GetPerson(game.allText);
             murderer = GetPerson(game.allText);
 
-            murderScene = GetScene(game.sceneTemplates);
+            murderScene = new Scene(random);
+            murderScene = murderScene.GenerateScene(game.sceneTemplates);
 
             //whereTheyFoundTheBody = new SceneTemplate(random.Next());
-            murderWeapon = GetItem(game.itemTemplates);
-
+            murderWeapon = new Item(random);
+            murderWeapon = murderWeapon.GenerateItem(random, game.itemTemplates);
+            
             //personsOfInterest = GeneratePersonsOfInterest(random.Next());
             //placesOfInterest = GeneratePlacesOfInterest(random.Next());
             //allEvidence = GenerateAllEvidence(random.Next());
@@ -80,24 +83,6 @@ namespace homicide_detective
             char.ToUpper(person.name[0]);
             person.name = person.name + " " + text.names.family[familyNameIndex];
             return person;
-        }
-
-        private Scene GetScene(List<SceneTemplate> scenes)
-        {
-            int sceneType = random.Next(0, scenes.Count() - 1);
-            
-            Scene scene = new Scene();
-            scene.name = scenes[sceneType].name;
-            return scene;
-        }
-
-        private Item GetItem(List<ItemTemplate> items)
-        {
-            int itemType = random.Next(0, items.Count() - 1);
-
-            Item item = new Item();
-            item.name = items[itemType].name;
-            return item;
         }
 
         private ItemTemplate[] GenerateAllEvidence(int seed)

@@ -120,9 +120,9 @@ namespace homicide_detective
             string[] persons = Directory.GetFiles(fileDirectory);
             int i = 0;
             List<PersonTemplate> returnList = new List<PersonTemplate>();
-            foreach(string json in persons)
+            foreach(string path in persons)
             {
-                returnList.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(persons[i])));
+                returnList.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(path)));
             }
 
             return returnList;
@@ -134,9 +134,9 @@ namespace homicide_detective
             string[] items = Directory.GetFiles(fileDirectory);
             int i = 0;
             List<ItemTemplate> returnList = new List<ItemTemplate>();
-            foreach (string json in items)
+            foreach (string path in items)
             {
-                returnList.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(items[i])));
+                returnList.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(path)));
             }
 
             return returnList;
@@ -148,9 +148,9 @@ namespace homicide_detective
             string[] scenes = Directory.GetFiles(fileDirectory);
             int i = 0;
             List<SceneTemplate> returnList = new List<SceneTemplate>();
-            foreach (string json in scenes)
+            foreach (string path in scenes)
             {
-                returnList.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scenes[i])));
+                returnList.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(path)));
             }
             
             return returnList;
