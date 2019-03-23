@@ -118,7 +118,7 @@ namespace homicide_detective
         {
             string fileDirectory = rootDirectory + @"\objects\person\";
             string[] persons = Directory.GetFiles(fileDirectory);
-            int i = 0;
+
             List<PersonTemplate> returnList = new List<PersonTemplate>();
             foreach(string path in persons)
             {
@@ -132,7 +132,7 @@ namespace homicide_detective
         {
             string fileDirectory = rootDirectory + @"\objects\item\";
             string[] items = Directory.GetFiles(fileDirectory);
-            int i = 0;
+
             List<ItemTemplate> returnList = new List<ItemTemplate>();
             foreach (string path in items)
             {
@@ -146,7 +146,7 @@ namespace homicide_detective
         {
             string fileDirectory = rootDirectory + @"\objects\scene\";
             string[] scenes = Directory.GetFiles(fileDirectory);
-            int i = 0;
+
             List<SceneTemplate> returnList = new List<SceneTemplate>();
             foreach (string path in scenes)
             {

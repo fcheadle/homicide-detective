@@ -1,30 +1,31 @@
 ﻿{
   "name": "drawer",
-  "description": "A small thing used to contain other things.",
-  "volume_ranges": {
+  "description": " a small thing used to contain other things.",
+  "volumeRanges": {
     "minimum": 275000,
     "maximum": 400000,
     "mean":    270000,
     "mode":    310000
   },
-  "mass_ranges": {
+  "massRanges": {
     "minimum": 200,
     "maximum": 2000,
     "mean":    500,
     "mode":    550
   },
   "hollowness": 95,
-  "sharp_point_number": 8,
-  "sharpness_of_point_degree": 90,
-  "sharp_point_decription": "corners",
+  "sharpPointNumber": 8,
+  "sharpnessOfPointDegree": 90,
+  "sharpPointDecription": "corners",
   "shapes": [
     {
       "name": "rectangular_prism",
       "value": 100
     }
   ],
-  "item_classes": [
-    "container"
+  "classes": [
+    "container",
+    "furniture"
   ],
   "materials": [
     "wood",
@@ -32,12 +33,12 @@
     "brass"
   ],
   "containers": [],
-  "lock_chance": 33,
-  "blocks_views": [
+  "lockChance": 33,
+  "blocksViews": [
     "behind",
     "under"
   ],
-  "visible_sides": [
+  "visibleSides": [
     "on_top"
   ]
 }

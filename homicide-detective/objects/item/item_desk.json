@@ -1,22 +1,22 @@
 ﻿{
   "name": "desk",
-  "description": "A mid-sized piece of furniture used for writing.",
-  "volume_ranges": {
+  "description": " a mid-sized piece of furniture used for writing.",
+  "volumeRanges": {
     "minimum": 2750000,
     "maximum": 4000000,
     "mean":    3330000,
     "mode":    3400000
   },
-  "mass_ranges": {
+  "massRanges": {
     "minimum": 22500,
     "maximum": 90000,
     "mean":    37500,
     "mode":    39000
   },
   "hollowness": 60,
-  "sharp_point_number": 4,
-  "sharpness_of_point_degree": 90,
-  "sharp_point_decription": "corners",
+  "sharpPointNumber": 4,
+  "sharpnessOfPointDegree": 90,
+  "sharpPointDecription": "corners",
   "shapes": [
     {
       "name": "rectangular_prism",
@@ -27,7 +27,7 @@
       "value": 20
     }
   ],
-  "item_classes": [
+  "classes": [
     "furniture",
     "container"
   ],
@@ -41,12 +41,12 @@
     "drawer",
     "drawer"
   ],
-  "lock_chance": 25,
-  "blocks_views": [
+  "lockChance": 25,
+  "blocksViews": [
     "behind",
     "beside"
   ],
-  "visible_sides": [
+  "visibleSides": [
     "on_top",
     "under"
   ]

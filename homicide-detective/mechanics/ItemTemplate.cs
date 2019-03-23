@@ -16,8 +16,8 @@ namespace homicide_detective
         public string description;      //freetext
         public float hollowness;        //in percent
         
-        public PhysicalPropertyRange mass_ranges;   //for determining mass of the object
-        public PhysicalPropertyRange volume_ranges; //for determining volume of the object
+        public PhysicalPropertyRange massRanges;   //for determining mass of the object
+        public PhysicalPropertyRange volumeRanges; //for determining volume of the object
 
         public List<Shape> shapes = new List<Shape>();          //hardcoded specific values
         public List<string> classes = new List<string>();       //freetext
@@ -30,8 +30,8 @@ namespace homicide_detective
         {
             name = "";
             description = "";
-            mass_ranges = new PhysicalPropertyRange();
-            volume_ranges = new PhysicalPropertyRange();
+            massRanges = new PhysicalPropertyRange();
+            volumeRanges = new PhysicalPropertyRange();
         }
     }
 }

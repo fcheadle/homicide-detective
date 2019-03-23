@@ -1,29 +1,29 @@
 ﻿{
   "name": "hammer",
-  "description": "A blunt instrument with a wooden handle and a metal head.",
-  "volume_ranges": {
+  "description": " a blunt instrument with a wooden handle and a metal head.",
+  "volumeRanges": {
     "minimum": 10,
     "maximum": 25,
     "mean": 16,
     "mode": 16
   },
-  "mass_ranges": {
+  "massRanges": {
     "minimum": 15,
     "maximum": 120,
     "mean": 60,
     "mode": 60
   },
   "hollowness": 0,
-  "sharp_point_number": 0,
-  "sharpness_of_point_degree": 0,
-  "sharp_point_decription": "head",
+  "sharpPointNumber": 0,
+  "sharpnessOfPointDegree": 0,
+  "sharpPointDecription": "head",
   "shapes": [
     {
       "name": "cylinder",
       "value": 100
     }
   ],
-  "item_classes": [
+  "classes": [
     "weapon",
     "tool",
     "clutter"
@@ -33,9 +33,9 @@
     "wood"
   ],
   "containers": [],
-  "lock_chance": 0,
-  "blocks_views": [],
-  "visible_sides": [
+  "lockChance": 0,
+  "blocksViews": [],
+  "visibleSides": [
     "on_top",
     "under",
     "behind",

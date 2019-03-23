@@ -38,12 +38,36 @@ namespace homicide_detective
             
             ItemTemplate template = items[itemType];
             name = template.name;
-            volume = PhysicalPropertyRange.GetIntFromRange(random, template.volume_ranges);
-            mass = PhysicalPropertyRange.GetIntFromRange(random, template.mass_ranges);
+            volume = PhysicalPropertyRange.GetIntFromRange(random, template.volumeRanges);
+            mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
 
             description = template.description;
-            description += AddVolumeDescriptor(template.volume_ranges);
-            description += AddMassDescriptor(template.mass_ranges);
+            description += AddVolumeDescriptor(template.volumeRanges);
+            description += AddMassDescriptor(template.massRanges);
+
+            return this;
+        }
+
+        public Item GenerateMurderWeapon(Random seedRandom, List<ItemTemplate> templates)
+        {
+            List<ItemTemplate> possibleMurderWeapons = new List<ItemTemplate>();
+
+            foreach (ItemTemplate itemTemplate in templates)
+            {
+                if (!itemTemplate.classes.Contains("furniture")) possibleMurderWeapons.Add(itemTemplate);
+            }
+
+            random = seedRandom;
+            int itemType = random.Next(0, possibleMurderWeapons.Count() - 1);
+
+            ItemTemplate template = possibleMurderWeapons[itemType];
+            name = template.name;
+            volume = PhysicalPropertyRange.GetIntFromRange(random, template.volumeRanges);
+            mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
+
+            description = template.description;
+            description += AddVolumeDescriptor(template.volumeRanges);
+            description += AddMassDescriptor(template.massRanges);
 
             return this;
         }

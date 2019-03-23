@@ -241,12 +241,14 @@ namespace homicide_detective.user_interface
             ////print the crime scene
             //throw new NotImplementedException();
             string caseDescription = game.activeCases[game.caseTaken].murderer.name;
-            caseDescription = caseDescription + " killed ";
-            caseDescription = caseDescription + game.activeCases[game.caseTaken].victim.name;
-            caseDescription = caseDescription + " with ";
-            caseDescription = caseDescription + game.activeCases[game.caseTaken].murderWeapon.name;
-            caseDescription = caseDescription + " at ";
-            caseDescription = caseDescription + game.activeCases[game.caseTaken].murderScene.name;
+            caseDescription += " killed ";
+            caseDescription += game.activeCases[game.caseTaken].victim.name;
+            caseDescription += " at ";
+            caseDescription += game.activeCases[game.caseTaken].murderScene.name;
+            caseDescription += " with ";
+            caseDescription += game.activeCases[game.caseTaken].murderWeapon.name;
+            caseDescription += ",";
+            caseDescription += game.activeCases[game.caseTaken].murderWeapon.description;
             Console.WriteLine(caseDescription);
             game.state = 0;
             return game;
