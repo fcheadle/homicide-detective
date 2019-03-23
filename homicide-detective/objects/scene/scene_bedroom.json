@@ -1,6 +1,6 @@
 ﻿{
   "name": "bedroom",
-  "description": "where {owner} sleeps.",
+  "description": "{0}, {1} sleeps.",
   "classes": [
     "utility"
   ],

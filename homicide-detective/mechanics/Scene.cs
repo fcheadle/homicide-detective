@@ -4,14 +4,10 @@ using System.Linq;
 
 namespace homicide_detective
 {
-    public class Scene
+    public class Scene : SceneTemplate
     {
         //this is an actual scene that is involved, somehow, in a case
-
-        public string name;         //bedroom_001, living_room_002, etc
-        public string description;  //generated from properties
-
-        public int height;          //in centimeters
+        public int length;          //in centimeters
         public int width;           //in centimeters
         public int area;
 
@@ -41,6 +37,7 @@ namespace homicide_detective
 
             if (area < range.mode - tenPercent - tenPercent)
             {
+                //
                 return " It is much smaller than average.";
             }
             else if (area < range.mode - tenPercent)

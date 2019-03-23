@@ -48,7 +48,14 @@ namespace homicide_detective.user_interface
 
         class CaseMenuText
         {
-            public string caseDescription;
+            public string caseDescription = LoadJson("case");
+
+
+            private static string LoadJson(string v)
+            {
+                throw new NotImplementedException();
+            }
+
             public string takeCase;
             public string nextCase;
             public string exitGame;
@@ -235,8 +242,9 @@ namespace homicide_detective.user_interface
         internal static Game CrimeSceneMenu(Game game)
         {
             //string[] gameLog;            //the entire game log is saved to the file
+            
             ////print the crime scene
-            //throw new NotImplementedException();
+            //in the future 
             string caseDescription = game.activeCases[game.caseTaken].murderer.name;
             caseDescription += " killed ";
             caseDescription += game.activeCases[game.caseTaken].victim.name;

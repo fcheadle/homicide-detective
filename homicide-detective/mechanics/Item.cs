@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    public class Item
+    public class Item : ItemTemplate
     {
-        //an item is specific to a case
-        public string name;                 //knife_003, bookshelf_005, etc
-        public string description;          //generated from json
-
         public int volume;                  //in cm^3
         public int mass;                    //in grams
         public Shape shape;                 //shape of the item
@@ -38,8 +36,8 @@ namespace homicide_detective
             
             ItemTemplate template = items[itemType];
             name = template.name;
-            volume = PhysicalPropertyRange.GetIntFromRange(random, template.volumeRanges);
-            mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
+            //volume = PhysicalPropertyRange.GetFromRange(random, template.volumeRanges);
+            //mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
 
             description = template.description;
             description += AddVolumeDescriptor(template.volumeRanges);
@@ -62,8 +60,8 @@ namespace homicide_detective
 
             ItemTemplate template = possibleMurderWeapons[itemType];
             name = template.name;
-            volume = PhysicalPropertyRange.GetIntFromRange(random, template.volumeRanges);
-            mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
+            //volume = PhysicalPropertyRange.GetIntFromRange(random, template.volumeRanges);
+            //mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
 
             description = template.description;
             description += AddVolumeDescriptor(template.volumeRanges);
@@ -76,6 +74,12 @@ namespace homicide_detective
         {
             //get a simplified standard deviation of 10%
             int tenPercent = range.maximum - range.minimum / 10;
+            object item_descriptions;
+            string saveFolder = Directory.GetCurrentDirectory() + @"\objects\text\";
+            string file = "item_description";
+            string extension = ".json";
+            string path = saveFolder + file + extension;
+            object item_decsriptions = JsonConvert.DeserializeObject(path);
 
             if (volume < range.mode - tenPercent - tenPercent)
             {

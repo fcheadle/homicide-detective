@@ -14,7 +14,7 @@ namespace homicide_detective
         public int mean;       //mean of typical masses or volumes
         public int mode;       //mode of typical masses or volumes
 
-        public static int GetIntFromRange(Random random, PhysicalPropertyRange range)
+        /*public static int SetStatsFromRange(Random random, PhysicalPropertyRange range)
         {
             int mean = 0;
             int totalRange = range.maximum - range.minimum;
@@ -32,6 +32,10 @@ namespace homicide_detective
             if (mean > range.maximum) mean = range.maximum;
 
             return mean;
-        }
+        }*/
+    }
+
+    public class PhysichalPropertyRange
+    {
     }
 }

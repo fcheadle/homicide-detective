@@ -16,7 +16,7 @@ namespace homicide_detective
         static string rootDirectory = Directory.GetCurrentDirectory();
         static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
         static string extension = ".json";
-        
+
         public int state = 1;
         //state = 0;        //turn off game
         //state = 1;        //show main menu
