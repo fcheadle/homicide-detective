@@ -1,42 +1,40 @@
 ﻿{
   "name": "bedroom",
   "description": "where {owner} sleeps.",
-  "scene_classes": [
+  "classes": [
     "utility"
   ],
-  "scene_connection_number": 2,
-  "scene_connection_classes": [
+  "sceneConnectionNumber": 2,
+  "sceneConnectionClasses": [
     "exterior",
     "utility",
     "subterranean"
   ],
-  "contains_item_classes": [
+  "containsItemClasses": [
     "furniture",
     "containers",
     "sleeping_surface",
     "sitting_surface"
   ],
-  "must_contain": [
+  "mustContain": [
     "sleeping_surface",
     "furniture"
   ],
-  "cannot_contain": [
+  "cannotContain": [
     "food_storage",
     "vehicle",
     "dining"
   ],
-  "area": {
-    "width": {
-      "minimum": 2,
-      "maximum": 5,
-      "median": 2.75,
-      "mode": 2.75
-    },
-    "length": {
-      "minimum": 2,
-      "maximum": 5,
-      "median": 2.75,
-      "mode": 2.75
-    }
+  "width": {
+    "minimum": 200,
+    "maximum": 500,
+    "median": 275,
+    "mode": 275
+  },
+  "length": {
+    "minimum": 200,
+    "maximum": 500,
+    "median": 275,
+    "mode": 275
   }
 }

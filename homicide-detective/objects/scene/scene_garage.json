@@ -1,32 +1,30 @@
 ﻿{
   "name": "garage",
   "description": "a place where {owner} stores or works on vehicles.",
-  "contains_classes": [
+  "containsClasses": [
     "vehicle",
     "containers",
     "food_storage",
     "sitting_surface",
     "tool"
   ],
-  "must_contain": [
+  "mustContain": [
     "tool",
     "clutter"
   ],
-  "cannot_contain": [
+  "cannotContain": [
     "sleeping_surface"
   ],
-  "area": {
-    "width": {
-      "minimum": 5,
-      "maximum": 15,
-      "median": 6,
-      "mode": 5.5
-    },
-    "length": {
-      "minimum": 5,
-      "maximum": 15,
-      "median": 12,
-      "mode": 11.5
-    }
+  "width": {
+    "minimum": 5,
+    "maximum": 15,
+    "median": 6,
+    "mode": 5.5
+  },
+  "length": {
+    "minimum": 5,
+    "maximum": 15,
+    "median": 12,
+    "mode": 11.5
   }
 }

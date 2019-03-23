@@ -8,8 +8,8 @@
   "ambition": 0,
   "classiness": 15,
   "creativity": -5,
-  "attention_to_detail": -20,
+  "attentionToDetail": -20,
   "intelligence": -5,
   "wealth": 20,
-  "family_importance": -5
+  "familyImportance": -5
 }
