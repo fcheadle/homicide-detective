@@ -14,6 +14,8 @@ namespace homicide_detective.user_interface
         //gameState = 2;        //show case menu
         //gameState = 3;        //investigating a scene
         //gameState = 4;        //talking to persons of interest
+        //gameState = 5;        //escape menu
+
 
         #region variables
         static string textFolder = Directory.GetCurrentDirectory() + @"\objects\text\";
@@ -22,15 +24,22 @@ namespace homicide_detective.user_interface
         static string mainMenuPath = textFolder + "menu_main" + extension;
         static string caseMenuPath = textFolder + "menu_case" + extension;
         static string csiMenuPath = textFolder + "menu_csi" + extension;
+        static string caseDescriptionPath = textFolder + "description_case" + extension;
+        static string itemDescriptionPath = textFolder + "description_item" + extension;
 
         static string mainMenuRaw = File.ReadAllText(mainMenuPath);
         static string caseMenuRaw = File.ReadAllText(caseMenuPath);
         static string csiMenuRaw = File.ReadAllText(csiMenuPath);
+        static string caseDescriptionRaw = File.ReadAllText(caseDescriptionPath);
+        static string itemDescriptionRaw = File.ReadAllText(itemDescriptionPath);
 
         static MainMenuText mainMenuText = JsonConvert.DeserializeObject<MainMenuText>(mainMenuRaw);
         static CaseMenuText caseMenuText = JsonConvert.DeserializeObject<CaseMenuText>(caseMenuRaw);
         static CSIMenuText csiMenuText = JsonConvert.DeserializeObject<CSIMenuText>(csiMenuRaw);
-        
+
+        static ItemDescription itemDescription = JsonConvert.DeserializeObject<ItemDescription>(itemDescriptionRaw);
+        static CaseDescription caseDescription = JsonConvert.DeserializeObject<CaseDescription>(caseDescriptionRaw);
+
         class MainMenuText
         {
             public string title;
@@ -48,15 +57,8 @@ namespace homicide_detective.user_interface
 
         class CaseMenuText
         {
-            public string caseDescription = LoadJson("case");
-
-
-            private static string LoadJson(string v)
-            {
-                throw new NotImplementedException();
-            }
-
             public string takeCase;
+            public string reviewCase;
             public string nextCase;
             public string exitGame;
         }
@@ -82,6 +84,21 @@ namespace homicide_detective.user_interface
             public string check;
             public string evidence;
         }
+
+        internal class ItemDescription
+        {
+            public string smaller;
+            public string smallerAdverb;
+            public string largerAdverb;
+            public string larger;
+            public string sizeDescription;
+            public string exactly;
+        }
+
+        internal class CaseDescription
+        {
+            public string intro;
+        }
         #endregion
 
         #region menus
@@ -93,7 +110,7 @@ namespace homicide_detective.user_interface
             Console.Write(mainMenuText.loadGame);
             Console.Write(" | ");
             Console.WriteLine(mainMenuText.exitGame);
-            
+
             Game game = new Game();
             game.state = 0;
             string command = Console.ReadLine();
@@ -169,7 +186,7 @@ namespace homicide_detective.user_interface
             {
                 Console.WriteLine(mainMenuText.commandNotFound);
                 return MainMenu();
-            }            
+            }
         }
 
         public static void PrintTitle()
@@ -189,7 +206,7 @@ namespace homicide_detective.user_interface
         //CaseMenu asks the detective which case he wants to work on.
         public static int CaseMenu(Game game)
         {
-            if(game.caseTaken == 0)
+            if (game.caseTaken == 0)
             {
                 //case numbers start at 1
                 game.caseTaken++;
@@ -199,7 +216,7 @@ namespace homicide_detective.user_interface
             {
                 game.GenerateCase(game);
             }
-            
+
             int i = 0;
 
             while (game.activeCases.Count() <= game.caseTaken)
@@ -207,8 +224,16 @@ namespace homicide_detective.user_interface
                 game.GenerateCase(game, game.caseTaken + i);
                 i++;
             }
-
-            Console.WriteLine(caseMenuText.caseDescription, game.caseTaken, game.activeCases[game.caseTaken].victim.name);
+            
+            int caseNumber = game.activeCases[game.caseTaken].caseNumber;
+            string victimName = game.activeCases[game.caseTaken].victim.name;
+            //string caseDescription = game.activeCases[game.caseTaken].victim.description;
+            Console.Write(caseDescription.intro);
+            Console.Write(caseNumber);
+            Console.Write(", ");
+            Console.WriteLine(victimName);
+            Console.Write(caseMenuText.reviewCase);
+            Console.Write(" | ");
             Console.Write(caseMenuText.takeCase);
             Console.Write(" | ");
             Console.Write(caseMenuText.nextCase);
@@ -216,7 +241,21 @@ namespace homicide_detective.user_interface
             Console.WriteLine(caseMenuText.exitGame);
 
             string command = Console.ReadLine();
-            if (command == caseMenuText.takeCase)
+            if (command == caseMenuText.reviewCase)
+            {
+                string output = game.activeCases[game.caseTaken].murderer.name;
+                output += " killed ";
+                output += game.activeCases[game.caseTaken].victim.name;
+                output += " at ";
+                output += game.activeCases[game.caseTaken].murderScene.name;
+                output += " with ";
+                output += game.activeCases[game.caseTaken].murderWeapon.name;
+                output += ",";
+                output += game.activeCases[game.caseTaken].murderWeapon.description;
+                Console.WriteLine(output);
+                return CaseMenu(game);
+            }
+            else if (command == caseMenuText.takeCase)
             {
                 //return case number
                 game.SaveGame();
@@ -242,18 +281,10 @@ namespace homicide_detective.user_interface
         internal static Game CrimeSceneMenu(Game game)
         {
             //string[] gameLog;            //the entire game log is saved to the file
-            
+
             ////print the crime scene
-            //in the future 
-            string caseDescription = game.activeCases[game.caseTaken].murderer.name;
-            caseDescription += " killed ";
-            caseDescription += game.activeCases[game.caseTaken].victim.name;
-            caseDescription += " at ";
-            caseDescription += game.activeCases[game.caseTaken].murderScene.name;
-            caseDescription += " with ";
-            caseDescription += game.activeCases[game.caseTaken].murderWeapon.name;
-            caseDescription += ",";
-            caseDescription += game.activeCases[game.caseTaken].murderWeapon.description;
+            //in the future replace these words with json-defined words
+
             Console.WriteLine(caseDescription);
             game.state = 0;
             return game;

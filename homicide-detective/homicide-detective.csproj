@@ -68,7 +68,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="objects\item\item_ammunition.json">
+    <None Include="objects\text\description_case.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="objects\item\item_bed.json">
@@ -105,6 +105,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="objects\scene\scene_garage.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\text\description_item.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="objects\text\menu_csi.json">

@@ -9,6 +9,7 @@ namespace homicide_detective
         public int caseNumber;                         //A short number that can be combined with the detective's name to regenerate the same case
         public string status = "active";               //active, solved, or closed
         public Random random;                          //Must be idempotent
+        public string description;                      //generated
 
         public Person victim;                          //The person who was murdered
         public Person murderer;                        //The person who killed the victim
