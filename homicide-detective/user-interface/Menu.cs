@@ -3,9 +3,9 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace homicide_detective.user_interface
+namespace homicide_detective
 {
-    static class Menu
+    public static class Menu
     {
         //The Menu class contains all call-response from the game to the user.
         //when Menu is called, it will almost always return an integer gameState:
@@ -99,21 +99,29 @@ namespace homicide_detective.user_interface
         {
             public string intro;
         }
+
+        public class InputRetriever
+        {
+            public virtual string Get()
+            {
+                return Console.ReadLine();
+            }
+        }
         #endregion
 
         #region menus
-        //MainMenu returns an integer that correlates to gameState in Homicide-Detective.cs
         public static Game MainMenu()
         {
-            Console.Write(mainMenuText.newGame);
-            Console.Write(" | ");
-            Console.Write(mainMenuText.loadGame);
-            Console.Write(" | ");
-            Console.WriteLine(mainMenuText.exitGame);
-
+            PrintMainMenuCommands();
+            InputRetriever input = new InputRetriever();
             Game game = new Game();
             game.state = 0;
-            string command = Console.ReadLine();
+            return EvaluateMainMenuCommand(input.Get(), game);
+        }
+
+        private static Game EvaluateMainMenuCommand(string command, Game game)
+        {
+            InputRetriever input = new InputRetriever();
             command = command.ToLower();
 
             if (command == mainMenuText.newGame)
@@ -126,7 +134,7 @@ namespace homicide_detective.user_interface
                     bool existConfirmation = false;
                     while (!existConfirmation)
                     {
-                        string answer = Console.ReadLine();
+                        string answer = input.Get();
                         try
                         {
                             if (answer.Trim().ToLower() == mainMenuText.no)
@@ -189,22 +197,81 @@ namespace homicide_detective.user_interface
             }
         }
 
+        private static void PrintMainMenuCommands()
+        {
+            Console.Write(mainMenuText.newGame);
+            Console.Write(" | ");
+            Console.Write(mainMenuText.loadGame);
+            Console.Write(" | ");
+            Console.WriteLine(mainMenuText.exitGame);
+        }
+
         public static void PrintTitle()
         {
             //object menu;
             Console.WriteLine(mainMenuText.title);
             Console.WriteLine(mainMenuText.subtitle);
         }
-
-        //GetDetective gets the name of the detective from the player
+        
         private static string GetDetective()
         {
+            InputRetriever input = new InputRetriever();
             Console.WriteLine(mainMenuText.namePrompt);
-            return Console.ReadLine();
+            return input.Get();
+        }
+        
+        public static int CaseMenu(Game game)
+        {
+            CreateCaseIfNull(game);
+
+            InputRetriever input = new InputRetriever();
+            Case thisCase = game.activeCases[game.caseTaken];
+            int caseNumber = thisCase.caseNumber;
+            string victimName = thisCase.victim.name;
+            //string caseDescription = game.activeCases[game.caseTaken].victim.description;
+            PrintCaseSynopsis(thisCase);
+            PrintCaseMenu();
+            return EvaluateCaseCommand(input.Get(), game);
+            
         }
 
-        //CaseMenu asks the detective which case he wants to work on.
-        public static int CaseMenu(Game game)
+        private static int EvaluateCaseCommand(string command, Game game)
+        {
+            InputRetriever input = new InputRetriever();
+            Case thisCase = game.activeCases[game.caseTaken];
+            if (command == caseMenuText.reviewCase)
+            {
+                Cheat(thisCase);
+                return CaseMenu(game);
+            }
+            else if (command == caseMenuText.takeCase)
+            {
+                //return case number
+                game.SaveGame();
+                return game.caseTaken;
+            }
+            else if (command == caseMenuText.nextCase)
+            {
+                game.caseTaken++;
+                return CaseMenu(game);
+            }
+            else if (command == caseMenuText.exitGame)
+            {
+                return 0; //return 0 to give the command to exit
+            }
+            else if (command == "cheat")
+            {
+                Cheat(thisCase);
+                return CaseMenu(game);
+            }
+            else
+            {
+                game.SaveGame();
+                return CaseMenu(game);
+            }
+        }
+
+        private static void CreateCaseIfNull(Game game)
         {
             if (game.caseTaken == 0)
             {
@@ -224,14 +291,10 @@ namespace homicide_detective.user_interface
                 game.GenerateCase(game, game.caseTaken + i);
                 i++;
             }
-            
-            int caseNumber = game.activeCases[game.caseTaken].caseNumber;
-            string victimName = game.activeCases[game.caseTaken].victim.name;
-            //string caseDescription = game.activeCases[game.caseTaken].victim.description;
-            Console.Write(caseDescription.intro);
-            Console.Write(caseNumber);
-            Console.Write(", ");
-            Console.WriteLine(victimName);
+        }
+
+        private static void PrintCaseMenu()
+        {
             Console.Write(caseMenuText.reviewCase);
             Console.Write(" | ");
             Console.Write(caseMenuText.takeCase);
@@ -239,58 +302,37 @@ namespace homicide_detective.user_interface
             Console.Write(caseMenuText.nextCase);
             Console.Write(" | ");
             Console.WriteLine(caseMenuText.exitGame);
-
-            string command = Console.ReadLine();
-            if (command == caseMenuText.reviewCase)
-            {
-                string output = game.activeCases[game.caseTaken].murderer.name;
-                output += " killed ";
-                output += game.activeCases[game.caseTaken].victim.name;
-                output += " at ";
-                output += game.activeCases[game.caseTaken].murderScene.name;
-                output += " with ";
-                output += game.activeCases[game.caseTaken].murderWeapon.name;
-                output += ",";
-                output += game.activeCases[game.caseTaken].murderWeapon.description;
-                Console.WriteLine(output);
-                return CaseMenu(game);
-            }
-            else if (command == caseMenuText.takeCase)
-            {
-                //return case number
-                game.SaveGame();
-                return game.caseTaken;
-            }
-            else if (command == caseMenuText.nextCase)
-            {
-                game.caseTaken++;
-                return CaseMenu(game);
-            }
-            else if (command == caseMenuText.exitGame)
-            {
-                return 0; //return 0 to give the command to exit
-            }
-            else
-            {
-                game.SaveGame();
-                return CaseMenu(game);
-            }
         }
 
-        //This is where the code for investigating a scene goes. Returns gameState
+        private static void PrintCaseSynopsis(Case thisCase)
+        {
+            Console.Write(caseDescription.intro);
+            Console.Write(thisCase.caseNumber);
+            Console.Write(", ");
+            Console.WriteLine(thisCase.victim.name);
+        }
+
+        private static void Cheat(Case game)
+        {
+            string output = game.murderer.name;
+            output += " killed ";
+            output += game.victim.name;
+            output += " at ";
+            output += game.murderScene.name;
+            output += " with ";
+            output += game.murderWeapon.name;
+            output += ",";
+            output += game.murderWeapon.description;
+            Console.WriteLine(output);
+        }
+        
         internal static Game CrimeSceneMenu(Game game)
         {
-            //string[] gameLog;            //the entire game log is saved to the file
-
-            ////print the crime scene
-            //in the future replace these words with json-defined words
-
             Console.WriteLine(caseDescription);
             game.state = 0;
             return game;
         }
-
-        //this is where the code for talking to witnesses belongs. Returns gameState
+        
         internal static Game WitnessDialogueMenu(Game game)
         {
             throw new NotImplementedException();
