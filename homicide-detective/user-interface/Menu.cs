@@ -8,16 +8,9 @@ namespace homicide_detective
     public static class Menu
     {
         //The Menu class contains all call-response from the game to the user.
-        //when Menu is called, it will almost always return an integer gameState:
-        //gameState = 0;        //turn off game
-        //gameState = 1;        //show main menu
-        //gameState = 2;        //show case menu
-        //gameState = 3;        //investigating a scene
-        //gameState = 4;        //talking to persons of interest
-        //gameState = 5;        //escape menu
-
 
         #region variables
+        //System Variables
         static string textFolder = Directory.GetCurrentDirectory() + @"\objects\text\";
         static string extension = ".json";
 
@@ -33,6 +26,7 @@ namespace homicide_detective
         static string caseDescriptionRaw = File.ReadAllText(caseDescriptionPath);
         static string itemDescriptionRaw = File.ReadAllText(itemDescriptionPath);
 
+        //These objects are used to build the strings that are given to the user
         static MainMenuText mainMenuText = JsonConvert.DeserializeObject<MainMenuText>(mainMenuRaw);
         static CaseMenuText caseMenuText = JsonConvert.DeserializeObject<CaseMenuText>(caseMenuRaw);
         static CSIMenuText csiMenuText = JsonConvert.DeserializeObject<CSIMenuText>(csiMenuRaw);
@@ -40,7 +34,8 @@ namespace homicide_detective
         static ItemDescription itemDescription = JsonConvert.DeserializeObject<ItemDescription>(itemDescriptionRaw);
         static CaseDescription caseDescription = JsonConvert.DeserializeObject<CaseDescription>(caseDescriptionRaw);
 
-        class MainMenuText
+        //these classes must match the JSON exactly
+        internal class MainMenuText
         {
             public string title;
             public string subtitle;
@@ -55,7 +50,7 @@ namespace homicide_detective
             public string commandNotFound;
         }
 
-        class CaseMenuText
+        internal class CaseMenuText
         {
             public string takeCase;
             public string reviewCase;
@@ -63,7 +58,7 @@ namespace homicide_detective
             public string exitGame;
         }
 
-        class CSIMenuText
+        internal class CSIMenuText
         {
             public string look;
             public string inside;
@@ -100,14 +95,11 @@ namespace homicide_detective
             public string intro;
         }
 
+
+        //these classes are so unit tests can have an overrideable way to read console input
         public class InputRetriever
         {
             public virtual string Get()
-            {
-                return Console.ReadLine();
-            }
-
-            public virtual string Get(int index)
             {
                 return Console.ReadLine();
             }
@@ -120,12 +112,12 @@ namespace homicide_detective
                 Console.Write(output);
             }
 
-            internal void SendLine(string output)
+            public virtual void SendLine(string output)
             {
                 Console.WriteLine(output);
             }
 
-            internal void SendLine(string output, string detective)
+            public virtual void SendLine(string output, string detective)
             {
                 Console.WriteLine(output, detective);
             }
