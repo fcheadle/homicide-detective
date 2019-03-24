@@ -152,7 +152,9 @@ namespace unit_tests
         public void EvaluateMainMenuCommandTest()
         {
             Game game = new Game();
-            Console.WriteLine("this is async test text");
+            output.Send("this is async test text");
+
+            Assert.AreEqual("this is async test text",input.Get());
         }
 
         [TestMethod]

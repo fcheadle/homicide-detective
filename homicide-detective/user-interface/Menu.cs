@@ -8,6 +8,9 @@ namespace homicide_detective
     public static class Menu
     {
         //The Menu class contains all call-response from the game to the user.
+        //Any time the game writes to the console, it should be the menu that does it
+        //because of this, the entire class and everything in it can be static
+        //crime scene commands are not implemented yet
 
         #region variables
         //System Variables
