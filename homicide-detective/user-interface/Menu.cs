@@ -106,6 +106,29 @@ namespace homicide_detective
             {
                 return Console.ReadLine();
             }
+
+            public virtual string Get(int index)
+            {
+                return Console.ReadLine();
+            }
+        }
+
+        public class OutputSender
+        {
+            public virtual void Send(string output)
+            {
+                Console.Write(output);
+            }
+
+            internal void SendLine(string output)
+            {
+                Console.WriteLine(output);
+            }
+
+            internal void SendLine(string output, string detective)
+            {
+                Console.WriteLine(output, detective);
+            }
         }
         #endregion
 
@@ -122,6 +145,7 @@ namespace homicide_detective
         private static Game EvaluateMainMenuCommand(string command, Game game)
         {
             InputRetriever input = new InputRetriever();
+            OutputSender output = new OutputSender();
             command = command.ToLower();
 
             if (command == mainMenuText.newGame)
@@ -129,7 +153,7 @@ namespace homicide_detective
                 string detective = GetDetective();
                 if (Game.CheckFile(detective))
                 {
-                    Console.WriteLine(mainMenuText.duplicateDetective, detective);
+                    output.SendLine(mainMenuText.duplicateDetective, detective);
 
                     bool existConfirmation = false;
                     while (!existConfirmation)
@@ -152,12 +176,12 @@ namespace homicide_detective
                             }
                             else
                             {
-                                Console.WriteLine(mainMenuText.yesNoOnly);
+                                output.SendLine(mainMenuText.yesNoOnly);
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            output.SendLine(e.Message);
                         }
                     }
                 }
@@ -182,7 +206,7 @@ namespace homicide_detective
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    output.SendLine(e.Message);
                     return MainMenu();
                 }
             }
@@ -192,31 +216,33 @@ namespace homicide_detective
             }
             else
             {
-                Console.WriteLine(mainMenuText.commandNotFound);
+                output.SendLine(mainMenuText.commandNotFound);
                 return MainMenu();
             }
         }
 
         private static void PrintMainMenuCommands()
         {
-            Console.Write(mainMenuText.newGame);
-            Console.Write(" | ");
-            Console.Write(mainMenuText.loadGame);
-            Console.Write(" | ");
-            Console.WriteLine(mainMenuText.exitGame);
+            OutputSender output = new OutputSender();
+            output.Send(mainMenuText.newGame);
+            output.Send(" | ");
+            output.Send(mainMenuText.loadGame);
+            output.Send(" | ");
+            output.SendLine(mainMenuText.exitGame);
         }
 
         public static void PrintTitle()
         {
-            //object menu;
-            Console.WriteLine(mainMenuText.title);
-            Console.WriteLine(mainMenuText.subtitle);
+            OutputSender output = new OutputSender();
+            output.SendLine(mainMenuText.title);
+            output.SendLine(mainMenuText.subtitle);
         }
         
         private static string GetDetective()
         {
             InputRetriever input = new InputRetriever();
-            Console.WriteLine(mainMenuText.namePrompt);
+            OutputSender output = new OutputSender();
+            output.SendLine(mainMenuText.namePrompt);
             return input.Get();
         }
         
@@ -295,40 +321,43 @@ namespace homicide_detective
 
         private static void PrintCaseMenu()
         {
-            Console.Write(caseMenuText.reviewCase);
-            Console.Write(" | ");
-            Console.Write(caseMenuText.takeCase);
-            Console.Write(" | ");
-            Console.Write(caseMenuText.nextCase);
-            Console.Write(" | ");
-            Console.WriteLine(caseMenuText.exitGame);
+            OutputSender output = new OutputSender();
+            output.Send(caseMenuText.reviewCase);
+            output.Send(" | ");
+            output.Send(caseMenuText.takeCase);
+            output.Send(" | ");
+            output.Send(caseMenuText.nextCase);
+            output.Send(" | ");
+            output.SendLine(caseMenuText.exitGame);
         }
 
         private static void PrintCaseSynopsis(Case thisCase)
         {
-            Console.Write(caseDescription.intro);
-            Console.Write(thisCase.caseNumber);
-            Console.Write(", ");
-            Console.WriteLine(thisCase.victim.name);
+            OutputSender output = new OutputSender();
+            output.Send(caseDescription.intro);
+            output.Send(thisCase.caseNumber.ToString());
+            output.Send(", ");
+            output.SendLine(thisCase.victim.name);
         }
 
         private static void Cheat(Case game)
         {
-            string output = game.murderer.name;
-            output += " killed ";
-            output += game.victim.name;
-            output += " at ";
-            output += game.murderScene.name;
-            output += " with ";
-            output += game.murderWeapon.name;
-            output += ",";
-            output += game.murderWeapon.description;
-            Console.WriteLine(output);
+            OutputSender output = new OutputSender();
+            string sentence = game.murderer.name;
+            sentence += " killed ";
+            sentence += game.victim.name;
+            sentence += " at ";
+            sentence += game.murderScene.name;
+            sentence += " with ";
+            sentence += game.murderWeapon.name;
+            sentence += ",";
+            sentence += game.murderWeapon.description;
+            output.SendLine(sentence);
         }
         
         internal static Game CrimeSceneMenu(Game game)
         {
-            Console.WriteLine(caseDescription);
+            //Console.WriteLine(caseDescription);
             game.state = 0;
             return game;
         }

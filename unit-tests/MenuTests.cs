@@ -10,14 +10,25 @@ namespace unit_tests
     [TestClass]
     public class MenuTests
     {
-        public class TestNameRetriever : Menu.InputRetriever
+        public class TestInputRetriever : Menu.InputRetriever
         {
             // This should give you the idea...
             private string[] names = new string[] { "Foo", "Foo2" };
             private int index = 0;
-            public override string Get()
+            public override string Get(int index)
             {
                 return names[index++];
+            }
+        }
+
+        public class TestOutputRetriever : Menu.OutputSender
+        {
+            // This should give you the idea...
+            private string[] names = new string[] { "Foo", "Foo2" };
+            private int index = 0;
+            public override void Send(string output)
+            {
+                
             }
         }
 
