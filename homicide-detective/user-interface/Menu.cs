@@ -100,16 +100,13 @@ namespace homicide_detective
 
 
         //these classes are so unit tests can have an overrideable way to read console input
-        public class InputRetriever
+        public class IO
         {
             public virtual string Get()
             {
                 return Console.ReadLine();
             }
-        }
 
-        public class OutputSender
-        {
             public virtual void Send(string output)
             {
                 Console.Write(output);
@@ -131,16 +128,16 @@ namespace homicide_detective
         public static Game MainMenu()
         {
             PrintMainMenuCommands();
-            InputRetriever input = new InputRetriever();
+            IO input = new IO();
             Game game = new Game();
             game.state = 0;
             return EvaluateMainMenuCommand(input.Get(), game);
         }
 
-        private static Game EvaluateMainMenuCommand(string command, Game game)
+        public static Game EvaluateMainMenuCommand(string command, Game game)
         {
-            InputRetriever input = new InputRetriever();
-            OutputSender output = new OutputSender();
+            IO input = new IO();
+            IO output = new IO();
             command = command.ToLower();
 
             if (command == mainMenuText.newGame)
@@ -218,7 +215,7 @@ namespace homicide_detective
 
         private static void PrintMainMenuCommands()
         {
-            OutputSender output = new OutputSender();
+            IO output = new IO();
             output.Send(mainMenuText.newGame);
             output.Send(" | ");
             output.Send(mainMenuText.loadGame);
@@ -228,15 +225,15 @@ namespace homicide_detective
 
         public static void PrintTitle()
         {
-            OutputSender output = new OutputSender();
+            IO output = new IO();
             output.SendLine(mainMenuText.title);
             output.SendLine(mainMenuText.subtitle);
         }
         
         private static string GetDetective()
         {
-            InputRetriever input = new InputRetriever();
-            OutputSender output = new OutputSender();
+            IO input = new IO();
+            IO output = new IO();
             output.SendLine(mainMenuText.namePrompt);
             return input.Get();
         }
@@ -245,7 +242,7 @@ namespace homicide_detective
         {
             CreateCaseIfNull(game);
 
-            InputRetriever input = new InputRetriever();
+            IO input = new IO();
             Case thisCase = game.activeCases[game.caseTaken];
             int caseNumber = thisCase.caseNumber;
             string victimName = thisCase.victim.name;
@@ -258,7 +255,7 @@ namespace homicide_detective
 
         private static int EvaluateCaseCommand(string command, Game game)
         {
-            InputRetriever input = new InputRetriever();
+            IO input = new IO();
             Case thisCase = game.activeCases[game.caseTaken];
             if (command == caseMenuText.reviewCase)
             {
@@ -316,7 +313,7 @@ namespace homicide_detective
 
         private static void PrintCaseMenu()
         {
-            OutputSender output = new OutputSender();
+            IO output = new IO();
             output.Send(caseMenuText.reviewCase);
             output.Send(" | ");
             output.Send(caseMenuText.takeCase);
@@ -328,7 +325,7 @@ namespace homicide_detective
 
         private static void PrintCaseSynopsis(Case thisCase)
         {
-            OutputSender output = new OutputSender();
+            IO output = new IO();
             output.Send(caseDescription.intro);
             output.Send(thisCase.caseNumber.ToString());
             output.Send(", ");
@@ -337,7 +334,7 @@ namespace homicide_detective
 
         private static void Cheat(Case game)
         {
-            OutputSender output = new OutputSender();
+            IO output = new IO();
             string sentence = game.murderer.name;
             sentence += " killed ";
             sentence += game.victim.name;

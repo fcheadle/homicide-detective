@@ -19,11 +19,10 @@ namespace unit_tests
         string[] personPaths = Directory.GetFiles(personFolder);
         string[] itemPaths = Directory.GetFiles(itemFolder);
         string[] scenePaths = Directory.GetFiles(sceneFolder);
-        TestInputRetriever input = new TestInputRetriever();
-        TestOutputRetriever output = new TestOutputRetriever();
+        TestIO io = new TestIO();
 
         //these is to get input from a file instead of the console
-        public class TestInputRetriever : Menu.InputRetriever
+        public class TestIO : Menu.IO
         {
             public override string Get()
             {
@@ -43,10 +42,7 @@ namespace unit_tests
 
                 return outcome;
             }
-        }
-        
-        public class TestOutputRetriever : Menu.OutputSender
-        {
+
             public override void Send(string output)
             {
                 TextWriter textWriterOriginal = Console.Out;
@@ -143,78 +139,81 @@ namespace unit_tests
         #endregion
 
         [TestMethod]
-        public void MainMenuTest()
+        public void IOTest()
         {
-            //Can this be tested?
+            io.Send("abcdefg");
+            Assert.AreEqual("abcdefg", io.Get());
         }
 
         [TestMethod]
         public void EvaluateMainMenuCommandTest()
         {
-            Game game = new Game();
-            output.Send("this is async test text");
+            throw new NotImplementedException();
 
-            Assert.AreEqual("this is async test text",input.Get());
+            Game game = new Game();
+            game = Menu.EvaluateMainMenuCommand("new", game);
+            Assert.AreEqual("What is your name, Detective?", game.detective);
         }
 
         [TestMethod]
         public void PrintMainMenuCommandsTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void PrintTitleTest()
         {
+            throw new NotImplementedException();
 
         }
 
         [TestMethod]
         public void CaseMenuTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void EvaluateCaseCommandTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void CreateCaseIfNullTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void PrintCaseMenuTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void PrintCaseSynopsisTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void CheatTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void CrimeScenemenuTest()
         {
-
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void WitnessDialogueTest()
         {
-
+            throw new NotImplementedException();
         }
     }
 }
