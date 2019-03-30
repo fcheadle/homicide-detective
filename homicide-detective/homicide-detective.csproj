@@ -52,14 +52,11 @@
     <Compile Include="mechanics\Base36.cs" />
     <Compile Include="mechanics\Case.cs" />
     <Compile Include="mechanics\Game.cs" />
-    <Compile Include="mechanics\ItemTemplate.cs" />
-    <Compile Include="mechanics\PersonTemplate.cs" />
     <Compile Include="mechanics\HomicideDetective.cs" />
     <Compile Include="mechanics\GameText.cs" />
     <Compile Include="mechanics\PhysicalPropertyRange.cs" />
     <Compile Include="mechanics\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="mechanics\SceneTemplate.cs" />
     <Compile Include="mechanics\Shape.cs" />
     <Compile Include="mechanics\Scene.cs" />
     <Compile Include="user-interface\Menu.cs" />

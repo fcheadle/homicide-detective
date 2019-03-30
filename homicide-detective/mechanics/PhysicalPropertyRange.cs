@@ -34,8 +34,4 @@ namespace homicide_detective
             return mean;
         }
     }
-
-    public class PhysichalPropertyRange
-    {
-    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace homicide_detective
@@ -22,6 +23,8 @@ namespace homicide_detective
 
         public Item murderWeapon;                      //The item that killed the victim; may be blunt force trauma or drowning...?
         public Item allEvidence;                     //Every item including furniture at the scenes, the murder weapon, tire marks, wall damage, etc
+        internal IEnumerable<Item> evidenceTaken;
+
         //public ItemTemplate[] evidenceTaken;                   //When an item is taken as evidence, it gets copied from all evidence to evidence taken
 
         public Case()
@@ -45,8 +48,11 @@ namespace homicide_detective
 
         private void GenerateCase(Game game)
         {
-            victim = GetPerson(game.allText);
-            murderer = GetPerson(game.allText);
+            int seed = Base36.Decode(game.detective);
+            victim = new Person(new Random(seed), game.allText);
+            victim = victim.GeneratePerson(game.allText);
+            murderer = new Person(new Random(seed + 1), game.allText);
+            murderer = murderer.GeneratePerson(game.allText);
 
             murderScene = new Scene(random);
             murderScene = murderScene.GenerateScene(game.sceneTemplates);
@@ -60,28 +66,7 @@ namespace homicide_detective
             //allEvidence = GenerateAllEvidence(random.Next());
         }
 
-        private Person GetPerson(GameText text)
-        {
-            int gender = random.Next(0, 1);
-            int givenNameIndex;
-            if (gender == 0)
-            {
-                //female
-                givenNameIndex = random.Next(0, text.names.givenFemale.Count() - 1);
-            }
-            else
-            {
-                //male
-                givenNameIndex = random.Next(0, text.names.givenMale.Count() - 1);
-            }
 
-            int familyNameIndex = random.Next(0, text.names.family.Count() - 1);
-            Person person = new Person();
-            person.name = text.names.givenFemale[givenNameIndex];
-            char.ToUpper(person.name[0]);
-            person.name = person.name + " " + text.names.family[familyNameIndex];
-            return person;
-        }
 
         private ItemTemplate[] GenerateAllEvidence(int seed)
         {

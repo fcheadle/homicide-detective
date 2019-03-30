@@ -13,7 +13,11 @@ namespace homicide_detective
          
         static void Main()
         {
+            //necessary variables - keep this section sparse
             Game game = new Game();
+
+
+            //the game loop
             while (game.state != 0)
             {
                 switch (game.state)
@@ -21,12 +25,12 @@ namespace homicide_detective
                     case 0:
                         break;
 
-                    case 1:
-                        Menu.PrintTitle();
+                    case 1:                                     //case 1 is the main menu
+                        Menu.PrintTitle();                      //
                         game = Menu.MainMenu();
                         break;
 
-                    case 2:
+                    case 2:                                     //case 2 is the case menu
                         game.caseTaken = Menu.CaseMenu(game);
 
                         if (game.caseTaken == 0)
@@ -41,11 +45,13 @@ namespace homicide_detective
                         break;
 
                     case 3:
-                        game = Menu.CrimeSceneMenu(game);
+                        game.csiState = Menu.CSIMenu(game);   //case 3 is the crime scene menu / main game
+
+
                         break;
 
-                    case 4:
-                        game = Menu.WitnessDialogueMenu(game);
+                    case 4:                                         //case 4 is the witness conversation mode
+                        throw new NotImplementedException();
                         break;
 
                     default:

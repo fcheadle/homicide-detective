@@ -8,6 +8,36 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
+    public class ItemTemplate
+    {
+        //different pieces of evidence
+        //or furniture or red herrings
+        //or murder weapons
+
+        public string id;               //unique identifier
+        public string name;             //freetext
+        public string description;      //freetext
+        public float hollowness;        //in percent
+
+        public PhysicalPropertyRange massRanges;   //for determining mass of the object
+        public PhysicalPropertyRange volumeRanges; //for determining volume of the object
+
+        public List<Shape> shapes = new List<Shape>();          //hardcoded specific values
+        public List<string> classes = new List<string>();       //freetext
+        public List<string> materials = new List<string>();     //freetext
+        public List<string> containers = new List<string>();    //must be valid items from json
+        public List<string> blocksViews = new List<string>();   //specific hardcoded values
+        public List<string> visibleSides = new List<string>();   //specific hardcoded values
+
+        public ItemTemplate()
+        {
+            name = "";
+            description = "";
+            massRanges = new PhysicalPropertyRange();
+            volumeRanges = new PhysicalPropertyRange();
+        }
+    }
+
     public class Item : ItemTemplate
     {
         public int volume;                  //in cm^3
@@ -18,6 +48,7 @@ namespace homicide_detective
         public bool bloodSpatter;           //if it contains bloodspatter of the victim
 
         Random random;                      //passed in during generation, to keep things idempotent
+        internal string aAn;                //"a" or "an"
 
         public Item()
         {
@@ -74,16 +105,10 @@ namespace homicide_detective
         {
             //get a simplified standard deviation of 10%
             int tenPercent = range.maximum - range.minimum / 10;
-            object item_descriptions;
-
-            string saveFolder = Directory.GetCurrentDirectory() + @"\objects\text\";
-            string file = "item_description";
-            string extension = ".json";
-
-
-            string path = saveFolder + file + extension;
             //itemDecsription = JsonConvert.DeserializeObject(path);
 
+
+            //todo: get strings from the json
             if (volume < range.mode - tenPercent - tenPercent)
             {
                 return " It is much smaller than average";

@@ -19,81 +19,7 @@ namespace unit_tests
         string[] personPaths = Directory.GetFiles(personFolder);
         string[] itemPaths = Directory.GetFiles(itemFolder);
         string[] scenePaths = Directory.GetFiles(sceneFolder);
-        TestIO io = new TestIO();
-
-        //these is to get input from a file instead of the console
-        public class TestIO : Menu.IO
-        {
-            public override string Get()
-            {
-                TextReader textReaderOriginal = Console.In;
-                
-                //set console.in to read from the file
-                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Open);
-                StreamReader streamReader = new StreamReader(fileStream);
-                Console.SetIn(streamReader);
-
-                //get test string from the file
-                string outcome = Console.ReadLine();
-
-                //return console.in to the console and close the file
-                Console.SetIn(textReaderOriginal);
-                streamReader.Close();
-
-                return outcome;
-            }
-
-            public override void Send(string output)
-            {
-                TextWriter textWriterOriginal = Console.Out;
-
-                //Set console.out to write to the file instead of the console
-                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Create);
-                StreamWriter streamWriter = new StreamWriter(fileStream);
-                Console.SetOut(streamWriter);
-
-                //Write test string to the file
-                Console.Write(output);
-
-                //Return the console output to the console and close the file
-                Console.SetOut(textWriterOriginal);
-                streamWriter.Close();
-            }
-
-            public override void SendLine(string output)
-            {
-                TextWriter textWriterOriginal = Console.Out;
-
-                //Set console.out to write to the file instead of the console
-                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Create);
-                StreamWriter streamWriter = new StreamWriter(fileStream);
-                Console.SetOut(streamWriter);
-
-                //Write test string to the file
-                Console.WriteLine(output);
-
-                //Return the console output to the console and close the file
-                Console.SetOut(textWriterOriginal);
-                streamWriter.Close();
-            }
-
-            public override void SendLine(string output, string detective)
-            {
-                TextWriter textWriterOriginal = Console.Out;
-
-                //Set console.out to write to the file instead of the console
-                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Create);
-                StreamWriter streamWriter = new StreamWriter(fileStream);
-                Console.SetOut(streamWriter);
-
-                //Write test string to the file
-                Console.WriteLine(output, detective);
-
-                //Return the console output to the console and close the file
-                Console.SetOut(textWriterOriginal);
-                streamWriter.Close();
-            }
-        }
+        Menu.IO io = new Menu.IO(true);
 
         #region file stream example
         /*
@@ -138,40 +64,47 @@ namespace unit_tests
         */
         #endregion
 
+        public MenuTests()
+        {
+            io.debug = true;
+        }
         [TestMethod]
         public void IOTest()
         {
-            io.Send("abcdefg");
-            Assert.AreEqual("abcdefg", io.Get());
+            io.Send("abcdefg", true);
+            Assert.AreEqual("abcdefg", io.Get(true));
         }
 
         [TestMethod]
         public void EvaluateMainMenuCommandTest()
         {
-            throw new NotImplementedException();
-
             Game game = new Game();
-            game = Menu.EvaluateMainMenuCommand("new", game);
+            game.debugMode = true;
+            game = Menu.EvaluateMainMenuCommand("new", game, game.debugMode);
             Assert.AreEqual("What is your name, Detective?", game.detective);
         }
 
         [TestMethod]
         public void PrintMainMenuCommandsTest()
         {
-            throw new NotImplementedException();
+            Menu.PrintMainMenuCommands();
+            Assert.AreEqual("new | load | exit", io.Get());
         }
 
         [TestMethod]
         public void PrintTitleTest()
         {
-            throw new NotImplementedException();
-
+            Menu.PrintTitle();
+            Assert.AreEqual("Homicide Detective", io.Get());
         }
 
         [TestMethod]
         public void CaseMenuTest()
         {
-            throw new NotImplementedException();
+            Game game = new Game();
+            game.state = Menu.CaseMenu(game);
+            string answer = "next case on the docket is";
+            Assert.AreEqual(true, io.Get().Contains(answer));
         }
 
         [TestMethod]
@@ -183,36 +116,48 @@ namespace unit_tests
         [TestMethod]
         public void CreateCaseIfNullTest()
         {
-            throw new NotImplementedException();
+            Game game = new Game("test");
+            Menu.CreateCaseIfNull(game);
+            Assert.AreEqual(2, game.activeCases.Count);
         }
 
         [TestMethod]
         public void PrintCaseMenuTest()
         {
-            throw new NotImplementedException();
+            Menu.PrintMainMenuCommands();
+            Assert.AreEqual("review | take | next | exit", io.Get());
         }
 
         [TestMethod]
         public void PrintCaseSynopsisTest()
         {
-            throw new NotImplementedException();
+            Menu.PrintMainMenuCommands();
+            Assert.AreEqual("new | load | exit", io.Get());
         }
 
         [TestMethod]
         public void CheatTest()
         {
-            throw new NotImplementedException();
+            Game game = new Game();
+            game.GenerateCase(game);
+            Case gameCase = game.activeCases[0];
+            Menu.Cheat(gameCase, true);
+            string answer = "killed with";
+            Assert.IsTrue(io.Get(true).Contains(answer));
         }
 
         [TestMethod]
-        public void CrimeScenemenuTest()
+        public void CrimeSceneMenuTest()
         {
-            throw new NotImplementedException();
+            Menu.PrintMainMenuCommands();
+            string answer = "look | take | dust | ";
+            Assert.AreEqual(answer, io.Get());
         }
 
         [TestMethod]
         public void WitnessDialogueTest()
         {
+            //This is a long way off still
             throw new NotImplementedException();
         }
     }

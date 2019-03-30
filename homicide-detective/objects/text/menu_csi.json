@@ -1,20 +1,47 @@
 ﻿{
-  "look": "look",
-  "inside": "inside",
-  "at": "at",
-  "behind": "behind",
-  "under": "under",
-  "onTop": "on",
-  "photograph": "photograph",
-  "scene": "scene",
-  "take": "take",
-  "note": "note",
-  "dust": "dust",
-  "leave": "leave",
-  "through": "through",
-  "open": "open",
-  "close": "close",
+  "look": {
+    "verb": "look",
+    "query": " Look {0} what?",
+    "lookInside": "inside",
+    "lookAt": "at",
+    "lookBehind": "behind",
+    "lookUnder": "under",
+    "lookOnTop": "on"
+  },
+  "photograph": {
+    "verb": "photograph",
+    "scene": "scene",
+    "query": " Photograph what?"
+  },
+  "take": {
+    "verb": "take",
+    "query": " Take what?",
+    "note": "note",
+    "evidence": "item"
+  },
+  "dust": {
+    "verb": "dust",
+    "query": " What do you dust for prints?"
+  },
+  "leave": {
+    "verb": "leave",
+    "leaveThrough": "through"
+  },
+  "open": {
+    "verb": "open",
+    "query": " Open what?"
+  },
+  "close": {
+    "verb": "close",
+    "query": " Close what?"
+  },
   "record": "record",
-  "check": "check",
-  "evidence": "evidence"
+  "check": {
+    "verb": "check",
+    "query": " Check what {0}?",
+    "notes": "notes",
+    "photos": "photographs",
+    "fingerprints": "prints",
+    "evidence": "evidence"
+  } 
 }

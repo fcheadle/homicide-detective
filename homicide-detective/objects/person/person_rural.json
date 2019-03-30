@@ -1,6 +1,6 @@
 ﻿{
-  "name": "rural",
-  "description": "a very small town person who is accustomed to both town and farm life.",
+  "id": "rural",
+  "description": " a very small town person who is accustomed to both town and farm life.",
   "jealousy": -10,
   "anger": -5,
   "pride": 10,

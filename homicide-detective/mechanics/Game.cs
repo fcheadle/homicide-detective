@@ -35,11 +35,13 @@ namespace homicide_detective
         public List<Case> activeCases = new List<Case>();      //cases that are neither solved nor cold
         public List<Case> solvedCases = new List<Case>();      //when a case is added to the solved array, it must be removed from the active array
         public List<Case> coldCases = new List<Case>();        //when a case is added to the cold array, it must be removed from the active cases
+        public List<Case> bookmarkedCases = new List<Case>();  //ones saved for later viewing
 
         public List<PersonTemplate> personTemplates = new List<PersonTemplate>();    //keep the persons from the person folder in memory
         public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();          //keep the items from the item folder in memory
         public List<SceneTemplate> sceneTemplates = new List<SceneTemplate>();       //keep the scenes from the scene folder in memory
         public GameText allText;                                //keep the text from the text folder in memory. There is only item for all game text 
+        internal int csiState;
 
         //need a blank constructor because JSONConvert instantiates the object with no arguments
         public Game()
@@ -178,12 +180,12 @@ namespace homicide_detective
             return gameText;
         }
 
-        internal void GenerateCase(Game game)
+        public void GenerateCase(Game game)
         {
             game.activeCases.Add(new Case(game));
         }
 
-        internal void GenerateCase(Game game, int caseNumber)
+        public void GenerateCase(Game game, int caseNumber)
         {
             game.activeCases.Add(new Case(game, caseNumber));
         }

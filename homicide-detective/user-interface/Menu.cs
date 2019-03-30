@@ -15,11 +15,13 @@ namespace homicide_detective
         #region variables
         //System Variables
         static string textFolder = Directory.GetCurrentDirectory() + @"\objects\text\";
+        static string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
         static string extension = ".json";
 
         static string mainMenuPath = textFolder + "menu_main" + extension;
         static string caseMenuPath = textFolder + "menu_case" + extension;
         static string csiMenuPath = textFolder + "menu_csi" + extension;
+
         static string caseDescriptionPath = textFolder + "description_case" + extension;
         static string itemDescriptionPath = textFolder + "description_item" + extension;
 
@@ -36,7 +38,7 @@ namespace homicide_detective
 
         static ItemDescription itemDescription = JsonConvert.DeserializeObject<ItemDescription>(itemDescriptionRaw);
         static CaseDescription caseDescription = JsonConvert.DeserializeObject<CaseDescription>(caseDescriptionRaw);
-
+        
         //these classes must match the JSON exactly
         internal class MainMenuText
         {
@@ -55,32 +57,105 @@ namespace homicide_detective
 
         internal class CaseMenuText
         {
-            public string takeCase;
-            public string reviewCase;
+            public class ReviewCaseText
+            {
+                public string verb;
+                public string saveCase;
+                public string nextCase;
+                public string bodyFound;
+            }
+
+            public class SceneSelectionText
+            {
+                public string flavorText;
+                public string where;
+            }
+
+            public ReviewCaseText reviewCaseText;
+            public SceneSelectionText sceneSelectionText;
+            public string take;
             public string nextCase;
             public string exitGame;
+            public string closeCase;
+            public string open;
+            public string check;
+            public string saveCase;
         }
 
         internal class CSIMenuText
         {
-            public string look;
-            public string inside;
-            public string at;
-            public string behind;
-            public string under;
-            public string on;
-            public string photograph;
-            public string scene;
-            public string take;
-            public string note;
-            public string dust;
-            public string leave;
-            public string through;
-            public string open;
-            public string close;
+            public class LookText
+            {
+                public string inside;
+                public string at;
+                public string behind;
+                public string under;
+                public string on;
+                public string query;
+                public string verb;
+            }
+
+            public class PhotographText
+            {
+                public string photograph;
+                public string scene;
+                public string query;
+                public string verb;
+            }
+
+            public class TakeText
+            {
+                public string take;
+                public string note;
+                public string evidence;
+                public string verb;
+            }
+
+            public class DustText
+            {
+                public string query;
+                public string verb;
+            }
+
+            public class LeaveText
+            {
+                public string photograph;
+                public string scene;
+                public string query;
+                public string verb;
+            }
+
+            public class OpenText
+            {
+                public string verb;
+                public string query;
+            }
+
+            public class CloseText
+            {
+                public string verb;
+                public string query;
+            }
+
+            public class Checktext
+            {
+                public string verb;
+                public string query;
+                public string notes;
+                public string photos;
+                public string fingerprints;
+                public string evidence;
+            }
+
+            public LookText look;
+            public PhotographText photograph;
+            public TakeText take;
+            public DustText dust;
+            public LeaveText leave;
+            public OpenText open;
+            public CloseText close;
+            public Checktext check;
             public string record;
-            public string check;
-            public string evidence;
         }
 
         internal class ItemDescription
@@ -102,55 +177,116 @@ namespace homicide_detective
         //these classes are so unit tests can have an overrideable way to read console input
         public class IO
         {
-            public virtual string Get()
+            public bool debug = false;
+            TextWriter textWriterOriginal = Console.Out;
+            TextReader textReaderOriginal = Console.In;
+
+            public IO(bool debugMode)
             {
-                return Console.ReadLine();
+                debug = debugMode;
             }
 
-            public virtual void Send(string output)
+            private void ResetIn()
             {
+                //Return the console output to the console and close the file
+                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Create);
+                StreamReader streamReader = new StreamReader(fileStream);
+                Console.SetIn(textReaderOriginal);
+                streamReader.Close();
+            }
+
+            private void SetIn()
+            {
+                //Set console.out to write to the file instead of the console
+                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Open);
+                StreamReader streamReader = new StreamReader(fileStream);
+                Console.SetIn(streamReader);
+            }
+            
+            public virtual string Get(bool debugMode = false)
+            {
+                debug = debugMode;
+
+                if (debug) SetIn();
+                string input = Console.ReadLine();
+                if (debug) ResetIn();
+                return input;
+            }
+
+            public virtual void Send(string output, bool debugMode = false)
+            {
+                if (debug) SetOut();
                 Console.Write(output);
+                if (debug) ResetOut();
             }
 
-            public virtual void SendLine(string output)
+            public virtual void SendLine(string output, bool debugMode = false)
             {
+                if (debug) SetOut();
                 Console.WriteLine(output);
+                if (debug) ResetOut();
             }
 
-            public virtual void SendLine(string output, string detective)
+            public virtual void SendLine(string output, string detective, bool debugMode = false)
             {
-                Console.WriteLine(output, detective);
+                if (debug) SetOut();
+                Console.WriteLine(output,detective);
+                if (debug) ResetOut();
+            }
+
+            internal void Send(string output, string aAn, string name, bool debugMode = false)
+            {
+                if (debug) SetOut();
+                Console.WriteLine(output, aAn, name);
+                if (debug) ResetOut();
+            }
+            
+            public void SetOut()
+            {
+                //Set console.out to write to the file instead of the console
+                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Create);
+                StreamWriter streamWriter = new StreamWriter(fileStream);
+                Console.SetOut(streamWriter);
+            }
+
+            public void ResetOut()
+            {
+                //Return the console output to the console and close the file
+                FileStream fileStream = new FileStream(saveFolder + "Test.txt", FileMode.Create);
+                StreamWriter streamWriter = new StreamWriter(fileStream);
+                Console.SetOut(textWriterOriginal);
+                streamWriter.Close();
             }
         }
         #endregion
 
-        #region menus
-        public static Game MainMenu()
+        #region menu controllers
+        public static Game MainMenu(bool debug = false)
         {
             PrintMainMenuCommands();
-            IO input = new IO();
+            IO input = new IO(false);
             Game game = new Game();
             game.state = 0;
-            return EvaluateMainMenuCommand(input.Get(), game);
+            return EvaluateMainMenuCommand(input.Get(debug), game);
         }
 
-        public static Game EvaluateMainMenuCommand(string command, Game game)
+        public static Game EvaluateMainMenuCommand(string command, Game game, bool debug = false)
         {
-            IO input = new IO();
-            IO output = new IO();
+            IO io = new IO(debug);
             command = command.ToLower();
 
             if (command == mainMenuText.newGame)
             {
-                string detective = GetDetective();
+                string detective = GetDetective();      //ask for detective name
+
                 if (Game.CheckFile(detective))
                 {
-                    output.SendLine(mainMenuText.duplicateDetective, detective);
+                    io.SendLine(mainMenuText.duplicateDetective, detective, debug);
 
                     bool existConfirmation = false;
                     while (!existConfirmation)
                     {
-                        string answer = input.Get();
+                        string answer = io.Get(debug);
                         try
                         {
                             if (answer.Trim().ToLower() == mainMenuText.no)
@@ -168,12 +304,12 @@ namespace homicide_detective
                             }
                             else
                             {
-                                output.SendLine(mainMenuText.yesNoOnly);
+                                io.SendLine(mainMenuText.yesNoOnly, debug);
                             }
                         }
                         catch (Exception e)
                         {
-                            output.SendLine(e.Message);
+                            io.SendLine(e.Message, debug);
                         }
                     }
                 }
@@ -198,7 +334,7 @@ namespace homicide_detective
                 }
                 catch (Exception e)
                 {
-                    output.SendLine(e.Message);
+                    io.SendLine(e.Message, debug);
                     return MainMenu();
                 }
             }
@@ -208,65 +344,67 @@ namespace homicide_detective
             }
             else
             {
-                output.SendLine(mainMenuText.commandNotFound);
+                io.SendLine(mainMenuText.commandNotFound, debug);
                 return MainMenu();
             }
         }
 
-        private static void PrintMainMenuCommands()
+        public static void PrintMainMenuCommands(IO io = null, bool debug = false)
         {
-            IO output = new IO();
-            output.Send(mainMenuText.newGame);
-            output.Send(" | ");
-            output.Send(mainMenuText.loadGame);
-            output.Send(" | ");
-            output.SendLine(mainMenuText.exitGame);
+            if (io == null)
+            {
+                io = new IO(debug);
+            }
+
+            io.Send(mainMenuText.newGame, debug);
+            io.Send(" | ", debug);
+            io.Send(mainMenuText.loadGame, debug);
+            io.Send(" | ", debug);
+            io.SendLine(mainMenuText.exitGame, debug);
         }
 
-        public static void PrintTitle()
+        public static void PrintTitle(bool debug = false)
         {
-            IO output = new IO();
-            output.SendLine(mainMenuText.title);
-            output.SendLine(mainMenuText.subtitle);
+            IO output = new IO(debug);
+            output.SendLine(mainMenuText.title, debug);
+            output.SendLine(mainMenuText.subtitle, debug);
         }
         
-        private static string GetDetective()
+        private static string GetDetective(bool debug = false)
         {
-            IO input = new IO();
-            IO output = new IO();
-            output.SendLine(mainMenuText.namePrompt);
-            return input.Get();
+            IO input = new IO(debug);
+            IO output = new IO(debug);
+            output.SendLine(mainMenuText.namePrompt, debug);
+            return input.Get(debug);
         }
         
-        public static int CaseMenu(Game game)
+        public static int CaseMenu(Game game, string command = null, bool debug = false)
         {
             CreateCaseIfNull(game);
 
-            IO input = new IO();
+            IO io = new IO(debug);
             Case thisCase = game.activeCases[game.caseTaken];
-            int caseNumber = thisCase.caseNumber;
-            string victimName = thisCase.victim.name;
-            //string caseDescription = game.activeCases[game.caseTaken].victim.description;
-            PrintCaseSynopsis(thisCase);
-            PrintCaseMenu();
-            return EvaluateCaseCommand(input.Get(), game);
+            PrintCaseSynopsis(thisCase, debug);
+            PrintCaseMenu(debug);
+            if (command != null) return EvaluateCaseCommand(game, command);
+            else return EvaluateCaseCommand(game, io.Get(debug));
             
         }
 
-        private static int EvaluateCaseCommand(string command, Game game)
+        public static int EvaluateCaseCommand(Game game, string command, bool debug = false)
         {
-            IO input = new IO();
+            IO io = new IO(debug);
             Case thisCase = game.activeCases[game.caseTaken];
-            if (command == caseMenuText.reviewCase)
+            if (command == caseMenuText.reviewCaseText.verb)
             {
-                Cheat(thisCase);
-                return CaseMenu(game);
+                PrintCaseIntroduction(thisCase);
+                PrintCaseReviewMenu(game);
+                return EvaluateCaseReviewCommand(game, io.Get(debug));
             }
-            else if (command == caseMenuText.takeCase)
+            else if (command == caseMenuText.take)
             {
-                //return case number
-                game.SaveGame();
-                return game.caseTaken;
+                PrintSceneSelection(game.activeCases[game.caseTaken]);
+                return game.caseIndex;
             }
             else if (command == caseMenuText.nextCase)
             {
@@ -284,12 +422,82 @@ namespace homicide_detective
             }
             else
             {
-                game.SaveGame();
                 return CaseMenu(game);
             }
         }
 
-        private static void CreateCaseIfNull(Game game)
+        private static void PrintCaseIntroduction(Case thisCase, bool debug = false)
+        {
+            //todo: move these hardcoded strings to the json
+            IO io = new IO(debug);
+            Person victim = thisCase.victim;
+            string output = victim.name + victim.description;
+            output += victim.pronounDescriptive + " was found dead in" + victim.pronounDescriptive + thisCase.murderScene.name + ".";
+            if (thisCase.evidenceTaken == null)
+            {
+                output += " There has been no evidence taken yet.";
+            }
+            else
+            {
+                output += " Evidence taken includes";
+                foreach (Item evidence in thisCase.evidenceTaken)
+                {
+                    output += "{0}{1}" + evidence.aAn + evidence.name;
+                }
+            }
+
+            io.SendLine(output, debug);
+        }
+
+        public static void PrintSceneSelection(Case thisCase, bool debug = false)
+        {
+            IO io = new IO(debug);
+            io.SendLine(caseMenuText.sceneSelectionText.flavorText, debug);
+            io.SendLine(caseMenuText.sceneSelectionText.where, debug);
+        }
+
+        private static int EvaluateCaseReviewCommand(Game game, string command, bool debug = false)
+        {
+            IO io = new IO(debug);
+            string review = caseMenuText.reviewCaseText.verb;
+            string save = caseMenuText.saveCase;
+            string next = caseMenuText.reviewCaseText.verb;
+          
+            if (command == review)
+            {
+                PrintCaseSynopsis(game.activeCases[game.caseIndex]);
+                return game.state++;
+            }
+            else if (command == save)
+            {
+                game.bookmarkedCases.Add(game.activeCases[game.caseIndex]);
+                game.SaveGame();
+                return game.state;
+            }
+            else if (command == next)
+            {
+                game.caseIndex++;
+                return game.state;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private static void PrintCaseReviewMenu(Game game, bool debug = false)
+        {
+            IO output = new IO(debug);
+            output.Send(caseMenuText.reviewCaseText.saveCase, debug);
+            output.Send(" | ", debug);
+            output.Send(caseMenuText.take, debug);
+            output.Send(" | ", debug);
+            output.Send(caseMenuText.reviewCaseText.nextCase, debug);
+            output.Send(" | ", debug);
+            output.SendLine(caseMenuText.exitGame, debug);
+        }
+
+        public static void CreateCaseIfNull(Game game)
         {
             if (game.caseTaken == 0)
             {
@@ -299,6 +507,7 @@ namespace homicide_detective
 
             if ((game.activeCases == null) || (game.activeCases.Count() == 0))
             {
+                game.GenerateCase(game);
                 game.GenerateCase(game);
             }
 
@@ -311,30 +520,30 @@ namespace homicide_detective
             }
         }
 
-        private static void PrintCaseMenu()
+        private static void PrintCaseMenu(bool debug = false)
         {
-            IO output = new IO();
-            output.Send(caseMenuText.reviewCase);
-            output.Send(" | ");
-            output.Send(caseMenuText.takeCase);
-            output.Send(" | ");
-            output.Send(caseMenuText.nextCase);
-            output.Send(" | ");
-            output.SendLine(caseMenuText.exitGame);
+            IO output = new IO(debug);
+            output.Send(caseMenuText.reviewCaseText.verb, debug);
+            output.Send(" | ", debug);
+            output.Send(caseMenuText.take, debug);
+            output.Send(" | ", debug);
+            output.Send(caseMenuText.nextCase, debug);
+            output.Send(" | ", debug);
+            output.SendLine(caseMenuText.exitGame, debug);
         }
 
-        private static void PrintCaseSynopsis(Case thisCase)
+        private static void PrintCaseSynopsis(Case thisCase, bool debug = false)
         {
-            IO output = new IO();
-            output.Send(caseDescription.intro);
-            output.Send(thisCase.caseNumber.ToString());
-            output.Send(", ");
-            output.SendLine(thisCase.victim.name);
+            IO output = new IO(debug);
+            output.Send(caseDescription.intro, debug);
+            output.Send(thisCase.caseNumber.ToString(), debug);
+            output.Send(", ", debug);
+            output.SendLine(thisCase.victim.name, debug);
         }
 
-        private static void Cheat(Case game)
+        public static void Cheat(Case game, bool debug = false)
         {
-            IO output = new IO();
+            IO io = new IO(debug);
             string sentence = game.murderer.name;
             sentence += " killed ";
             sentence += game.victim.name;
@@ -342,98 +551,154 @@ namespace homicide_detective
             sentence += game.murderScene.name;
             sentence += " with ";
             sentence += game.murderWeapon.name;
-            sentence += ",";
-            sentence += game.murderWeapon.description;
-            output.SendLine(sentence);
+            sentence += ".";
+            io.SendLine(sentence, debug);
         }
         
-        internal static Game CrimeSceneMenu(Game game)
+        public static void PrintCSICommands(Game game, bool debug = false)
         {
-            //Console.WriteLine(caseDescription);
-            game.state = 0;
-            return game;
+            IO output = new IO(debug);
+
+            output.Send(csiMenuText.look.verb, debug);
+            output.Send(" | ", debug);
+            output.Send(csiMenuText.photograph.verb, debug);
+            output.Send(" | ", debug);
+            output.Send(csiMenuText.dust.verb, debug);
+            output.Send(" | ", debug);
+            output.Send(csiMenuText.take.verb, debug);
+            output.Send(" | ", debug);
+            output.Send(csiMenuText.open.verb, debug);
+            output.Send(" | ", debug);
+            output.Send(csiMenuText.close.verb, debug);
+            output.Send(" | ", debug);
+            output.Send(csiMenuText.leave.verb, debug);
+            //output.Send(" | ");
+            //output.SendLine(caseMenuText.record);
+            output.Send(" | ", debug);
+            output.SendLine(csiMenuText.check.verb, debug);
+
+            //game.state = 0;
+            //return game.state;
         }
-        
-        internal static Game WitnessDialogueMenu(Game game)
+
+        public static int CSIMenu(Game game, bool debug = false)
         {
-            throw new NotImplementedException();
+            IO io = new IO(debug);
+            PrintCSICommands(game);
+            return EvaluateCSICommand(game, io.Get(debug));
         }
-        #endregion 
+
+        public static int EvaluateCSICommand(Game game, string inputString)
+        {
+            if (inputString == csiMenuText.look.verb)
+            {
+                return 1;
+            }
+            else if (inputString == csiMenuText.open.verb)
+            {
+                return 2;
+            }
+            else if (inputString == csiMenuText.close.verb)
+            {
+                return 3;
+            }
+            else if (inputString == csiMenuText.take.verb)
+            {
+                return 4;
+            }
+            else if (inputString == csiMenuText.dust.verb)
+            {
+                return 5;
+            }
+            else if (inputString == csiMenuText.leave.verb)
+            {
+                return 6;
+            }
+            else if (inputString == csiMenuText.record)
+            {
+                return 7;
+            }
+            else if (inputString == csiMenuText.check.verb)
+            {
+                return 8;
+            }
+            else return 0;
+            //      switch (inputString)
+            //      {
+            //          case "at": LookAt(command[2]); break;
+            //          case "under": LookUnder(command[2]); break;
+            //          case "inside": LookInsideOf(command[2]); break;
+            //          case "on": LookOnTopOf(command[4]); break;
+            //          case "behind": LookBehind(command[2]); break;
+            //      }
+            //      break;
+            //
+            //  case "photograph":
+            //      switch (command[1])
+            //      {
+            //          case "scene": PhotographScene(); break;
+            //          default: PhotographItem(command[1]); break;
+            //      }
+            //      break;
+            //
+            //  case "take":
+            //      switch (command[1])
+            //      {
+            //          case "note": TakeNote(); break;
+            //          default: TakeEvidence(command[1]); break;
+            //      }
+            //      break;
+            //
+            //  case "dust":
+            //      DustForPrints(command[1]);
+            //      break;
+            //
+            //  case "leave":
+            //      switch (command[1])
+            //      {
+            //          case "through": LeaveThroughDoor(command[2]); break;
+            //          default: LeaveScene(); break;
+            //      }
+            //      break;
+            //
+            //  case "open":
+            //      OpenDoor(command[1]);
+            //      break;
+            //
+            //  case "close":
+            //      CloseDoor(command[1]);
+            //      break;
+            //
+            //  case "check":
+            //      switch (command[1])
+            //      {
+            //          case "notes": CheckNotes(); break;
+            //          case "photographs": CheckPhotographs(); break;
+            //          case "evidence": CheckEvidence(); break;
+            //      }
+            //      break;
+            //
+            //  case "record":
+            //      RecordConversation();
+            //      break;
+            //
+            //  default:
+            //      Console.WriteLine("?");
+            //      break;
+            //}//
+        }
+        #endregion
+
+        #region print methods
+        //All print methods should take only what they need and return void
+        #endregion
+
+        #region evaluate methods
+        //all evaluate methods should return a state integer of some sort based on an input string
+        //io.get should only be called in from the menu methods
+        #endregion
 
         #region crime scene commands
-        //EvaluateCommand reads the input during gameplay and figures out what method to call
-        static void EvaluateCommand(string inputString)
-        {
-            var command = inputString.Split(' ');
-
-            switch (command[0])
-            {
-                case "look":
-                    switch (command[1])
-                    {
-                        case "at": LookAt(command[2]); break;
-                        case "under": LookUnder(command[2]); break;
-                        case "inside": LookInsideOf(command[2]); break;
-                        case "on": LookOnTopOf(command[4]); break;
-                        case "behind": LookBehind(command[2]); break;
-                    }
-                    break;
-
-                case "photograph":
-                    switch (command[1])
-                    {
-                        case "scene": PhotographScene(); break;
-                        default: PhotographItem(command[1]); break;
-                    }
-                    break;
-
-                case "take":
-                    switch (command[1])
-                    {
-                        case "note": TakeNote(); break;
-                        default: TakeEvidence(command[1]); break;
-                    }
-                    break;
-
-                case "dust":
-                    DustForPrints(command[1]);
-                    break;
-
-                case "leave":
-                    switch (command[1])
-                    {
-                        case "through": LeaveThroughDoor(command[2]); break;
-                        default: LeaveScene(); break;
-                    }
-                    break;
-
-                case "open":
-                    OpenDoor(command[1]);
-                    break;
-
-                case "close":
-                    CloseDoor(command[1]);
-                    break;
-
-                case "check":
-                    switch (command[1])
-                    {
-                        case "notes": CheckNotes(); break;
-                        case "photographs": CheckPhotographs(); break;
-                        case "evidence": CheckEvidence(); break;
-                    }
-                    break;
-
-                case "record":
-                    RecordConversation();
-                    break;
-
-                default:
-                    Console.WriteLine("?");
-                    break;
-            }
-        }
-
         static void LookAt(string item)
         {
             throw new NotImplementedException();

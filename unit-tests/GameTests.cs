@@ -105,9 +105,10 @@ namespace unit_tests
             {
                 foreach (PersonTemplate knownPerson in knownPersons)
                 {
-                    if (knownPerson.name == person.name)
-                        if(knownPerson.description == person.description)
-                            testResult = true;
+                    if (knownPerson.id == person.id)
+                    {
+                        testResult = true;
+                    }
                 }
             }
 
