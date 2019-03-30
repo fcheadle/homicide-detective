@@ -52,12 +52,31 @@ namespace homicide_detective
         public List<string> causeOfDeath;       //specific hardcoded values... for now
         Random random;
 
-        public Person(Random newRandom, GameText text)
+        public Person(int seed, GameText text)
         {
-            random = newRandom;
-            gender = (random.Next(0,1));
+            random = new Random(seed);
+            gender = (random.Next(0,2));
+
+            int givenNameIndex;
+            int familyNameIndex = random.Next(0, text.names.family.Count());
+
+            if (gender == 0)
+            {
+                givenNameIndex = random.Next(0, text.names.givenMale.Count());
+                firstName = text.names.givenMale[givenNameIndex];
+            }
+            else
+            {
+                givenNameIndex = random.Next(0, text.names.givenMale.Count());
+                firstName = text.names.givenFemale[givenNameIndex];
+            }
+
+            lastName = text.names.family[familyNameIndex];
+
+            name = firstName + " " + lastName;
         }
 
+        /*
         public Person GeneratePerson(GameText text)
         {
             Person person = new Person(random, text);
@@ -80,5 +99,6 @@ namespace homicide_detective
             name = firstName + " " + lastName;
             return person;
         }
+        */
     }
 }

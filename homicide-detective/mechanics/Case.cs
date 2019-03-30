@@ -23,7 +23,7 @@ namespace homicide_detective
 
         public Item murderWeapon;                      //The item that killed the victim; may be blunt force trauma or drowning...?
         public Item allEvidence;                     //Every item including furniture at the scenes, the murder weapon, tire marks, wall damage, etc
-        internal IEnumerable<Item> evidenceTaken;
+        internal List<Item> evidenceTaken;
 
         //public ItemTemplate[] evidenceTaken;                   //When an item is taken as evidence, it gets copied from all evidence to evidence taken
 
@@ -49,17 +49,17 @@ namespace homicide_detective
         private void GenerateCase(Game game)
         {
             int seed = Base36.Decode(game.detective);
-            victim = new Person(new Random(seed), game.allText);
-            victim = victim.GeneratePerson(game.allText);
-            murderer = new Person(new Random(seed + 1), game.allText);
-            murderer = murderer.GeneratePerson(game.allText);
+            victim = new Person(random.Next(), game.allText);
+            //victim = victim.GeneratePerson(game.allText);
+            murderer = new Person(random.Next(), game.allText);
+            //murderer = murderer.GeneratePerson(game.allText);
 
             murderScene = new Scene(random);
-            murderScene = murderScene.GenerateScene(game.sceneTemplates);
+            //murderScene = murderScene.GenerateScene(game.sceneTemplates);
 
             //whereTheyFoundTheBody = new SceneTemplate(random.Next());
             murderWeapon = new Item(random);
-            murderWeapon = murderWeapon.GenerateMurderWeapon(random, game.itemTemplates);
+            //murderWeapon = murderWeapon.GenerateMurderWeapon(random, game.itemTemplates);
             
             //personsOfInterest = GeneratePersonsOfInterest(random.Next());
             //placesOfInterest = GeneratePlacesOfInterest(random.Next());

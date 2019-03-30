@@ -19,7 +19,7 @@ namespace unit_tests
         string[] personPaths = Directory.GetFiles(personFolder);
         string[] itemPaths = Directory.GetFiles(itemFolder);
         string[] scenePaths = Directory.GetFiles(sceneFolder);
-        Menu.IO io = new Menu.IO(true);
+        IO io = new IO();
 
         #region file stream example
         /*
@@ -66,8 +66,8 @@ namespace unit_tests
 
         public MenuTests()
         {
-            io.debug = true;
         }
+
         [TestMethod]
         public void IOTest()
         {
@@ -79,32 +79,33 @@ namespace unit_tests
         public void EvaluateMainMenuCommandTest()
         {
             Game game = new Game();
-            game.debugMode = true;
-            game = Menu.EvaluateMainMenuCommand("new", game, game.debugMode);
-            Assert.AreEqual("What is your name, Detective?", game.detective);
+            game = Menu.EvaluateMainMenuCommand("new", game, true);
+            Assert.AreEqual("What is your name, Detective?", game.detective, true);
         }
 
         [TestMethod]
         public void PrintMainMenuCommandsTest()
         {
-            Menu.PrintMainMenuCommands();
-            Assert.AreEqual("new | load | exit", io.Get());
+            Menu.PrintCSIMenuCommands();
+            Assert.AreEqual("new | load | exit", io.Get(true));
         }
 
         [TestMethod]
         public void PrintTitleTest()
         {
-            Menu.PrintTitle();
-            Assert.AreEqual("Homicide Detective", io.Get());
+            Menu.PrintTitle(true);
+            Assert.AreEqual("Whenever two objects interact, some evidence of that interaction can be found and verified.", io.Get(true));
         }
 
         [TestMethod]
         public void CaseMenuTest()
         {
-            Game game = new Game();
-            game.state = Menu.CaseMenu(game);
-            string answer = "next case on the docket is";
-            Assert.AreEqual(true, io.Get().Contains(answer));
+            //Implemented and failing
+            Game game = new Game("test");
+            game.state = Menu.CaseMenu(game, "review", true);
+            string answer = "review | take | next | exit";
+            string input = io.Get(true);
+            Assert.AreEqual(answer, input);
         }
 
         [TestMethod]
@@ -124,34 +125,42 @@ namespace unit_tests
         [TestMethod]
         public void PrintCaseMenuTest()
         {
-            Menu.PrintMainMenuCommands();
-            Assert.AreEqual("review | take | next | exit", io.Get());
+            Menu.PrintCSIMenuCommands();
+            Assert.AreEqual("review | take | next | exit", io.Get(true));
         }
 
         [TestMethod]
         public void PrintCaseSynopsisTest()
         {
-            Menu.PrintMainMenuCommands();
-            Assert.AreEqual("new | load | exit", io.Get());
+            Menu.PrintCSIMenuCommands();
+            Assert.AreEqual("new | load | exit", io.Get(true));
         }
 
         [TestMethod]
         public void CheatTest()
         {
-            Game game = new Game();
+            Game game = new Game("test");
             game.GenerateCase(game);
             Case gameCase = game.activeCases[0];
             Menu.Cheat(gameCase, true);
-            string answer = "killed with";
-            Assert.IsTrue(io.Get(true).Contains(answer));
+            string answer = "killed";
+            string result = io.Get(true);
+            Assert.IsTrue(result.Contains(answer));
+
+            answer = "with";
+            Assert.IsTrue(result.Contains(answer));
+
+            answer = "at";
+            Assert.IsTrue((result.Contains(answer) || result.Contains("in")));
         }
 
         [TestMethod]
         public void CrimeSceneMenuTest()
         {
-            Menu.PrintMainMenuCommands();
-            string answer = "look | take | dust | ";
-            Assert.AreEqual(answer, io.Get());
+            Menu.PrintCSIMenuCommands(true);
+            string answer = "look | photograph | take | ";
+            string result = io.Get(true);
+            Assert.IsTrue(result.Contains(answer));
         }
 
         [TestMethod]
