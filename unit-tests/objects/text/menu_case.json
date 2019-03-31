@@ -1,0 +1,7 @@
+﻿{
+  "caseDescription": "The next case on the docket is case number {0}, {1}.",
+  "takeCase": "take",
+  "reviewCase": "review",
+  "nextCase": "next",
+  "exitGame": "exit"
+}

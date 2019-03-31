@@ -1,0 +1,13 @@
+{
+	"title":"Homicide Detective",
+  "subtitle": "Whenever two objects interact, some evidence of that interaction can be found and verified.",
+  "namePrompt": "What is your name, Detective?",
+  "newGame": "new",
+  "loadGame": "load",
+  "exitGame": "exit",
+  "yes": "yes",
+  "no": "no",
+  "duplicateDetective": "There is already a detective named {0}. Would you like to load that game instead?",
+  "yesNoOnly": "Yes or No answers only, please.",
+  "commandNotFound": "What?"
+}
