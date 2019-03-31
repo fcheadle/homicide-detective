@@ -1,7 +1,18 @@
 ﻿{
-  "caseDescription": "The next case on the docket is case number {0}, {1}.",
-  "takeCase": "take",
-  "reviewCase": "review",
+  "caseDescription": " The next case on the docket is case number {0}, {1}.",
+  "take": "take",
+  "reviewCaseText": {
+    "verb": "review",
+    "bookmarkCase": "bookmark",
+    "nextCase": "next",
+    "bodyFound": "{0}{1}{2}{3}{4}{5}"
+  },
+  "bookmarkCase": "bookmark",
+  "takeCaseNumber": "case",
   "nextCase": "next",
-  "exitGame": "exit"
+  "exitGame": "exit",
+  "sceneSelectionText": {
+    "flavorText": " A hot haze hangs over the town on a thursday from hell. It's a real Scorcher.",
+    "where": " Where will you investigate first?"
+  }
 }

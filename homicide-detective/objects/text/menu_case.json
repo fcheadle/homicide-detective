@@ -3,11 +3,11 @@
   "take": "take",
   "reviewCaseText": {
     "verb": "review",
-    "saveCase": "save",
+    "bookmarkCase": "bookmark",
     "nextCase": "next",
     "bodyFound": "{0}{1}{2}{3}{4}{5}"
   },
-  "saveCase": "save",
+  "bookmarkCase": "bookmark",
   "takeCaseNumber": "case",
   "nextCase": "next",
   "exitGame": "exit",

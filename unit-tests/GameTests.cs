@@ -10,6 +10,7 @@ namespace unit_tests
     [TestClass]
     public class GameTests
     {
+        #region variable declaration
         //system variables
         string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
         static string personFolder = Directory.GetCurrentDirectory() + @"\objects\person";
@@ -35,6 +36,9 @@ namespace unit_tests
         string knownName = "test";
         string knownDescription;
 
+        #endregion
+
+        #region constructor
         public GameTests()
         {
             foreach (string person in personPaths)
@@ -52,7 +56,8 @@ namespace unit_tests
                 knownScenes.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scene)));
             }
         }
-
+        #endregion
+        
         [TestMethod]
         public void NewGameWithName()
         {
@@ -62,6 +67,13 @@ namespace unit_tests
             Assert.AreEqual(knownName, game.detective);
         }
 
+        [TestMethod]
+        public void SanitizeDetectiveTest()
+        {
+            Assert.AreEqual("MarjoryStJohnOneil", Game.SanitizeName("Marjory St. John-O'neil"));
+        }
+
+        #region file io tests
         [TestMethod]
         public void SaveGame()
         {
@@ -86,12 +98,6 @@ namespace unit_tests
             Game game = Game.LoadGame(knownName);
             Assert.AreEqual(knownName, game.detective);
             Assert.AreEqual(knownSeed, game.seed);
-        }
-
-        [TestMethod]
-        public void SanitizeDetective()
-        {
-            Assert.AreEqual("MarjoryStJohnOneil", Game.SanitizeName("Marjory St. John-O'neil"));
         }
         
         [TestMethod]
@@ -162,5 +168,6 @@ namespace unit_tests
             game.allText = game.LoadTextFiles();
             Assert.IsInstanceOfType(game.allText, knownText.GetType());
         }
+        #endregion
     }
 }

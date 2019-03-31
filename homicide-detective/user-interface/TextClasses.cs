@@ -36,7 +36,7 @@ namespace homicide_detective
             public class ReviewCaseText
             {
                 public string verb;
-                public string saveCase;
+                public string bookmarkCase;
                 public string nextCase;
                 public string bodyFound;
             }
@@ -55,7 +55,7 @@ namespace homicide_detective
             public string closeCase;
             public string open;
             public string check;
-            public string saveCase;
+            public string bookmarkCase;
         }
 
         public class CSIMenuText
