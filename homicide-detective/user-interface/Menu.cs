@@ -44,7 +44,7 @@ namespace homicide_detective
         #region menu controllers
         public static Game MainMenu(bool debug = false)
         {
-            PrintCSIMenuCommands();
+            PrintMainMenuCommands(debug);
             IO input = new IO();
             Game game = new Game();
             game.state = 0;
@@ -65,9 +65,9 @@ namespace homicide_detective
             IO io = new IO();
             Case thisCase = game.activeCases[game.caseTaken];
             PrintCaseSynopsis(thisCase, debug);
-            PrintCaseMenu(debug);
+            PrintCaseMenuCommands(debug);
             if (command != null) return EvaluateCaseCommand(game, command, debug);
-            else return EvaluateCaseCommand(game, io.Get(debug));
+            else return EvaluateCaseCommand(game, io.Get(debug), debug);
 
         }
 
@@ -96,7 +96,7 @@ namespace homicide_detective
         public static int CSIMenu(Game game, bool debug = false)
         {
             IO io = new IO();
-            PrintCSICommands(game);
+            PrintCSICommands(game, debug);
             return EvaluateCSICommand(game, io.Get(debug));
         }
         #endregion
@@ -128,26 +128,28 @@ namespace homicide_detective
             io.SendLine(output, debug);
         }
         
-        private static void PrintCaseMenu(bool debug = false)
+        public static void PrintCaseMenuCommands(bool debug = false)
         {
             IO io = new IO();
-            string output =caseMenuText.reviewCaseText.verb;
+            string output = "";
+            output += caseMenuText.nextCase;
             output += " | ";
             output += caseMenuText.take;
             output += " | ";
-            output += caseMenuText.nextCase;
+            output += caseMenuText.reviewCaseText.verb;
             output += " | ";
             output += caseMenuText.exitGame;
             io.SendLine(output, debug);
         }
 
-        private static void PrintCaseSynopsis(Case thisCase, bool debug = false)
+        public static void PrintCaseSynopsis(Case thisCase, bool debug = false)
         {
-            IO output = new IO();
-            output.Send(caseDescription.intro, debug);
-            output.Send(thisCase.caseNumber.ToString(), debug);
-            output.Send(", ", debug);
-            output.SendLine(thisCase.victim.name, debug);
+            IO io = new IO();
+            string output = caseDescription.intro;
+            output += thisCase.caseNumber.ToString();
+            output += ",";
+            output += thisCase.victim.name;
+            io.SendLine(output, debug);
         }
 
         private static void PrintCaseIntroduction(Case thisCase, bool debug = false)
@@ -182,25 +184,26 @@ namespace homicide_detective
 
         private static void PrintCaseReviewMenu(Game game, bool debug = false)
         {
-            IO output = new IO();
-            output.Send(caseMenuText.reviewCaseText.saveCase, debug);
-            output.Send(" | ", debug);
-            output.Send(caseMenuText.take, debug);
-            output.Send(" | ", debug);
-            output.Send(caseMenuText.reviewCaseText.nextCase, debug);
-            output.Send(" | ", debug);
-            output.SendLine(caseMenuText.exitGame, debug);
+            IO io = new IO();
+            string output = caseMenuText.reviewCaseText.saveCase;
+            output += " | ";
+            output += caseMenuText.take;
+            output += " | ";
+            output += caseMenuText.reviewCaseText.nextCase;
+            output += " | ";
+            output += caseMenuText.exitGame;
+            io.SendLine(output, debug);
         }
 
         public static void Cheat(Case thisCase, bool debug = false)
         {
             IO io = new IO();
             string sentence = thisCase.murderer.name;
-            sentence += " killed ";
+            sentence += " killed";
             sentence += thisCase.victim.name;
-            sentence += " at ";
+            sentence += " at";
             sentence += thisCase.murderScene.name;
-            sentence += " with ";
+            sentence += " with";
             sentence += thisCase.murderWeapon.name;
             sentence += ".";
             io.SendLine(sentence, debug);
@@ -208,25 +211,23 @@ namespace homicide_detective
 
         public static void PrintCSICommands(Game game, bool debug = false)
         {
-            IO output = new IO();
+            IO io = new IO();
+            string output = csiMenuText.look.verb;
+            output += " | ";
+            output += csiMenuText.photograph.verb;
+            output += " | ";
+            output += csiMenuText.dust.verb;
+            output += " | ";
+            output += csiMenuText.take.verb; 
+            output += " | ";
+            output += csiMenuText.open.verb;
+            output += " | ";
+            output += csiMenuText.close.verb;
+            output += " | ";
+            output += csiMenuText.record;
+            output += " | ";
+            output += csiMenuText.check.verb;
 
-            output.Send(csiMenuText.look.verb, debug);
-            output.Send(" | ", debug);
-            output.Send(csiMenuText.photograph.verb, debug);
-            output.Send(" | ", debug);
-            output.Send(csiMenuText.dust.verb, debug);
-            output.Send(" | ", debug);
-            output.Send(csiMenuText.take.verb, debug);
-            output.Send(" | ", debug);
-            output.Send(csiMenuText.open.verb, debug);
-            output.Send(" | ", debug);
-            output.Send(csiMenuText.close.verb, debug);
-            output.Send(" | ", debug);
-            output.Send(csiMenuText.leave.verb, debug);
-            //output.Send(" | ");
-            //output.SendLine(caseMenuText.record);
-            output.Send(" | ", debug);
-            output.SendLine(csiMenuText.check.verb, debug);
 
             //game.state = 0;
             //return game.state;
@@ -237,6 +238,17 @@ namespace homicide_detective
             IO output = new IO();
             output.SendLine(mainMenuText.title, debug);
             output.SendLine(mainMenuText.subtitle, debug);
+        }
+
+        public static void PrintMainMenuCommands(bool debug = false)
+        {
+            IO io = new IO();
+            string output = mainMenuText.newGame;
+            output += " | ";
+            output += mainMenuText.loadGame;
+            output += " | ";
+            output += mainMenuText.exitGame;
+            io.SendLine(output, debug);
         }
         #endregion
 
@@ -327,22 +339,30 @@ namespace homicide_detective
         public static int EvaluateCaseCommand(Game game, string command, bool debug = false)
         {
             IO io = new IO();
+            CreateCaseIfNull(game);
             Case thisCase = game.activeCases[game.caseTaken];
+
+            //for debugging
+            if (command.Contains(' ')) 
+            {
+                command = command.Split(' ')[0];
+            }
+
             if (command == caseMenuText.reviewCaseText.verb)
             {
-                PrintCaseIntroduction(thisCase);
-                PrintCaseReviewMenu(game);
-                return EvaluateCaseReviewCommand(game, io.Get(debug));
+                PrintCaseIntroduction(thisCase, debug);
+                PrintCaseReviewMenu(game, debug);
+                return EvaluateCaseReviewCommand(game, io.Get(debug),  debug);
             }
             else if (command == caseMenuText.take)
             {
-                PrintSceneSelection(game.activeCases[game.caseTaken]);
+                PrintSceneSelection(game.activeCases[game.caseTaken], debug);
                 return game.caseIndex;
             }
             else if (command == caseMenuText.nextCase)
             {
                 game.caseTaken++;
-                return CaseMenu(game);
+                return game.caseTaken;
             }
             else if (command == caseMenuText.exitGame)
             {
@@ -350,12 +370,12 @@ namespace homicide_detective
             }
             else if (command == "cheat")
             {
-                Cheat(thisCase);
-                return CaseMenu(game);
+                Cheat(thisCase, debug);
+                return CaseMenu(game, null, debug);
             }
             else
             {
-                return CaseMenu(game);
+                return CaseMenu(game, null, debug);
             }
         }
 

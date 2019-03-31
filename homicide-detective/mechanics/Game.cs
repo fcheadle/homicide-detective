@@ -13,6 +13,7 @@ namespace homicide_detective
          */
 
         //System Variables
+        //todo: move to settings.config
         static string rootDirectory = Directory.GetCurrentDirectory();
         static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
         static string extension = ".json";
@@ -23,6 +24,7 @@ namespace homicide_detective
         //state = 2;        //show case menu
         //state = 3;        //investigating a scene
         //state = 4;        //talking to persons of interest
+        //state = 5;        //case review menu
 
         public int caseTaken = 0;
         public List<string> gameLog;
@@ -73,7 +75,7 @@ namespace homicide_detective
         //get the detective's name ready to be converted to a base36 number for the seed
         public static string SanitizeName(string detectiveName)
         {
-            char[] separator = { ' ', '-', '\'', '.'};
+            char[] separator = { ' ', '-', '\'', '.', ',', '?' };
             string[] afterSplit = detectiveName.Split(separator);
             string returnString = "";
             foreach(string s in afterSplit)
@@ -102,7 +104,7 @@ namespace homicide_detective
         public void SaveGame()
         {
             allText = new GameText();
-            string path = saveFolder + detective.ToLower() + extension;
+            string path = saveFolder + SanitizeName(detective).ToLower() + extension;
             File.WriteAllText(path, JsonConvert.SerializeObject(this));
             allText = LoadTextFiles();
         }

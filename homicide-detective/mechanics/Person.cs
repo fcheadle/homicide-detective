@@ -63,12 +63,12 @@ namespace homicide_detective
             if (gender == 0)
             {
                 givenNameIndex = random.Next(0, text.names.givenMale.Count());
-                firstName = text.names.givenMale[givenNameIndex];
+                firstName = " " + text.names.givenMale[givenNameIndex];
             }
             else
             {
                 givenNameIndex = random.Next(0, text.names.givenMale.Count());
-                firstName = text.names.givenFemale[givenNameIndex];
+                firstName = " " + text.names.givenFemale[givenNameIndex];
             }
 
             lastName = text.names.family[familyNameIndex];
