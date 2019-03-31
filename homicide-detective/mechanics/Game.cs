@@ -112,6 +112,7 @@ namespace homicide_detective
         //loads the game from a file
         public static Game LoadGame(string name)
         {
+            name = SanitizeName(name);
             string path = Directory.GetCurrentDirectory() + @"\saves\" + name + ".json";
             string saveFileContents = File.ReadAllText(path);
             Game game = JsonConvert.DeserializeObject<Game>(saveFileContents);
@@ -182,14 +183,18 @@ namespace homicide_detective
             return gameText;
         }
 
-        public void GenerateCase(Game game)
+        public static Case AddCase(Game game)
         {
             game.activeCases.Add(new Case(game));
+            int i = game.activeCases.Count;
+            return game.activeCases[i];
         }
 
-        public void GenerateCase(Game game, int caseNumber)
+        public Case GenerateCase(Game game, int caseNumber)
         {
             game.activeCases.Add(new Case(game, caseNumber));
+            int i = game.activeCases.Count - 1;
+            return game.activeCases[i];
         }
     }
 }

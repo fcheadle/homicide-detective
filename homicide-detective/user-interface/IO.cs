@@ -11,14 +11,7 @@ namespace homicide_detective
     //these classes are so unit tests can have an overrideable way to read console input
     public class IO
     {
-        TextWriter textWriterOriginal = Console.Out;
-        TextReader textReaderOriginal = Console.In;
         static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
-
-        //Set console.out to write to the file instead of the console
-        FileStream fileStream;
-        StreamWriter streamWriter;
-        StreamReader streamReader;
 
         //read the console input
         public virtual string Get(bool debug = false)
