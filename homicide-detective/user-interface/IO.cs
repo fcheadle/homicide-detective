@@ -49,10 +49,10 @@ namespace homicide_detective
         }
 
         //write to console
-        internal void SendLine(string output, string aAn, string name, bool debug = false)
+        public void SendLine(string output, string aAn, string name, bool debug = false)
         {
-            if (debug) SendLineDebug(output);
-            else Console.WriteLine(output);
+            if (debug) SendLineDebug(output, aAn, name);
+            else Console.WriteLine(output, aAn, name);
         }
         
         //write to file
