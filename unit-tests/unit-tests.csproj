@@ -56,39 +56,43 @@
     <Compile Include="IOTests.cs" />
     <Compile Include="MenuTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ItemTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="objects\item\item_knife.json">
+    <None Include="objects\dialogue_default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="objects\item_knife.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="objects\person\person_yokel.json">
+    <None Include="objects\person_yokel.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="objects\scene\scene_bedroom.json">
+    <None Include="objects\scene_bedroom.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="objects\text\description_case.json">
+    <None Include="objects\description_case.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="objects\text\description_item.json">
+    <None Include="objects\description_item.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="objects\text\menu_case.json">
+    <None Include="objects\menu_case.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="objects\text\menu_csi.json">
+    <None Include="objects\menu_csi.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="objects\text\menu_main.json">
+    <None Include="objects\menu_main.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="objects\text\names_default.json">
+    <None Include="objects\names_default.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="objects\text\written_diary.json">
+    <None Include="objects\written_diary.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

@@ -12,6 +12,7 @@ namespace homicide_detective
     public class IO
     {
         static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
+        static string objectsFolder = Directory.GetCurrentDirectory() + @"\objects\";
 
         //read the console input
         public virtual string Get(bool debug = false)
@@ -47,7 +48,22 @@ namespace homicide_detective
             if (debug) SendLineDebug(output, aAn, name);
             else Console.WriteLine(output, aAn, name);
         }
-        
+
+        //get from a file you pass in
+        private string GetFromFile(string file)
+        {
+            string path = saveFolder + file;
+            return File.ReadAllText(path);
+        }
+
+        //get from a file you pass in
+        private void SendToFile(string file, string output)
+        {
+            string path = saveFolder + file;
+            string text = File.ReadAllText(path);
+            text += output;
+        }
+
         //write to file
         private string GetDebug()
         {

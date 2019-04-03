@@ -10,18 +10,16 @@ namespace homicide_detective
     {
         public string id;
         public string descrtiption;
+
         //following are added to percents during person generation
         public int jealousy;
         public int anger;
         public int pride;
         public int laziness;
         public int ambition;
-        public int classiness;
         public int creativity;
         public int attentionToDetail;
-        public int intelligence;
-        public int wealth;
-        public int importanceOfFamily;
+        public int familialImportance;
 
         public PersonTemplate()
         {
@@ -36,7 +34,7 @@ namespace homicide_detective
         public int gender;          //2 for now
         public string pronounDescriptive;       //he, she
         public string pronounPossessive;        //his, her
-        public int type;                    //general collections of mannerism / descriptions
+        //public int type;                    //general collections of mannerism / descriptions
                                             
         
         //define people physiologically and psychologically
@@ -50,55 +48,30 @@ namespace homicide_detective
         
         public List<string> motives;            //generated from percents
         public List<string> causeOfDeath;       //specific hardcoded values... for now
-        Random random;
 
-        public Person(int seed, GameText text)
+        public Person(int seed)
         {
-            random = new Random(seed);
+            Text text = new Text();
+            Random random = new Random(seed);
             gender = (random.Next(0,2));
 
             int givenNameIndex;
-            int familyNameIndex = random.Next(0, text.names.family.Count());
+            int familyNameIndex = random.Next(0, text.personNames.family.Count());
 
             if (gender == 0)
             {
-                givenNameIndex = random.Next(0, text.names.givenMale.Count());
-                firstName = " " + text.names.givenMale[givenNameIndex];
+                givenNameIndex = random.Next(0, text.personNames.givenMale.Count());
+                firstName = " " + text.personNames.givenMale[givenNameIndex];
             }
             else
             {
-                givenNameIndex = random.Next(0, text.names.givenMale.Count());
-                firstName = " " + text.names.givenFemale[givenNameIndex];
+                givenNameIndex = random.Next(0, text.personNames.givenMale.Count());
+                firstName = " " + text.personNames.givenFemale[givenNameIndex];
             }
 
-            lastName = text.names.family[familyNameIndex];
+            lastName = text.personNames.family[familyNameIndex];
 
             name = firstName + " " + lastName;
         }
-
-        /*
-        public Person GeneratePerson(GameText text)
-        {
-            Person person = new Person(random, text);
-            int givenNameIndex;
-            int familyNameIndex = random.Next(0, text.names.family.Count() - 1);
-
-            if (gender == 0)
-            {
-                givenNameIndex = random.Next(0, text.names.givenMale.Count() - 1);
-                firstName = text.names.givenMale[givenNameIndex];
-            }
-            else
-            {
-                givenNameIndex = random.Next(0, text.names.givenMale.Count() - 1);
-                firstName = text.names.givenFemale[givenNameIndex];
-            }
-            
-            lastName = text.names.family[familyNameIndex];
-           
-            name = firstName + " " + lastName;
-            return person;
-        }
-        */
     }
 }

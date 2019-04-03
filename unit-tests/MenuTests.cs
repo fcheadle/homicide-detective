@@ -52,10 +52,12 @@ namespace unit_tests
         [TestMethod]
         public void BookmarkCaseTest()
         {
+            //not working
             Game game = new Game("deacon-smythe");
             Case thisCase = new Case();
             game = Menu.BookmarkCase(thisCase, game);
             Assert.AreEqual(1, game.bookmarkedCases.Count);
+            //Assert.AreEqual();
         }
         #endregion
 
@@ -117,7 +119,7 @@ namespace unit_tests
         public void CheatTest()
         {
             Game game = new Game("test");
-            Case thisCase = game.GenerateCase(game,1);
+            Case thisCase = Game.AddCase(game);
             Menu.Cheat(thisCase, true);
             string answer = "killed";
             string result = io.Get(true);
@@ -225,6 +227,76 @@ namespace unit_tests
             game.caseTaken = 1;
             game.caseTaken = Menu.EvaluateCaseCommand(game, "exit", true);
             Assert.AreEqual(0, game.caseTaken);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandLookTest()
+        {
+            int result = Menu.EvaluateCSICommand("look");
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandOpenTest()
+        {
+            int result = Menu.EvaluateCSICommand("open");
+            Assert.AreEqual(2, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandCloseTest()
+        {
+            int result = Menu.EvaluateCSICommand("close");
+            Assert.AreEqual(3, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandTakeTest()
+        {
+            int result = Menu.EvaluateCSICommand("take");
+            Assert.AreEqual(4, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandDustTest()
+        {
+            int result = Menu.EvaluateCSICommand("dust");
+            Assert.AreEqual(5, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandLeaveTest()
+        {
+            int result = Menu.EvaluateCSICommand("leave");
+            Assert.AreEqual(6, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandRecordTest()
+        {
+            int result = Menu.EvaluateCSICommand("record");
+            Assert.AreEqual(7, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandCheckTest()
+        {
+            int result = Menu.EvaluateCSICommand("check");
+            Assert.AreEqual(8, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandPhotographTest()
+        {
+            int result = Menu.EvaluateCSICommand("photograph");
+            Assert.AreEqual(9, result);
+        }
+
+        [TestMethod]
+        public void EvaluateCSICommandNegativeTest()
+        {
+            int result = Menu.EvaluateCSICommand("negative");
+            Assert.AreEqual(0, result);
         }
         #endregion
     }

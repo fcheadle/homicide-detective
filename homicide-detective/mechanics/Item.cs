@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace homicide_detective
 {
     public class ItemTemplate
@@ -19,8 +15,8 @@ namespace homicide_detective
         public string description;      //freetext
         public float hollowness;        //in percent
 
-        public PhysicalPropertyRange massRanges;   //for determining mass of the object
-        public PhysicalPropertyRange volumeRanges; //for determining volume of the object
+        public Range massRanges;   //for determining mass of the object
+        public Range volumeRanges; //for determining volume of the object
 
         public List<Shape> shapes = new List<Shape>();          //hardcoded specific values
         public List<string> classes = new List<string>();       //freetext
@@ -33,8 +29,8 @@ namespace homicide_detective
         {
             name = "";
             description = "";
-            massRanges = new PhysicalPropertyRange();
-            volumeRanges = new PhysicalPropertyRange();
+            massRanges = new Range();
+            volumeRanges = new Range();
         }
     }
 
@@ -43,65 +39,69 @@ namespace homicide_detective
         public int volume;                  //in cm^3
         public int mass;                    //in grams
         public Shape shape;                 //shape of the item
+        public string aAn;                //"a" or "an"
 
         public bool murderWeapon;           //if it murdered the victim
         public bool bloodSpatter;           //if it contains bloodspatter of the victim
 
-        Random random;                      //passed in during generation, to keep things idempotent
-        internal string aAn;                //"a" or "an"
+        internal static Random random;                      //passed in during generation, to keep things idempotent
 
         public Item()
         {
 
         }
 
-        public Item(Random rand)
+        public Item(int seed)
         {
-            random = rand;
+            random = new Random(seed);
         }
 
-        public Item GenerateItem(Random seedRandom, List<ItemTemplate> items)
+        public Item GenerateItem(int seed, List<ItemTemplate> items)
         {
-            random = seedRandom;
-            int itemType = random.Next(0, items.Count() - 1);
+            random = new Random(seed);
             
-            ItemTemplate template = items[itemType];
-            name = template.name;
-            //volume = PhysicalPropertyRange.GetFromRange(random, template.volumeRanges);
-            //mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
-
-            description = template.description;
-            description += AddVolumeDescriptor(template.volumeRanges);
-            description += AddMassDescriptor(template.massRanges);
-
-            return this;
+            int itemType = random.Next(0, items.Count() - 1);
+            Item item = new Item();
+            return MakeItem(items[itemType]);
         }
 
-        public Item GenerateMurderWeapon(Random seedRandom, List<ItemTemplate> templates)
+        private Item MakeItem(ItemTemplate template)
         {
+            Item item = new Item();
+            item.name = template.name;
+            item.massRanges = template.massRanges;
+            item.volumeRanges = template.volumeRanges;
+            item.volume = Range.GetIntFromRange(random.Next(), template.volumeRanges);
+            item.mass = Range.GetIntFromRange(random.Next(), template.massRanges);
+
+            item.description = template.description;
+            item.description += item.AddVolumeDescriptor(item.volume, template.volumeRanges);
+            item.description += item.AddMassDescriptor(item.mass, template.massRanges);
+
+            item.classes = template.classes;
+            item.blocksViews = template.blocksViews;
+            item.bloodSpatter = false; //not yet implemented
+            item.containers = template.containers;
+            //item.
+            return item;
+        }
+
+        public Item GenerateMurderWeapon(int seed, List<ItemTemplate> templates)
+        {
+            Random random = new Random(seed);
             List<ItemTemplate> possibleMurderWeapons = new List<ItemTemplate>();
 
             foreach (ItemTemplate itemTemplate in templates)
             {
-                if (!itemTemplate.classes.Contains("furniture")) possibleMurderWeapons.Add(itemTemplate);
+                if (itemTemplate.classes.Contains("weapon")) possibleMurderWeapons.Add(itemTemplate);
             }
 
-            random = seedRandom;
-            int itemType = random.Next(0, possibleMurderWeapons.Count() - 1);
-
-            ItemTemplate template = possibleMurderWeapons[itemType];
-            name = template.name;
-            //volume = PhysicalPropertyRange.GetIntFromRange(random, template.volumeRanges);
-            //mass = PhysicalPropertyRange.GetIntFromRange(random, template.massRanges);
-
-            description = template.description;
-            description += AddVolumeDescriptor(template.volumeRanges);
-            description += AddMassDescriptor(template.massRanges);
-
-            return this;
+            Item item = GenerateItem(random.Next(), possibleMurderWeapons);
+            item.bloodSpatter = true;
+            return item;
         }
 
-        private string AddVolumeDescriptor(PhysicalPropertyRange range)
+        private string AddVolumeDescriptor(int value, Range range)
         {
             //get a simplified standard deviation of 10%
             int tenPercent = range.maximum - range.minimum / 10;
@@ -109,66 +109,66 @@ namespace homicide_detective
 
 
             //todo: get strings from the json
-            if (volume < range.mode - tenPercent - tenPercent)
+            if (value < range.mode - tenPercent - tenPercent)
             {
                 return " It is much smaller than average";
             }
-            else if (volume < range.mode - tenPercent)
+            else if (value < range.mode - tenPercent)
             {
                 return " It is smaller than average";
             }
-            else if (volume < range.mode)
+            else if (value <= range.mode)
             {
                 return " It is slightly smaller than average";
             }
-            else if (volume > range.mode + tenPercent + tenPercent)
+            else if (value >= range.mode + tenPercent + tenPercent)
             {
                 return " It is much larger than average";
             }
-            else if (volume > range.mode + tenPercent)
+            else if (value >= range.mode + tenPercent)
             {
                 return " It is larger than average";
             }
-            else if (volume > range.mode)
+            else if (value >= range.mode)
             {
                 return " It is slightly larger than average";
             }
             else
             {
-                return " It is exactly average in size";
+                return " It is average in size";
             }
         }
 
-        private string AddMassDescriptor(PhysicalPropertyRange range)
+        private string AddMassDescriptor(int value, Range range)
         {
             //get a simplified standard deviation of 10%
             int tenPercent = range.maximum - range.minimum / 10;
 
-            if (volume < range.mode - tenPercent - tenPercent)
+            if (value < range.mode - tenPercent - tenPercent)
             {
                 return " and much less heavy than average.";
             }
-            else if (volume < range.mode - tenPercent)
+            else if (value < range.mode - tenPercent)
             {
                 return " and less heavy than average.";
             }
-            else if (volume < range.mode)
+            else if (value < range.mode)
             {
                 return " and slightly less heavy than average.";
             }
-            else if (volume == range.mode)
+            else if (value == range.mode)
             {
                 return " and is exactly average in weight.";
             }
-            else if (volume > range.mode + tenPercent + tenPercent)
+            else if (value > range.mode + tenPercent + tenPercent)
             {
                 return " and much heavier than average.";
             }
-            else if (volume > range.mode + tenPercent)
+            else if (value > range.mode + tenPercent)
             {
                 return " and heavier than average.";
             }
-            else if (volume > range.mode)
+            else if (value > range.mode)
             {
                 return " and slightly heavier than average.";
             }

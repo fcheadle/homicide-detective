@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using static homicide_detective.TextClasses;
+using static homicide_detective.Text;
 
 namespace homicide_detective
 {
@@ -14,31 +14,7 @@ namespace homicide_detective
         //crime scene commands are not implemented yet
 
         #region variables
-        //System Variables
-        static string textFolder = Directory.GetCurrentDirectory() + @"\objects\text\";
-        static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
-        static string extension = ".json";
-
-        static string mainMenuPath = textFolder + "menu_main" + extension;
-        static string caseMenuPath = textFolder + "menu_case" + extension;
-        static string csiMenuPath = textFolder + "menu_csi" + extension;
-
-        static string caseDescriptionPath = textFolder + "description_case" + extension;
-        static string itemDescriptionPath = textFolder + "description_item" + extension;
-
-        static string mainMenuRaw = File.ReadAllText(mainMenuPath);
-        static string caseMenuRaw = File.ReadAllText(caseMenuPath);
-        static string csiMenuRaw = File.ReadAllText(csiMenuPath);
-        static string caseDescriptionRaw = File.ReadAllText(caseDescriptionPath);
-        static string itemDescriptionRaw = File.ReadAllText(itemDescriptionPath);
-
-        //These objects are used to build the strings that are given to the user
-        static MainMenuText mainMenuText = JsonConvert.DeserializeObject<MainMenuText>(mainMenuRaw);
-        static CaseMenuText caseMenuText = JsonConvert.DeserializeObject<CaseMenuText>(caseMenuRaw);
-        static CSIMenuText csiMenuText = JsonConvert.DeserializeObject<CSIMenuText>(csiMenuRaw);
-
-        static ItemDescription itemDescription = JsonConvert.DeserializeObject<ItemDescription>(itemDescriptionRaw);
-        static CaseDescription caseDescription = JsonConvert.DeserializeObject<CaseDescription>(caseDescriptionRaw);
+        static Text text = new Text();
         #endregion
 
         //These call the necessary print and Evaluate commands
@@ -69,13 +45,13 @@ namespace homicide_detective
         {
             IO io = new IO();
             PrintCSIMenuCommands(debug);
-            return EvaluateCSICommand(game, io.Get(debug));
+            return EvaluateCSICommand(io.Get(debug));
         }
 
         public static string GetDetective(bool debug = false)
         {
             IO io = new IO();
-            io.SendLine(mainMenuText.namePrompt, debug);
+            io.SendLine(text.mainMenuText.namePrompt, debug);
             return io.Get(debug);
         }
 
@@ -91,14 +67,14 @@ namespace homicide_detective
 
             if ((game.activeCases == null) || (game.activeCases.Count() == 0))
             {
-                thisCase = game.GenerateCase(game, game.caseTaken);
+                thisCase = Game.AddCase(game);
             }
 
             int i = 0;
 
             while (game.activeCases.Count() <= game.caseTaken)
             {
-                game.GenerateCase(game, game.caseTaken + i);
+                thisCase = Game.AddCase(game);
                 i++;
             }
 
@@ -112,30 +88,29 @@ namespace homicide_detective
         }
         #endregion
 
-
         //All print methods should take only what they need and return void
         //an optional debug parameter writes to a file instead of console
         #region print methods
         public static void PrintCSIMenuCommands(bool debug = false)
         {
             IO io = new IO();
-            string output = csiMenuText.look.verb;
+            string output = text.csiMenuText.look.verb;
             output += " | ";
-            output += csiMenuText.photograph.verb;
+            output += text.csiMenuText.photograph.verb;
             output += " | ";
-            output += csiMenuText.take.verb;
+            output += text.csiMenuText.take.verb;
             output += " | ";
-            output += csiMenuText.dust.verb;
+            output += text.csiMenuText.dust.verb;
             output += " | ";
-            output += csiMenuText.leave.verb;
+            output += text.csiMenuText.leave.verb;
             output += " | ";
-            output += csiMenuText.open.verb;
+            output += text.csiMenuText.open.verb;
             output += " | ";
-            output += csiMenuText.close.verb;
+            output += text.csiMenuText.close.verb;
             output += " | ";
-            output += csiMenuText.record;
+            output += text.csiMenuText.record;
             output += " | ";
-            output += csiMenuText.check.verb;
+            output += text.csiMenuText.check.verb;
             io.SendLine(output, debug);
         }
         
@@ -143,20 +118,20 @@ namespace homicide_detective
         {
             IO io = new IO();
             string output = "";
-            output += caseMenuText.nextCase;
+            output += text.caseMenuText.nextCase;
             output += " | ";
-            output += caseMenuText.take;
+            output += text.caseMenuText.take;
             output += " | ";
-            output += caseMenuText.reviewCaseText.verb;
+            output += text.caseMenuText.reviewCaseText.verb;
             output += " | ";
-            output += caseMenuText.exitGame;
+            output += text.caseMenuText.exitGame;
             io.SendLine(output, debug);
         }
 
         public static void PrintCaseSynopsis(Case thisCase, bool debug = false)
         {
             IO io = new IO();
-            string output = caseDescription.intro;
+            string output = text.caseDescription.intro;
             output += thisCase.caseNumber.ToString();
             output += ",";
             output += thisCase.victim.name;
@@ -189,20 +164,20 @@ namespace homicide_detective
         public static void PrintSceneSelection(Case thisCase, bool debug = false)
         {
             IO io = new IO();
-            io.SendLine(caseMenuText.sceneSelectionText.flavorText, debug);
-            io.SendLine(caseMenuText.sceneSelectionText.where, debug);
+            io.SendLine(text.caseMenuText.sceneSelectionText.flavorText, debug);
+            io.SendLine(text.caseMenuText.sceneSelectionText.where, debug);
         }
 
         public static void PrintCaseReviewMenu(Game game, bool debug = false)
         {
             IO io = new IO();
-            string output = caseMenuText.reviewCaseText.bookmarkCase;
+            string output = text.caseMenuText.reviewCaseText.bookmarkCase;
             output += " | ";
-            output += caseMenuText.take;
+            output += text.caseMenuText.take;
             output += " | ";
-            output += caseMenuText.reviewCaseText.nextCase;
+            output += text.caseMenuText.reviewCaseText.nextCase;
             output += " | ";
-            output += caseMenuText.exitGame;
+            output += text.caseMenuText.exitGame;
             io.SendLine(output, debug);
         }
 
@@ -223,18 +198,18 @@ namespace homicide_detective
         public static void PrintTitle(bool debug = false)
         {
             IO output = new IO();
-            output.SendLine(mainMenuText.title, debug);
-            output.SendLine(mainMenuText.subtitle, debug);
+            output.SendLine(text.mainMenuText.title, debug);
+            output.SendLine(text.mainMenuText.subtitle, debug);
         }
 
         public static void PrintMainMenuCommands(bool debug = false)
         {
             IO io = new IO();
-            string output = mainMenuText.newGame;
+            string output = text.mainMenuText.newGame;
             output += " | ";
-            output += mainMenuText.loadGame;
+            output += text.mainMenuText.loadGame;
             output += " | ";
-            output += mainMenuText.exitGame;
+            output += text.mainMenuText.exitGame;
             io.SendLine(output, debug);
         }
         #endregion
@@ -249,13 +224,13 @@ namespace homicide_detective
             IO io = new IO();
             command = command.ToLower();
 
-            if (command == mainMenuText.newGame)
+            if (command == text.mainMenuText.newGame)
             {
                 string detective = GetDetective(debug);      //ask for detective name
 
                 if (Game.CheckFile(detective))
                 {
-                    io.SendLine(mainMenuText.duplicateDetective, detective, debug);
+                    io.SendLine(text.mainMenuText.duplicateDetective, detective, debug);
 
                     bool existConfirmation = false;
                     while (!existConfirmation)
@@ -263,14 +238,14 @@ namespace homicide_detective
                         string answer = io.Get(debug);
                         try
                         {
-                            if (answer.Trim().ToLower() == mainMenuText.no)
+                            if (answer.Trim().ToLower() == text.mainMenuText.no)
                             {
                                 game = new Game(detective);
                                 game.state = 2;
                                 existConfirmation = true;
                                 break;
                             }
-                            else if (answer.Trim().ToLower() == mainMenuText.yes)
+                            else if (answer.Trim().ToLower() == text.mainMenuText.yes)
                             {
                                 game = Game.LoadGame(detective);
                                 existConfirmation = true;
@@ -278,7 +253,7 @@ namespace homicide_detective
                             }
                             else
                             {
-                                io.SendLine(mainMenuText.yesNoOnly, debug);
+                                io.SendLine(text.mainMenuText.yesNoOnly, debug);
                             }
                         }
                         catch (Exception e)
@@ -295,7 +270,7 @@ namespace homicide_detective
                 game.state = 2;
                 return game;
             }
-            else if (command == mainMenuText.loadGame)
+            else if (command == text.mainMenuText.loadGame)
             {
 
                 string detective = GetDetective(debug);
@@ -312,14 +287,14 @@ namespace homicide_detective
                     return MainMenu();
                 }
             }
-            else if (command == mainMenuText.exitGame)
+            else if (command == text.mainMenuText.exitGame)
             {
                 game.state = 0;
                 return game;
             }
             else
             {
-                io.SendLine(mainMenuText.commandNotFound, debug);
+                io.SendLine(text.mainMenuText.commandNotFound, debug);
                 return MainMenu();
             }
         }
@@ -337,24 +312,24 @@ namespace homicide_detective
                 command = command.Split(' ')[0];
             }
 
-            if (command == caseMenuText.reviewCaseText.verb)
+            if (command == text.caseMenuText.reviewCaseText.verb)
             {
                 PrintCaseIntroduction(thisCase, debug);
                 PrintCaseReviewMenu(game, debug);
                 game = EvaluateCaseReviewCommand(game, io.Get(debug),  debug);
                 return game.caseTaken;
             }
-            else if (command == caseMenuText.take)
+            else if (command == text.caseMenuText.take)
             {
                 PrintSceneSelection(game.activeCases[game.caseTaken], debug);
                 return game.caseIndex;
             }
-            else if (command == caseMenuText.nextCase)
+            else if (command == text.caseMenuText.nextCase)
             {
                 game.caseTaken++;
                 return game.caseTaken;
             }
-            else if (command == caseMenuText.exitGame)
+            else if (command == text.caseMenuText.exitGame)
             {
                 return 0; //return 0 to give the command to exit
             }
@@ -383,22 +358,22 @@ namespace homicide_detective
                 command = command.Split(' ')[0];
             }
 
-            if (command == caseMenuText.bookmarkCase)
+            if (command == text.caseMenuText.bookmarkCase)
             {
                 game = BookmarkCase(thisCase, game);
                 return game;
             }
-            else if (command == caseMenuText.take)
+            else if (command == text.caseMenuText.take)
             {
                 PrintSceneSelection(game.activeCases[game.caseTaken], debug);
                 return game;
             }
-            else if (command == caseMenuText.nextCase)
+            else if (command == text.caseMenuText.nextCase)
             {
                 game.caseTaken++;
                 return game;
             }
-            else if (command == caseMenuText.exitGame)
+            else if (command == text.caseMenuText.exitGame)
             {
                 game.caseTaken = 0;
                 return game; //return 0 to give the command to exit
@@ -416,39 +391,43 @@ namespace homicide_detective
             }
         }
 
-        public static int EvaluateCSICommand(Game game, string inputString)
+        public static int EvaluateCSICommand(string inputString)
         {
-            if (inputString == csiMenuText.look.verb)
+            if (inputString == text.csiMenuText.look.verb)
             {
                 return 1;
             }
-            else if (inputString == csiMenuText.open.verb)
+            else if (inputString == text.csiMenuText.open.verb)
             {
                 return 2;
             }
-            else if (inputString == csiMenuText.close.verb)
+            else if (inputString == text.csiMenuText.close.verb)
             {
                 return 3;
             }
-            else if (inputString == csiMenuText.take.verb)
+            else if (inputString == text.csiMenuText.take.verb)
             {
                 return 4;
             }
-            else if (inputString == csiMenuText.dust.verb)
+            else if (inputString == text.csiMenuText.dust.verb)
             {
                 return 5;
             }
-            else if (inputString == csiMenuText.leave.verb)
+            else if (inputString == text.csiMenuText.leave.verb)
             {
                 return 6;
             }
-            else if (inputString == csiMenuText.record)
+            else if (inputString == text.csiMenuText.record)
             {
                 return 7;
             }
-            else if (inputString == csiMenuText.check.verb)
+            else if (inputString == text.csiMenuText.check.verb)
             {
                 return 8;
+            }
+            else if (inputString == text.csiMenuText.photograph.verb)
+            {
+                return 9;
             }
             else return 0;
             //      switch (inputString)

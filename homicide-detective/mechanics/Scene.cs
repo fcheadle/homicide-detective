@@ -18,8 +18,8 @@ namespace homicide_detective
         public List<string> sceneConnections;
         public List<string> sceneContains;
         public List<string> sceneMustContain;
-        public PhysicalPropertyRange lengthRange;
-        public PhysicalPropertyRange widthRange;
+        public Range lengthRange;
+        public Range widthRange;
 
         public SceneTemplate()
         {
@@ -40,21 +40,21 @@ namespace homicide_detective
         public List<string> owners;         //names of peoople associated with this scene
         private Random random;
 
-        public Scene(Random random)
+        public Scene(int seed)
         {
-            this.random = random;
+            random = new Random(seed);
         }
 
         public Scene GenerateScene(List<SceneTemplate> scenes)
         {
+            Scene scene = new Scene(random.Next());
             int sceneType = random.Next(0, scenes.Count() - 1);
-
-            Scene scene = new Scene(random);
             scene.name = scenes[sceneType].name;
+
             return scene;
         }
 
-        private string AddVolumeDescriptor(PhysicalPropertyRange range)
+        private string AddVolumeDescriptor(Range range)
         {
             //get a simplified standard deviation of 10%
             int tenPercent = range.maximum - range.minimum / 10;
