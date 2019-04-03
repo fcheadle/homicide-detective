@@ -42,7 +42,7 @@ namespace homicide_detective
         public List<PersonTemplate> personTemplates = new List<PersonTemplate>();    //keep the persons from the person folder in memory
         public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();          //keep the items from the item folder in memory
         public List<SceneTemplate> sceneTemplates = new List<SceneTemplate>();       //keep the scenes from the scene folder in memory
-        public GameText allText;                                //keep the text from the text folder in memory. There is only item for all game text 
+        //public Text.GameText allText;                                //keep the text from the text folder in memory. There is only item for all game text 
         internal int csiState;
 
         //need a blank constructor because JSONConvert instantiates the object with no arguments
@@ -51,7 +51,7 @@ namespace homicide_detective
             personTemplates = LoadPersonFiles();
             itemTemplates = LoadItemFiles();
             sceneTemplates = LoadSceneFiles();
-            allText = LoadTextFiles();
+            //allText = LoadTextFiles();
         }
 
         //constructor - new game
@@ -67,7 +67,7 @@ namespace homicide_detective
             personTemplates = LoadPersonFiles();
             itemTemplates = LoadItemFiles();
             sceneTemplates = LoadSceneFiles();
-            allText = LoadTextFiles();
+            //allText = LoadTextFiles();
 
             SaveGame();
         }
@@ -103,10 +103,10 @@ namespace homicide_detective
         //saves the game to a file
         public void SaveGame()
         {
-            allText = new GameText();
+            //allText = new Text.GameText();
             string path = saveFolder + SanitizeName(detective).ToLower() + extension;
             File.WriteAllText(path, JsonConvert.SerializeObject(this));
-            allText = LoadTextFiles();
+            //allText = Text.LoadTextFiles();
         }
 
         //loads the game from a file
@@ -121,13 +121,16 @@ namespace homicide_detective
 
         public List<PersonTemplate> LoadPersonFiles()
         {
-            string fileDirectory = rootDirectory + @"\objects\person\";
+            string fileDirectory = rootDirectory + @"\objects\";
             string[] persons = Directory.GetFiles(fileDirectory);
 
             List<PersonTemplate> returnList = new List<PersonTemplate>();
             foreach(string path in persons)
             {
-                returnList.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(path)));
+                if (path.Contains("person_"))
+                {
+                    returnList.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(path)));
+                }
             }
 
             return returnList;
@@ -135,13 +138,16 @@ namespace homicide_detective
 
         public List<ItemTemplate> LoadItemFiles()
         {
-            string fileDirectory = rootDirectory + @"\objects\item\";
+            string fileDirectory = rootDirectory + @"\objects\";
             string[] items = Directory.GetFiles(fileDirectory);
 
             List<ItemTemplate> returnList = new List<ItemTemplate>();
             foreach (string path in items)
             {
-                returnList.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(path)));
+                if (path.Contains("person_"))
+                {
+                    returnList.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(path)));
+                }
             }
 
             return returnList;
@@ -149,50 +155,23 @@ namespace homicide_detective
 
         public List<SceneTemplate> LoadSceneFiles()
         {
-            string fileDirectory = rootDirectory + @"\objects\scene\";
+            string fileDirectory = rootDirectory + @"\objects\";
             string[] scenes = Directory.GetFiles(fileDirectory);
 
             List<SceneTemplate> returnList = new List<SceneTemplate>();
             foreach (string path in scenes)
             {
-                returnList.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(path)));
+                if (path.Contains("person_"))
+                {
+                    returnList.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(path)));
+                }
             }
             
             return returnList;
         }
-
-        public GameText LoadTextFiles()
-        {
-            string fileDirectory = rootDirectory + @"\objects\text\";
-            string[] texts = Directory.GetFiles(fileDirectory);
-
-            GameText gameText = new GameText();
-
-            foreach(string text in texts)
-            {
-                if(text.Contains("names_"))
-                {
-                    gameText.AddNames(JsonConvert.DeserializeObject<GameText.Name>(File.ReadAllText(text)));
-                }                
-                if(text.Contains("written_"))
-                {
-                    gameText.AddWrittenTexts(JsonConvert.DeserializeObject<GameText.WrittenText>(File.ReadAllText(text)));
-                }
-            }
-
-            return gameText;
-        }
-
         public static Case AddCase(Game game)
         {
             game.activeCases.Add(new Case(game));
-            int i = game.activeCases.Count;
-            return game.activeCases[i];
-        }
-
-        public Case GenerateCase(Game game, int caseNumber)
-        {
-            game.activeCases.Add(new Case(game, caseNumber));
             int i = game.activeCases.Count - 1;
             return game.activeCases[i];
         }

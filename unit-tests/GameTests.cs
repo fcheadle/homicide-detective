@@ -11,11 +11,12 @@ namespace unit_tests
     public class GameTests
     {
         #region variable declaration
+        
         //system variables
         string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
-        static string personFolder = Directory.GetCurrentDirectory() + @"\objects\person";
-        static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\item";
-        static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\scene";
+        static string personFolder = Directory.GetCurrentDirectory() + @"\objects\";
+        static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\";
+        static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\";
 
         string[] personPaths = Directory.GetFiles(personFolder);
         string[] itemPaths = Directory.GetFiles(itemFolder);
@@ -28,9 +29,12 @@ namespace unit_tests
         List<Case> knownActiveCases = new List<Case>();
         List<Case> knownSolvedCases = new List<Case>();
         List<Case> knownColdCases = new List<Case>();
-        
-        GameText knownText = new GameText();
 
+        //GameText knownText;
+        Text.PersonName knownNames;
+        Case knownCase;
+        Person knownVictim;
+        Person knownMurderer;
         int knownCaseIndex;
         int knownSeed = 1372205;
         string knownName = "test";
@@ -55,9 +59,22 @@ namespace unit_tests
             {
                 knownScenes.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scene)));
             }
+
+            //knownText = Game.LoadTextFiles();
+            knownVictim = new Person(1);
+            knownVictim.firstName = " Anastasia";
+            knownVictim.lastName = "Hembree";
+            knownVictim.name = knownVictim.firstName + " " + knownVictim.lastName;
+            knownMurderer = new Person(2);
+            knownMurderer.firstName = " Sung";
+            knownMurderer.lastName = "Benz";
+            knownMurderer.name = knownMurderer.firstName + " " + knownMurderer.lastName;
+            knownCase = new Case();
+            knownCase.victim = knownVictim;
+            knownCase.murderer = knownMurderer;
         }
         #endregion
-        
+
         [TestMethod]
         public void NewGameWithName()
         {
@@ -68,9 +85,19 @@ namespace unit_tests
         }
 
         [TestMethod]
-        public void SanitizeDetectiveTest()
+        public void SanitizeNameTest()
         {
             Assert.AreEqual("MarjoryStJohnOneil", Game.SanitizeName("Marjory St. John-O'neil"));
+        }
+
+        [TestMethod]
+        public void AddCaseTest()
+        {
+            Game game = new Game("deacon-smythe");
+            Case thisCase = new Case();
+            thisCase = Game.AddCase(game);
+            Assert.AreEqual(knownCase.murderer.name, thisCase.murderer.name);
+            Assert.AreEqual(knownCase.victim.name, thisCase.victim.name);
         }
 
         #region file io tests
@@ -161,13 +188,13 @@ namespace unit_tests
             Assert.AreEqual(true, testResult);
         }
 
-        [TestMethod]
-        public void LoadTextFiles()
-        {
-            Game game = new Game();
-            game.allText = game.LoadTextFiles();
-            Assert.IsInstanceOfType(game.allText, knownText.GetType());
-        }
+        //[TestMethod]
+        //public void LoadTextFiles()
+        //{
+        //    Game game = new Game();
+        //    game.allText = Game.LoadTextFiles();
+        //    Assert.IsInstanceOfType(game.allText, knownNames.GetType());
+        //}
         #endregion
     }
 }
