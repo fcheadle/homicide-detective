@@ -1,16 +1,16 @@
 ﻿{
   "name": " bedroom",
-  "description": " {0}, {1} sleeps.",
+  "description": " where {0} sleeps.",
   "classes": [
     "utility"
   ],
-  "sceneConnectionNumber": 2,
-  "sceneConnectionClasses": [
+  "connectionNumber": 2,
+  "connectionTypes": [
     "exterior",
     "utility",
     "subterranean"
   ],
-  "containsItemClasses": [
+  "containsTypes": [
     "furniture",
     "containers",
     "sleeping_surface",
@@ -25,16 +25,16 @@
     "vehicle",
     "dining"
   ],
-  "width": {
-    "minimum": 200,
-    "maximum": 500,
-    "median": 275,
-    "mode": 275
+  "widthRange": {
+    "minimum": 2000,
+    "maximum": 5000,
+    "median": 2750,
+    "mode": 2750
   },
-  "length": {
-    "minimum": 200,
-    "maximum": 500,
-    "median": 275,
-    "mode": 275
+  "lengthRange": {
+    "minimum": 2000,
+    "maximum": 5000,
+    "median": 2750,
+    "mode": 2750
   }
 }

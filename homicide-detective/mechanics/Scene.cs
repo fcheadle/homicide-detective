@@ -14,10 +14,10 @@ namespace homicide_detective
 
         public string name;
         public string description;
-        public List<string> sceneClasses;
-        public List<string> sceneConnections;
-        public List<string> sceneContains;
-        public List<string> sceneMustContain;
+        public List<string> classes;
+        public List<string> connectionTypes;
+        public List<string> containsTypes;
+        public List<string> mustContain;
         public Range lengthRange;
         public Range widthRange;
 
@@ -40,16 +40,32 @@ namespace homicide_detective
         public List<string> owners;         //names of peoople associated with this scene
         private Random random;
 
+        public Scene()
+        {
+
+        }
         public Scene(int seed)
         {
             random = new Random(seed);
+            id = seed;
+            List<SceneTemplate> templates = new Text().sceneTemplates;
+            Scene scene = GenerateScene(random.Next(), templates);
+            name = scene.name;
+            classes = scene.classes;
+            length = scene.length;
+            width = scene.width;
         }
 
-        public Scene GenerateScene(List<SceneTemplate> scenes)
+        public Scene GenerateScene(int seed, List<SceneTemplate> scenes)
         {
-            Scene scene = new Scene(random.Next());
+            Random random = new Random(seed);
+            Scene scene = new Scene();
             int sceneType = random.Next(0, scenes.Count() - 1);
-            scene.name = scenes[sceneType].name;
+            SceneTemplate template = scenes[sceneType];
+            scene.name = template.name;
+            scene.classes = template.classes;
+            scene.length = Range.GetIntFromRange(random.Next(), template.lengthRange);
+            scene.width = Range.GetIntFromRange(random.Next(), template.widthRange);
 
             return scene;
         }

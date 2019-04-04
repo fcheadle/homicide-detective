@@ -26,6 +26,7 @@ namespace homicide_detective
         private static string personNamesPath = folder + "names_default" + extension;
         private static string writtenPath = folder + "written_diary" + extension;
         private static string dialoguePath = folder + "dialogue_default" + extension;
+
         private static string mainMenuRaw = File.ReadAllText(mainMenuPath);
         private static string caseMenuRaw = File.ReadAllText(caseMenuPath);
         private static string csiMenuRaw = File.ReadAllText(csiMenuPath);
