@@ -1,29 +1,29 @@
 ﻿{
   "name": "knife",
-  "description": "A blade used for many things, including self defense and bodily harm.",
-  "volume_ranges": {
-    "minimum": 10,
+  "description": " a blade used for many things, including self defense and bodily harm.",
+  "volumeRanges": {
+    "minimum": 6,
     "maximum": 25,
-    "mean": 16,
-    "mode": 16
+    "mean": 10,
+    "mode": 10
   },
-  "mass_ranges": {
-    "minimum": 50,
-    "maximum": 350,
-    "mean": 125,
-    "mode": 175
+  "massRanges": {
+    "minimum": 3,
+    "maximum": 80,
+    "mean": 20,
+    "mode": 25
   },
   "hollowness": 0,
-  "sharp_point_number": 1,
-  "sharpness_of_point_degree": 350,
-  "sharp_point_decription": "point",
+  "sharpPointNumber": 1,
+  "sharpnessOfPointDegree": 350,
+  "sharpPointDecription": "point",
   "shapes": [
     {
       "name": "spike",
       "value": 100
     }
   ],
-  "item_classes": [
+  "classes": [
     "weapon",
     "tool"
   ],
@@ -34,9 +34,9 @@
     "bone"
   ],
   "containers": [],
-  "lock_chance": 0,
-  "blocks_views": [],
-  "visible_sides": [
+  "lockChance": 0,
+  "blocksViews": [],
+  "visibleSides": [
     "on_top",
     "under",
     "behind",

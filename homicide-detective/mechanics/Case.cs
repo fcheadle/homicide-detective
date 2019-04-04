@@ -60,6 +60,7 @@ namespace homicide_detective
 
             //whereTheyFoundTheBody = new SceneTemplate(random.Next());
             murderWeapon = new Item(random.Next());
+            
             //murderWeapon = murderWeapon.GenerateMurderWeapon(random, game.itemTemplates);
             
             //personsOfInterest = GeneratePersonsOfInterest(random.Next());

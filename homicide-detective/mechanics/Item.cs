@@ -6,11 +6,6 @@ namespace homicide_detective
 {
     public class ItemTemplate
     {
-        //different pieces of evidence
-        //or furniture or red herrings
-        //or murder weapons
-
-        public string id;               //unique identifier
         public string name;             //freetext
         public string description;      //freetext
         public float hollowness;        //in percent
@@ -36,6 +31,7 @@ namespace homicide_detective
 
     public class Item : ItemTemplate
     {
+        int id;
         public int volume;                  //in cm^3
         public int mass;                    //in grams
         public Shape shape;                 //shape of the item
@@ -53,7 +49,14 @@ namespace homicide_detective
 
         public Item(int seed)
         {
-            random = new Random(seed);
+            id = seed;
+            random = new Random(id);
+            Item item = new Item();
+            item = GenerateItem(random.Next(), new Text().itemTemplates);
+            name = item.name;
+            volume = item.volume;
+            mass = item.mass;
+            aAn = item.aAn;
         }
 
         public Item GenerateItem(int seed, List<ItemTemplate> items)
@@ -61,7 +64,6 @@ namespace homicide_detective
             random = new Random(seed);
             
             int itemType = random.Next(0, items.Count() - 1);
-            Item item = new Item();
             return MakeItem(items[itemType]);
         }
 

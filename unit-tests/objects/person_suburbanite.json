@@ -1,0 +1,15 @@
+﻿{
+  "id": "suburbanite",
+  "description": "a small town person who is accustomed to town life.",
+  "jealousy": 0,
+  "anger": -15,
+  "pride": 5,
+  "laziness": 15,
+  "ambition": 0,
+  "classiness": 15,
+  "creativity": -5,
+  "attentionToDetail": -20,
+  "intelligence": -5,
+  "wealth": 20,
+  "familyImportance": -5
+}
