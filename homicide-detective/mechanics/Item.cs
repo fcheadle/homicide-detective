@@ -51,46 +51,48 @@ namespace homicide_detective
         {
             id = seed;
             random = new Random(id);
-            Item item = new Item();
-            item = GenerateItem(random.Next(), new Text().itemTemplates);
-            name = item.name;
-            volume = item.volume;
-            mass = item.mass;
-            aAn = item.aAn;
+            //item = GenerateItem(random.Next(), new Text().itemTemplates);
+            List<ItemTemplate> templates = new Text().itemTemplates;
+            ItemTemplate template;
+            int itemType = random.Next(0, templates.Count() - 1);
+            template = templates[itemType];
+            name = template.name;
+            massRanges = template.massRanges;
+            volumeRanges = template.volumeRanges;
+            volume = Range.GetIntFromRange(random.Next(), template.volumeRanges);
+            mass = Range.GetIntFromRange(random.Next(), template.massRanges);
+
+            description = template.description;
+            description += AddVolumeDescriptor(volume, template.volumeRanges);
+            description += AddMassDescriptor(mass, template.massRanges);
+
+            classes = template.classes;
+            blocksViews = template.blocksViews;
+            bloodSpatter = false; //not yet implemented
+            containers = template.containers;
         }
 
-        public Item GenerateItem(int seed, List<ItemTemplate> items)
+        public Item(int seed, ItemTemplate template)
         {
-            random = new Random(seed);
-            
-            int itemType = random.Next(0, items.Count() - 1);
-            return MakeItem(items[itemType]);
+            id = seed;
+            random = new Random(id);
+            name = template.name;
+            massRanges = template.massRanges;
+            volumeRanges = template.volumeRanges;
+            volume = Range.GetIntFromRange(random.Next(), template.volumeRanges);
+            mass = Range.GetIntFromRange(random.Next(), template.massRanges);
+
+            description = template.description;
+            description += AddVolumeDescriptor(volume, template.volumeRanges);
+            description += AddMassDescriptor(mass, template.massRanges);
+
+            classes = template.classes;
+            blocksViews = template.blocksViews;
+            bloodSpatter = false; //not yet implemented
+            containers = template.containers;
         }
-
-        private Item MakeItem(ItemTemplate template)
-        {
-            Item item = new Item();
-            item.name = template.name;
-            item.massRanges = template.massRanges;
-            item.volumeRanges = template.volumeRanges;
-            item.volume = Range.GetIntFromRange(random.Next(), template.volumeRanges);
-            item.mass = Range.GetIntFromRange(random.Next(), template.massRanges);
-
-            item.description = template.description;
-            item.description += item.AddVolumeDescriptor(item.volume, template.volumeRanges);
-            item.description += item.AddMassDescriptor(item.mass, template.massRanges);
-
-            item.classes = template.classes;
-            item.blocksViews = template.blocksViews;
-            item.bloodSpatter = false; //not yet implemented
-            item.containers = template.containers;
-            //item.
-            return item;
-        }
-
         public Item GenerateMurderWeapon(int seed, List<ItemTemplate> templates)
         {
-            Random random = new Random(seed);
             List<ItemTemplate> possibleMurderWeapons = new List<ItemTemplate>();
 
             foreach (ItemTemplate itemTemplate in templates)
@@ -98,7 +100,9 @@ namespace homicide_detective
                 if (itemTemplate.classes.Contains("weapon")) possibleMurderWeapons.Add(itemTemplate);
             }
 
-            Item item = GenerateItem(random.Next(), possibleMurderWeapons);
+            int count = possibleMurderWeapons.Count;
+            ItemTemplate murderWeapon = possibleMurderWeapons[random.Next(0, count)];
+            Item item = new Item(seed, murderWeapon);
             item.bloodSpatter = true;
             return item;
         }
@@ -178,6 +182,26 @@ namespace homicide_detective
             {
                 return "";
             }
+        }
+
+        internal object GetFingerprints()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal List<Person.FingerPrint> GetFingerPrints()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void Open()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void Close()
+        {
+            throw new NotImplementedException();
         }
     }
 }

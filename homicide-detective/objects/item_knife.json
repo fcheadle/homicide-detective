@@ -4,13 +4,13 @@
   "volumeRanges": {
     "minimum": 6,
     "maximum": 25,
-    "mean": 10,
+    "median": 10,
     "mode": 10
   },
   "massRanges": {
     "minimum": 3,
     "maximum": 80,
-    "mean": 20,
+    "median": 20,
     "mode": 25
   },
   "hollowness": 0,

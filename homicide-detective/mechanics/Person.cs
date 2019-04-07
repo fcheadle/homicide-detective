@@ -8,7 +8,7 @@ namespace homicide_detective
 {
     public class PersonTemplate
     {
-        public string id;
+        public string type;
         public string descrtiption;
 
         //following are added to percents during person generation
@@ -34,11 +34,11 @@ namespace homicide_detective
         public int gender;          //2 for now
         public string pronounDescriptive;       //he, she
         public string pronounPossessive;        //his, her
-        //public int type;                    //general collections of mannerism / descriptions
                                             
         
         //define people physiologically and psychologically
         public string name;
+        public int id;
         public string firstName;                
         public string lastName;
         public string description;
@@ -49,10 +49,16 @@ namespace homicide_detective
         public List<string> motives;            //generated from percents
         public List<string> causeOfDeath;       //specific hardcoded values... for now
 
+        public Person()
+        {
+
+        }
+
         public Person(int seed)
         {
+            id = seed;
             Text text = new Text();
-            Random random = new Random(seed);
+            Random random = new Random(id);
             gender = (random.Next(0,2));
 
             int givenNameIndex;
@@ -72,6 +78,30 @@ namespace homicide_detective
             lastName = text.personNames.family[familyNameIndex];
 
             name = firstName + " " + lastName;
+        }
+
+        internal class FingerPrint
+        {
+            public class Digits
+            {
+                //"this is a fingerprint of someone's index finger. It is an accidental loop, centered high on the finger. It has a small scar in the shape of a line on it's bottom left side."
+                public string index;
+                public string middle;
+                public string ring;
+                public string pinky;
+                public string thumb;
+            }
+
+            //public Digits left;
+            //public Digits right;
+            //string archPlain;
+            //string archTented;
+            //string loopUlnar;
+            //string loopRadial;
+            //string loopDouble;
+            //string whorlCentralPocketLoop;
+            //string whorlPlain;
+            //string whorlAccidental;
         }
     }
 }

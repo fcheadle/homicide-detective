@@ -62,12 +62,12 @@ namespace unit_tests
 
             //knownText = Game.LoadTextFiles();
             knownVictim = new Person(1);
-            knownVictim.firstName = " Anastasia";
-            knownVictim.lastName = "Hembree";
+            knownVictim.firstName = " Chieko";
+            knownVictim.lastName = "Sutton";
             knownVictim.name = knownVictim.firstName + " " + knownVictim.lastName;
             knownMurderer = new Person(2);
-            knownMurderer.firstName = " Sung";
-            knownMurderer.lastName = "Benz";
+            knownMurderer.firstName = " Cathie";
+            knownMurderer.lastName = "Carson";
             knownMurderer.name = knownMurderer.firstName + " " + knownMurderer.lastName;
             knownCase = new Case();
             knownCase.victim = knownVictim;
@@ -94,10 +94,9 @@ namespace unit_tests
         public void AddCaseTest()
         {
             Game game = new Game("deacon-smythe");
-            Case thisCase = new Case();
-            thisCase = Game.AddCase(game);
-            Assert.AreEqual(knownCase.murderer.name, thisCase.murderer.name);
-            Assert.AreEqual(knownCase.victim.name, thisCase.victim.name);
+            game.AddCase();
+            Assert.AreEqual(" Cheyenne Bowden", game.activeCase.murderer.name);
+            Assert.AreEqual(" Lamont Xenakis", game.activeCase.victim.name);
         }
 
         #region file io tests
@@ -126,75 +125,6 @@ namespace unit_tests
             Assert.AreEqual(knownName, game.detective);
             Assert.AreEqual(knownSeed, game.seed);
         }
-        
-        [TestMethod]
-        public void LoadPersonFiles()
-        {
-            Game game = new Game();
-
-            bool testResult = false;
-            game.personTemplates = game.LoadPersonFiles();
-            foreach (PersonTemplate person in game.personTemplates)
-            {
-                foreach (PersonTemplate knownPerson in knownPersons)
-                {
-                    if (knownPerson.id == person.id)
-                    {
-                        testResult = true;
-                    }
-                }
-            }
-
-            Assert.AreEqual(true, testResult);
-        }
-
-        [TestMethod]
-        public void LoadSceneFiles()
-        {
-            Game game = new Game();
-
-            bool testResult = false;
-            game.sceneTemplates = game.LoadSceneFiles();
-            foreach (SceneTemplate scene in game.sceneTemplates)
-            {
-                foreach (SceneTemplate knownScene in knownScenes)
-                {
-                    if (knownScene.name == scene.name)
-                        if (knownScene.description == scene.description)
-                            testResult = true;
-                }
-            }
-
-            Assert.AreEqual(true, testResult);
-        }
-
-        [TestMethod]
-        public void LoadItemFiles()
-        {
-            Game game = new Game();
-
-            bool testResult = false;
-            game.itemTemplates = game.LoadItemFiles();
-            foreach (ItemTemplate item in game.itemTemplates)
-            {
-                foreach (ItemTemplate knownItem in knownItems)
-                {
-                    if (knownItem.name == item.name)
-                        if (knownItem.description == item.description)
-                            testResult = true;
-                }
-            }
-
-            Assert.AreEqual(true, testResult);
-        }
-
-        //[TestMethod]
-        //public void LoadTextFiles()
-        //{
-        //    Game game = new Game();
-        //    game.allText = Game.LoadTextFiles();
-        //    Assert.IsInstanceOfType(game.allText, knownNames.GetType());
-        //}
         #endregion
     }
 }

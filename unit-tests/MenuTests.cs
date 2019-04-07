@@ -42,22 +42,15 @@ namespace unit_tests
         }
 
         [TestMethod]
-        public void CreateCaseIfNullTest()
-        {
-            Game game = new Game("test");
-            Menu.CreateCaseIfNull(game);
-            Assert.AreEqual(2, game.activeCases.Count);
-        }
-
-        [TestMethod]
         public void BookmarkCaseTest()
         {
             //not working
             Game game = new Game("deacon-smythe");
-            Case thisCase = new Case();
+            Case thisCase = new Case(33, 4); //arbitrarily chose seed / casenumber
             game = Menu.BookmarkCase(thisCase, game);
             Assert.AreEqual(1, game.bookmarkedCases.Count);
-            //Assert.AreEqual();
+            Assert.AreEqual(" Cara Niles", game.bookmarkedCases[0].victim.name);
+            Assert.AreEqual(" Joseph Yarborough", game.bookmarkedCases[0].murderer.name);
         }
         #endregion
 
@@ -65,17 +58,17 @@ namespace unit_tests
         [TestMethod]
         public void PrintCSIMenuCommandsTest()
         {
-            Menu.PrintCSIMenuCommands(true);
-            string answer = "look | photograph | take | ";
+            Menu.PrintMenuCommands(new Text.Menu(true).csi.ToList(), true);
             string result = io.Get(true);
-            Assert.IsTrue(result.Contains(answer));
+            Assert.AreEqual("dust | leave | open | close | record | check | look | photograph | take", result);
         }
 
         [TestMethod]
         public void PrintCaseMenuCommandsTest()
         {
-            Menu.PrintCaseMenuCommands(true);
-            Assert.AreEqual("next | take | review | exit", io.Get(true));
+            Menu.PrintMenuCommands(new Text.Menu(true)._case.ToList(), true);
+            string result = io.Get(true);
+            Assert.AreEqual("take | review | next | bookmark | case", result);
         }
 
         [TestMethod]
@@ -88,38 +81,20 @@ namespace unit_tests
         }
 
         [TestMethod]
-        public void PrintCaseIntroductionTest()
+        public void PrintCaseReviewTest()
         {
-            Menu.PrintCaseIntroduction(knownCase, true);
+            Menu.PrintCaseReview(knownCase, true);
             string result = io.Get(true);
             string answer = " was found dead in";
             Assert.IsTrue(result.Contains(answer));
         }
 
         [TestMethod]
-        public void PrintSceneSelectionTest()
-        {
-            Game game = new Game("deacon-smythe");
-            Case thisCase = new Case(game, 1);
-            Menu.PrintSceneSelection(thisCase, true);
-            string answer = " Where will you investigate first?";
-            Assert.AreEqual(answer, io.Get(true));
-        }
-
-        [TestMethod]
-        public void PrintCrimeSceneReviewMenuTest()
-        {
-            Game game = new Game("deacon-smythe");
-            Menu.PrintCaseReviewMenu(game, true);
-            string answer = "bookmark | take | next | exit";
-            Assert.AreEqual(answer, io.Get(true));
-        }
-
-        [TestMethod]
         public void CheatTest()
         {
             Game game = new Game("test");
-            Case thisCase = Game.AddCase(game);
+            game.AddCase();
+            Case thisCase = game.activeCase;
             Menu.Cheat(thisCase, true);
             string answer = "killed";
             string result = io.Get(true);
@@ -142,7 +117,7 @@ namespace unit_tests
         [TestMethod]
         public void PrintMainMenuCommandsTest()
         {
-            Menu.PrintMainMenuCommands(true);
+            Menu.PrintMenuCommands(new Text.Menu(true).main.ToList(),true);
             Assert.AreEqual("new | load | exit", io.Get(true));
         }
         #endregion
@@ -152,7 +127,7 @@ namespace unit_tests
         public void EvaluateMainMenuCommandNewTest()
         {
             Game game = new Game();
-            game = Menu.EvaluateMainMenuCommand("new", game, true);
+            game = Menu.EvaluateMainMenuCommand("new", true);
             Assert.AreEqual("What is your name, Detective?", game.detective, true);
         }
 
@@ -161,7 +136,7 @@ namespace unit_tests
         {
             //Hanging on some io.Get() call somewhere?
             Game game = new Game();
-            game = Menu.EvaluateMainMenuCommand("load", game, true);
+            game = Menu.EvaluateMainMenuCommand("load", true);
             Assert.AreEqual("What is your name, Detective?", game.detective, true);
         }
 
@@ -170,7 +145,7 @@ namespace unit_tests
         {
             //not implemented
             Game game = new Game();
-            game = Menu.EvaluateMainMenuCommand("exit", game, true);
+            game = Menu.EvaluateMainMenuCommand("exit", true);
             Assert.AreEqual(0, game.state);
         }
 
@@ -179,7 +154,7 @@ namespace unit_tests
         {
             Game game = new Game("deacon-smythe");
             game.caseTaken = 1;
-            game.caseTaken = Menu.EvaluateCaseCommand(game, "next", true);
+            game = Menu.EvaluateCaseCommand(game, "next", true);
             Assert.AreEqual(2, game.caseTaken);
         }
 
@@ -187,117 +162,82 @@ namespace unit_tests
         public void EvaluateCaseCommandTakeTest()
         {
             Game game = new Game("deacon-smythe");
+            game.state = 2; //case menu
             game.caseTaken = 1;
-            game.caseTaken = Menu.EvaluateCaseCommand(game, "take", true);
-            Assert.AreEqual(" Where will you investigate first?", io.Get(true));
+            game = Menu.EvaluateCaseCommand(game, "take", true);
+            Assert.AreEqual(3, game.state);
+            Assert.AreEqual(game.activeCase, game.activeCases[game.caseTaken]);
         }
+        
+        //[TestMethod]
+        //public void EvaluateCSICommandLookTest()
+        //{
+        //    game = Menu.EvaluateCSICommand(game, "look");
+        //    Assert.AreEqual(1, game.case);
+        //}
 
-        [TestMethod]
-        public void EvaluateCaseCommandReviewBookmarkTest()
-        {
-            Game game = new Game("deacon-smythe");
-            game.caseTaken = 1;
-            game = Menu.EvaluateCaseReviewCommand(game, "bookmark", true);
-            Assert.AreEqual(1, game.bookmarkedCases.Count);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandOpenTest()
+        //{
+        //    game = Menu.EvaluateCSICommand(game,"open");
+        //    Assert.AreEqual(2, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCaseCommandReviewNextTest()
-        {
-            Game game = new Game("deacon-smythe");
-            game.caseTaken = 2;
-            game = Menu.EvaluateCaseReviewCommand(game, "next", true);
-            Assert.AreEqual(1, game.state);
-            Assert.AreEqual(3, game.caseTaken);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandCloseTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("close");
+        //    Assert.AreEqual(3, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCaseCommandReviewExitTest()
-        {
-            Game game = new Game("deacon-smythe");
-            game.state = 5;
-            game = Menu.EvaluateCaseReviewCommand(game, "exit", true);
-            Assert.AreEqual(0, game.caseTaken);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandTakeTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("take");
+        //    Assert.AreEqual(4, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCaseCommandExitTest()
-        {
-            Game game = new Game("deacon-smythe");
-            game.caseTaken = 1;
-            game.caseTaken = Menu.EvaluateCaseCommand(game, "exit", true);
-            Assert.AreEqual(0, game.caseTaken);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandDustTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("dust");
+        //    Assert.AreEqual(5, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCSICommandLookTest()
-        {
-            int result = Menu.EvaluateCSICommand("look");
-            Assert.AreEqual(1, result);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandLeaveTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("leave");
+        //    Assert.AreEqual(6, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCSICommandOpenTest()
-        {
-            int result = Menu.EvaluateCSICommand("open");
-            Assert.AreEqual(2, result);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandRecordTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("record");
+        //    Assert.AreEqual(7, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCSICommandCloseTest()
-        {
-            int result = Menu.EvaluateCSICommand("close");
-            Assert.AreEqual(3, result);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandCheckTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("check");
+        //    Assert.AreEqual(8, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCSICommandTakeTest()
-        {
-            int result = Menu.EvaluateCSICommand("take");
-            Assert.AreEqual(4, result);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandPhotographTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("photograph");
+        //    Assert.AreEqual(9, result);
+        //}
 
-        [TestMethod]
-        public void EvaluateCSICommandDustTest()
-        {
-            int result = Menu.EvaluateCSICommand("dust");
-            Assert.AreEqual(5, result);
-        }
-
-        [TestMethod]
-        public void EvaluateCSICommandLeaveTest()
-        {
-            int result = Menu.EvaluateCSICommand("leave");
-            Assert.AreEqual(6, result);
-        }
-
-        [TestMethod]
-        public void EvaluateCSICommandRecordTest()
-        {
-            int result = Menu.EvaluateCSICommand("record");
-            Assert.AreEqual(7, result);
-        }
-
-        [TestMethod]
-        public void EvaluateCSICommandCheckTest()
-        {
-            int result = Menu.EvaluateCSICommand("check");
-            Assert.AreEqual(8, result);
-        }
-
-        [TestMethod]
-        public void EvaluateCSICommandPhotographTest()
-        {
-            int result = Menu.EvaluateCSICommand("photograph");
-            Assert.AreEqual(9, result);
-        }
-
-        [TestMethod]
-        public void EvaluateCSICommandNegativeTest()
-        {
-            int result = Menu.EvaluateCSICommand("negative");
-            Assert.AreEqual(0, result);
-        }
+        //[TestMethod]
+        //public void EvaluateCSICommandNegativeTest()
+        //{
+        //    int result = Menu.EvaluateCSICommand("negative");
+        //    Assert.AreEqual(0, result);
+        //}
         #endregion
     }
 }

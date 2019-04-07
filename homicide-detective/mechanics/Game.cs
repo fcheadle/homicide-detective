@@ -14,7 +14,6 @@ namespace homicide_detective
 
         //System Variables
         //todo: move to settings.config
-        static string rootDirectory = Directory.GetCurrentDirectory();
         static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
         static string extension = ".json";
 
@@ -24,34 +23,26 @@ namespace homicide_detective
         //state = 2;        //show case menu
         //state = 3;        //investigating a scene
         //state = 4;        //talking to persons of interest
-        //state = 5;        //case review menu
 
         public int caseTaken = 0;
         public List<string> gameLog;
 
         //these variables need to be public so that JSONConvert can access them during static loadGame calls
-        public string detective;            //name of the detective, stored with dashes, periods, and hyphens
-        public int seed;                    //number generated from the detective's name
-        public int caseIndex;               //case currently being reviewed (always exactly one case in review)
-        public bool debugMode = false;      //for testing purposes
-        public List<Case> activeCases = new List<Case>();      //cases that are neither solved nor cold
-        public List<Case> solvedCases = new List<Case>();      //when a case is added to the solved array, it must be removed from the active array
-        public List<Case> coldCases = new List<Case>();        //when a case is added to the cold array, it must be removed from the active cases
-        public List<Case> bookmarkedCases = new List<Case>();  //ones saved for later viewing
-
-        public List<PersonTemplate> personTemplates = new List<PersonTemplate>();    //keep the persons from the person folder in memory
-        public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();          //keep the items from the item folder in memory
-        public List<SceneTemplate> sceneTemplates = new List<SceneTemplate>();       //keep the scenes from the scene folder in memory
-        //public Text.GameText allText;                                //keep the text from the text folder in memory. There is only item for all game text 
-        internal int csiState;
+        public string detective;                                //name of the detective, stored with dashes, periods, and hyphens
+        public int seed;                                        //number generated from the detective's name
+        public bool debugMode = false;                          //for testing purposes
+        public List<Case> activeCases = new List<Case>();       //cases that are neither solved nor cold
+        public List<Case> solvedCases = new List<Case>();       //when a case is added to the solved array, it must be removed from the active array
+        public List<Case> coldCases = new List<Case>();         //when a case is added to the cold array, it must be removed from the active cases
+        public List<Case> bookmarkedCases = new List<Case>();   //ones saved for later viewing
+        public Case activeCase;                                 //the case currently being investigated
+        Random random;
+        public int menuState;
 
         //need a blank constructor because JSONConvert instantiates the object with no arguments
         public Game()
         {
-            personTemplates = LoadPersonFiles();
-            itemTemplates = LoadItemFiles();
-            sceneTemplates = LoadSceneFiles();
-            //allText = LoadTextFiles();
+
         }
 
         //constructor - new game
@@ -62,13 +53,10 @@ namespace homicide_detective
             if (detective != null)
             {
                 seed = Base36.Decode(SanitizeName(name.ToLower()));
+                random = new Random(seed);
             }
-            
-            personTemplates = LoadPersonFiles();
-            itemTemplates = LoadItemFiles();
-            sceneTemplates = LoadSceneFiles();
-            //allText = LoadTextFiles();
 
+            CreateCaseIfNull();
             SaveGame();
         }
 
@@ -84,6 +72,30 @@ namespace homicide_detective
             }
 
             return returnString;
+        }
+
+        internal void CreateCaseIfNull()
+        {
+            Case thisCase = new Case();
+
+            if (caseTaken == 0)
+            {
+                //case numbers start at 1
+                caseTaken++;
+            }
+
+            if ((activeCases == null) || (activeCases.Count == 0))
+            {
+                activeCases.Add(new Case(random.Next(), caseTaken));
+            }
+
+            int i = 0;
+            while (activeCases.Count <= caseTaken)
+            {
+                activeCases.Add(new Case(random.Next(), caseTaken + i));
+                i++;
+            }
+            activeCase = activeCases[caseTaken];
         }
 
         //Check to see if a saved game exists for this string
@@ -118,62 +130,12 @@ namespace homicide_detective
             Game game = JsonConvert.DeserializeObject<Game>(saveFileContents);
             return game;
         }
-
-        public List<PersonTemplate> LoadPersonFiles()
+        
+        public void AddCase()
         {
-            string fileDirectory = rootDirectory + @"\objects\";
-            string[] persons = Directory.GetFiles(fileDirectory);
-
-            List<PersonTemplate> returnList = new List<PersonTemplate>();
-            foreach(string path in persons)
-            {
-                if (path.Contains("person_"))
-                {
-                    returnList.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(path)));
-                }
-            }
-
-            return returnList;
-        }
-
-        public List<ItemTemplate> LoadItemFiles()
-        {
-            string fileDirectory = rootDirectory + @"\objects\";
-            string[] items = Directory.GetFiles(fileDirectory);
-
-            List<ItemTemplate> returnList = new List<ItemTemplate>();
-            foreach (string path in items)
-            {
-                if (path.Contains("person_"))
-                {
-                    returnList.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(path)));
-                }
-            }
-
-            return returnList;
-        }
-
-        public List<SceneTemplate> LoadSceneFiles()
-        {
-            string fileDirectory = rootDirectory + @"\objects\";
-            string[] scenes = Directory.GetFiles(fileDirectory);
-
-            List<SceneTemplate> returnList = new List<SceneTemplate>();
-            foreach (string path in scenes)
-            {
-                if (path.Contains("person_"))
-                {
-                    returnList.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(path)));
-                }
-            }
-            
-            return returnList;
-        }
-        public static Case AddCase(Game game)
-        {
-            game.activeCases.Add(new Case(game));
-            int i = game.activeCases.Count - 1;
-            return game.activeCases[i];
+            int i = activeCases.Count - 1;
+            activeCases.Add(new Case(random.Next(), i));
+            activeCase = activeCases[i];
         }
     }
 }

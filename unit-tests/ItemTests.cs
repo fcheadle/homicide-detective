@@ -19,8 +19,8 @@ namespace unit_tests
         public void GenerateItemTest()
         {
             Random random = new Random(44); //arbitrary random seed
-            Item item = new Item();
-            item = item.GenerateItem(random.Next(), text.itemTemplates);
+            Item item = new Item(random.Next());
+            //item = item.GenerateItem(random.Next(), text.itemTemplates);
             Assert.AreEqual("handgun", item.name); //idempotent
             Assert.IsTrue(item.mass <= item.massRanges.maximum);
             Assert.IsTrue(item.mass >= item.massRanges.minimum);
