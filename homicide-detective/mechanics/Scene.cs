@@ -6,13 +6,8 @@ namespace homicide_detective
 {
     public class SceneTemplate
     {
-        //different locations that are involved, such as
-        //scene of the crime
-        //where the body was found
-        //victim's place of work
-        //so on
-
-        public string name;
+        //These match with the json descriptions
+        public string templateName;
         public string description;
         public List<string> classes;
         public List<string> connectionTypes;
@@ -30,46 +25,52 @@ namespace homicide_detective
     public class Scene : SceneTemplate
     {
         //this is an actual scene that is involved, somehow, in a case
+        public int id;              //unique identifier and seed - a person should be regeneratable based on seed
+        public string name;            //Josie's Bedroom, Bill's office, etc
         public int length;          //in centimeters
         public int width;           //in centimeters
         public int area;            //in meters
-        public int id;              //unique identifier
-
-        public List<string> connections;    //names of scenes that are connected to this scene
-        public List<string> contains;       //names of items contained within this scene
-        public List<string> owners;         //names of peoople associated with this scene
+        
+        public List<Scene> connections;    //ids of scenes that are connected to this scene
+        public List<Item> contains;       //names of items contained within this scene
+        public List<Person> owners;         //names of peoople associated with this scene
         private Random random;
-
-        public Scene()
-        {
-
-        }
+        //
+        //public Scene()
+        //{
+        //
+        //}
         public Scene(int seed)
         {
             random = new Random(seed);
             id = seed;
             List<SceneTemplate> templates = new Text().sceneTemplates;
-            Scene scene = GenerateScene(random.Next(), templates);
-            name = scene.name;
-            classes = scene.classes;
-            length = scene.length;
-            width = scene.width;
+            SceneTemplate template = new SceneTemplate();
+            template = templates[random.Next(0, templates.Count)];
+            //Scene scene = new Scene();// GenerateScene(random.Next(), templates);
+            name = template.templateName;
+            classes = template.classes;
+            lengthRange = template.lengthRange;
+            widthRange = template.widthRange;
+            length = Range.GetIntFromRange(random.Next(), lengthRange);
+            width = Range.GetIntFromRange(random.Next(), widthRange);
         }
 
-        public Scene GenerateScene(int seed, List<SceneTemplate> scenes)
-        {
-            Random random = new Random(seed);
-            Scene scene = new Scene();
-            int sceneType = random.Next(0, scenes.Count() - 1);
-            SceneTemplate template = scenes[sceneType];
-            scene.name = template.name;
-            scene.classes = template.classes;
-            scene.length = Range.GetIntFromRange(random.Next(), template.lengthRange);
-            scene.width = Range.GetIntFromRange(random.Next(), template.widthRange);
+        //public Scene GenerateScene(int seed, List<SceneTemplate> scenes)
+        //{
+        //    Random random = new Random(seed);
+        //    //Scene scene = new Scene();
+        //    int sceneType = random.Next(0, scenes.Count() - 1);
+        //    SceneTemplate template = scenes[sceneType];
+        //    scene.name = template.templateName;
+        //    scene.classes = template.classes;
+        //    scene.length = Range.GetIntFromRange(random.Next(), template.lengthRange);
+        //    scene.width = Range.GetIntFromRange(random.Next(), template.widthRange);
+        //
+        //    return scene;
+        //}
 
-            return scene;
-        }
-
+            //todo: move these to menu
         private string AddVolumeDescriptor(Range range)
         {
             //get a simplified standard deviation of 10%

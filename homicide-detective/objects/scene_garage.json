@@ -1,5 +1,5 @@
 ﻿{
-  "name": "garage",
+  "templateName": "garage",
   "description": "a place where {owner} stores or works on vehicles.",
   "containsClasses": [
     "vehicle",
@@ -15,16 +15,16 @@
   "cannotContain": [
     "sleeping_surface"
   ],
-  "width": {
-    "minimum": 5,
-    "maximum": 15,
-    "median": 6,
-    "mode": 5.5
+  "widthRange": {
+    "minimum": 5000,
+    "maximum": 15000,
+    "median": 6900,
+    "mode": 7750
   },
-  "length": {
-    "minimum": 5,
-    "maximum": 15,
-    "median": 12,
-    "mode": 11.5
+  "lengthRange": {
+    "minimum": 5000,
+    "maximum": 15000,
+    "median": 12000,
+    "mode": 10
   }
 }

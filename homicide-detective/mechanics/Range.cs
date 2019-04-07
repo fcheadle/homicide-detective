@@ -11,7 +11,7 @@ namespace homicide_detective
     {
         public int minimum;    //minimum value for mass or volume
         public int maximum;    //maximum value for mass or volume
-        public int mean;       //mean of typical masses or volumes
+        public int median;       //mean of typical masses or volumes
         public int mode;       //mode of typical masses or volumes
 
         public static int GetIntFromRange(int seed, Range range)
@@ -20,15 +20,19 @@ namespace homicide_detective
             int mean = 0;
             int totalRange = range.maximum - range.minimum;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 mean += random.Next(-totalRange, totalRange);
             }
 
-            mean /= 10;
-
+            mean += range.median;
+            mean += range.median;
+            mean += range.mode;
+            mean += range.mode;
             mean += range.mode;
 
+            mean /= 10;
+            
             if (mean < range.minimum) mean = range.minimum;
             if (mean > range.maximum) mean = range.maximum;
 

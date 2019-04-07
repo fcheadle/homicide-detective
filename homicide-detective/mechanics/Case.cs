@@ -18,54 +18,50 @@ namespace homicide_detective
 
         public Scene murderScene;                      //Where the person was killed
         public Scene whereTheyFoundTheBody;            //The first scene the detective arrives at
-        
+        public Scene currentScene;
+
         //public SceneTemplate[] placesOfInterest;               //All other relevant places
 
         public Item murderWeapon;                      //The item that killed the victim; may be blunt force trauma or drowning...?
         public Item allEvidence;                     //Every item including furniture at the scenes, the murder weapon, tire marks, wall damage, etc
         internal List<Item> evidenceTaken;
-        //public ItemTemplate[] evidenceTaken;                   //When an item is taken as evidence, it gets copied from all evidence to evidence taken
+        internal List<Person.FingerPrint> printsTaken;
+        public Item activeItem;                                 //the item currently in question
+        public Person activePerson;                             //the person currently being looked at or something
+        public Scene activeScene;                               //the scene currently being looked at
+
 
         public Case()
         {
 
         }
 
+        public Case (int seed, int caseNum)
+        {
+            caseNumber = caseNum;
+            GenerateCase(seed + caseNum);
+        }
+
         public Case(Game game)
         {
             caseNumber = game.caseTaken;
-            random = new Random(caseNumber + game.seed);
-            GenerateCase(game);
+            GenerateCase(caseNumber + game.seed);
         }
 
         public Case(Game game, int caseId)
         {
             caseNumber = caseId;
-            random = new Random(caseNumber + game.seed);
-            GenerateCase(game);
+            GenerateCase(caseNumber + game.seed);
         }
 
-        private void GenerateCase(Game game)
+        private void GenerateCase(int seed)
         {
-            //Text text = new Text();
-            int seed = Base36.Decode(game.detective);
-
+            random = new Random(seed);
             victim = new Person(random.Next());
-            //victim = victim.GeneratePerson(game.allText);
             murderer = new Person(random.Next());
-            //murderer = murderer.GeneratePerson(game.allText);
-
             murderScene = new Scene(random.Next());
-            //murderScene = murderScene.GenerateScene(game.sceneTemplates);
-
-            //whereTheyFoundTheBody = new SceneTemplate(random.Next());
             murderWeapon = new Item(random.Next());
-            
-            //murderWeapon = murderWeapon.GenerateMurderWeapon(random, game.itemTemplates);
-            
-            //personsOfInterest = GeneratePersonsOfInterest(random.Next());
-            //placesOfInterest = GeneratePlacesOfInterest(random.Next());
-            //allEvidence = GenerateAllEvidence(random.Next());
+            activeScene = murderScene;
         }
 
         private ItemTemplate[] GenerateAllEvidence(int seed)

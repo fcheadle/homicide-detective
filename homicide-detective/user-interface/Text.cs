@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -13,23 +14,19 @@ namespace homicide_detective
          * 
          */
 
-
+        #region variables
         //System Variables
         private static string folder = Directory.GetCurrentDirectory() + @"\objects\";
         private static string extension = ".json";
         
-        private static string mainMenuPath = folder + "menu_main" + extension;
-        private static string caseMenuPath = folder + "menu_case" + extension;
-        private static string csiMenuPath = folder + "menu_csi" + extension;
+        private static string menuPath = folder + "menu_english" + extension;
         private static string caseDescriptionPath = folder + "description_case" + extension;
         private static string itemDescriptionPath = folder + "description_item" + extension;
         private static string personNamesPath = folder + "names_default" + extension;
         private static string writtenPath = folder + "written_diary" + extension;
         private static string dialoguePath = folder + "dialogue_default" + extension;
 
-        private static string mainMenuRaw = File.ReadAllText(mainMenuPath);
-        private static string caseMenuRaw = File.ReadAllText(caseMenuPath);
-        private static string csiMenuRaw = File.ReadAllText(csiMenuPath);
+        private static string menuRaw = File.ReadAllText(menuPath);
         private static string caseDescriptionRaw = File.ReadAllText(caseDescriptionPath);
         private static string itemDescriptionRaw = File.ReadAllText(itemDescriptionPath);
         private static string personNamesRaw = File.ReadAllText(personNamesPath);
@@ -40,9 +37,7 @@ namespace homicide_detective
         private string personTemplateRaw;
 
         //These objects are used to build the strings that are given to the user
-        public MainMenu mainMenuText;
-        public CaseMenu caseMenuText;
-        public CSIMenu csiMenuText;
+        public Text.Menu menu;
         public ItemDescription itemDescription;
         public CaseDescription caseDescription;
         public PersonName personNames;
@@ -51,12 +46,11 @@ namespace homicide_detective
         public List<ItemTemplate> itemTemplates = new List<ItemTemplate>();
         public List<SceneTemplate> sceneTemplates = new List<SceneTemplate>();
         public List<PersonTemplate> personTemplates = new List<PersonTemplate>();
+        #endregion
 
         public Text()
         {
-            mainMenuText = JsonConvert.DeserializeObject<MainMenu>(mainMenuRaw);
-            caseMenuText = JsonConvert.DeserializeObject<CaseMenu>(caseMenuRaw);
-            csiMenuText = JsonConvert.DeserializeObject<CSIMenu>(csiMenuRaw);
+            menu = JsonConvert.DeserializeObject<Text.Menu>(menuRaw);
             itemDescription = JsonConvert.DeserializeObject<ItemDescription>(itemDescriptionRaw);
             caseDescription = JsonConvert.DeserializeObject<CaseDescription>(caseDescriptionRaw);
             personNames = JsonConvert.DeserializeObject<PersonName>(personNamesRaw);
@@ -87,121 +81,158 @@ namespace homicide_detective
         }
 
         #region objects
-        public class MainMenu
+        public class Menu
         {
-            public string title;
-            public string subtitle;
-            public string newGame;
-            public string loadGame;
-            public string exitGame;
-            public string namePrompt;
-            public string yes;
-            public string no;
-            public string duplicateDetective;
-            public string yesNoOnly;
-            public string commandNotFound;
-        }
-        public class CaseMenu
-        {
-            public class ReviewCaseText
+            public Main main;
+            public Case _case;
+            public CSI csi;
+            public Response response;
+            public LookType look;
+
+            public Menu(bool load = false)
             {
-                public string verb;
-                public string bookmarkCase;
-                public string nextCase;
-                public string bodyFound;
+                if (load)
+                {
+                    Menu _menu = new Menu();
+                    _menu = JsonConvert.DeserializeObject<Text.Menu>(menuRaw);
+                    main = _menu.main;
+                    _case = _menu._case;
+                    csi = _menu.csi;
+                }
             }
 
-            public class SceneSelectionText
+            public class Main
             {
-                public string flavorText;
-                public string where;
+                public string title;
+                public string subtitle;
+                public string newGame;
+                public string loadGame;
+                public string exitGame;
+
+                public List<string> ToList()
+                {
+                    List<string> list = new List<string>();
+                    list.Add(newGame);
+                    list.Add(loadGame);
+                    list.Add(exitGame);
+                    return list;
+                }
             }
 
-            public ReviewCaseText reviewCaseText;
-            public SceneSelectionText sceneSelectionText;
-            public string take;
-            public string nextCase;
-            public string exitGame;
-            public string closeCase;
-            public string open;
-            public string check;
-            public string bookmarkCase;
-        }
-        public class CSIMenu
-        {
-            public class LookText
-            {
-                public string inside;
-                public string at;
-                public string behind;
-                public string under;
-                public string on;
-                public string query;
-                public string verb;
-            }
-
-            public class PhotographText
-            {
-                public string photograph;
-                public string scene;
-                public string query;
-                public string verb;
-            }
-
-            public class TakeText
+            public class Case
             {
                 public string take;
-                public string note;
-                public string evidence;
-                public string verb;
+                public string review;
+                public string next;
+                public string bookmark;
+                public string takeCaseNumber;
+
+                public List<string> ToList()
+                {
+                    List<string> list = new List<string>();
+                    list.Add(take);
+                    list.Add(review);
+                    list.Add(next);
+                    list.Add(bookmark);
+                    list.Add(takeCaseNumber);
+                    return list;
+                }
             }
 
-            public class DustText
+            public class CSI
             {
-                public string query;
-                public string verb;
-            }
-
-            public class LeaveText
-            {
+                public string dust;
+                public string leave;
+                public string open;
+                public string close;
+                public string record;
+                public string check;
+                public string look;
                 public string photograph;
-                public string scene;
-                public string query;
-                public string verb;
+                public string take;
+
+                public List<string> ToList()
+                {
+                    List<string> list = new List<string>();
+                    list.Add(dust);
+                    list.Add(leave);
+                    list.Add(open);
+                    list.Add(close);
+                    list.Add(record);
+                    list.Add(check);
+                    list.Add(look);
+                    list.Add(photograph);
+                    list.Add(take);
+                    return list;
+                }
             }
 
-            public class OpenText
+            public class Response
             {
-                public string verb;
-                public string query;
-            }
+                public string duplicateDetective;
+                public string yes;
+                public string no;
+                public string yesNoOnly;
+                public string commandNotFound;
+                public string namePrompt;
+                public string sceneSelection;
+                public string caseMenuIntro;
+                public string dustQuery;
+                public string checkQuery;
+                public string openQuery;
+                public string closeQuery;
+                public string leaveQuery;
+                public string takeQuery;
+                public string lookUnderQuery;
+                public string photographQuery;
+                internal string lookBehindQuery;
+                internal string lookAtQuery;
+                internal string lookInsideQuery;
+                internal string lookOnQuery;
 
-            public class CloseText
+                public List<string> ToList()
+                {
+                    List<string> list = new List<string>();
+                    list.Add(duplicateDetective);
+                    list.Add(yes);
+                    list.Add(no);
+                    list.Add(yesNoOnly);
+                    list.Add(commandNotFound);
+                    list.Add(namePrompt);
+                    list.Add(sceneSelection);
+                    list.Add(caseMenuIntro);
+                    list.Add(dustQuery);
+                    list.Add(checkQuery);
+                    list.Add(openQuery);
+                    list.Add(closeQuery);
+                    list.Add(leaveQuery);
+                    list.Add(takeQuery);
+                    list.Add(photographQuery);
+                    return list;
+                }
+            }                
+                 
+            public class LookType
             {
-                public string verb;
-                public string query;
-            }
+                public string at;
+                public string behind;
+                public string underneath;
+                public string onTopOf;
+                public string insideOf;
 
-            public class Checktext
-            {
-                public string verb;
-                public string query;
-                public string notes;
-                public string photos;
-                public string fingerprints;
-                public string evidence;
+                public List<string> ToList()
+                {
+                    List<string> list = new List<string>();
+                    list.Add(at);
+                    list.Add(behind);
+                    list.Add(underneath);
+                    list.Add(onTopOf);
+                    list.Add(insideOf);
+                    return list;
+                }
             }
-
-            public LookText look;
-            public PhotographText photograph;
-            public TakeText take;
-            public DustText dust;
-            public LeaveText leave;
-            public OpenText open;
-            public CloseText close;
-            public Checktext check;
-            public string record;
         }
+
         public class ItemDescription
         {
             public string smaller;
@@ -233,11 +264,6 @@ namespace homicide_detective
         {
             public Written()
             {
-                this.intro = new List<string>();
-                this.victim = new List<string>();
-                this.murderer = new List<string>();
-                this.accomplice = new List<string>();
-                this.unrelated = new List<string>();
             }
             public List<string> intro;
             public List<string> victim;

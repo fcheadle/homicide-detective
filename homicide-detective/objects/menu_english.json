@@ -1,0 +1,50 @@
+{
+  "main": {
+    "title": "Homicide Detective",
+    "subtitle": "Whenever two objects interact, some evidence of that interaction can be found and verified.",
+    "newGame": "new",
+    "loadGame": "load",
+    "exitGame": "exit"
+  },
+  "response": {
+    "duplicateDetective": " There is already a detective named {0}. Would you like to load that game instead?",
+    "yes": "yes",
+    "no": "no",
+    "yesNoOnly": " Yes or No answers only, please.",
+    "commandNotFound": "What?",
+    "namePrompt": "What is your name, Detective?",
+    "sceneSelection": " Where will you investigate first?",
+    "caseMenuIntro": " The next case on the docket is case number {0}, {1}.",
+    "dustQuery": " What do you dust for prints?",
+    "checkQuery": " Check what?",
+    "openQuery": " Open what?",
+    "closeQuery": " Close What?",
+    "leaveQuery": " Leave through which door?",
+    "takeQuery": " Take What?"
+  },
+  "_case": {
+    "next": "next",
+    "take": "take",
+    "review": "review",
+    "bookmark": "bookmark",
+    "takeCaseNumber": "case"
+  },
+  "csi": {
+    "dust": "dust",
+    "leave": "leave",
+    "open": "open",
+    "close": "close",
+    "record": "record",
+    "check": "check",
+    "look": "look",
+    "photograph": "photograph",
+    "take": "take"
+  },
+  "look": {
+    "at": "at",
+    "behind": "behind",
+    "underneath": "under",
+    "onTopOf": "on",
+    "insideOf": "in"
+  }
+}
