@@ -1,0 +1,13 @@
+﻿{
+  "welcome": "This is the modding guide for Homicide Detective.",
+  "notes": "your can label an attribue as 'notes', and it will be ignored but the game. Use this to make comments in the .json files",
+  "NOTES": "You can basically do a free-text key. Try to use comments to help yourself and other modders",
+  "notes-extra-one": "Comments of any other kind will break the json reader.",
+  
+  "notes-basic-two": "Check the existing items included in the base game.",
+  "notes-extra-three": "Replacing the existing values will cause the game to output those values.",
+
+  "notes-language-one": "The game will eventually have the entirety of it's outputtable text defined in the language file.",
+  "notes-language-two": "And there will be a sentence structure type to allow for changing the subject/object/verb/etc order in a sentence output",
+  "notes-language-three": "this will allow translation into other languages"
+}

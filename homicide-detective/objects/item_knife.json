@@ -1,13 +1,13 @@
 ﻿{
-  "name": "knife",
+  "name": " knife",
   "description": " a blade used for many things, including self defense and bodily harm.",
-  "volumeRanges": {
+  "volumeRange": {
     "minimum": 6,
     "maximum": 25,
     "median": 10,
     "mode": 10
   },
-  "massRanges": {
+  "massRange": {
     "minimum": 3,
     "maximum": 80,
     "median": 20,

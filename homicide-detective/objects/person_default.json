@@ -1,5 +1,5 @@
 ﻿{
-  "id": "yokel",
+  "name": "yokel",
   "description": "a country {pronoun} who isn't accustomed to city life.",
   "jealousy": -5,
   "anger": 15,
@@ -11,5 +11,17 @@
   "attentionToDetail": 0,
   "intelligence": -15,
   "wealth": -15,
-  "familyImportance": 35
+  "familyImportance": 35,
+  "heightRange": {
+    "minimum": 160,
+    "maximum": 190,
+    "mean": 175,
+    "mode": 170
+  },
+  "massRange": {
+    "minimum": 60000,
+    "maximum": 100000,
+    "mean": 70000,
+    "mode": 75000
+  }
 }

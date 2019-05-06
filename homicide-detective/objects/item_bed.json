@@ -1,13 +1,13 @@
 ﻿{
-  "name": "bed",
+  "name": " bed",
   "description": " a large piece of furniture used for sleeping.",
-  "volumeRanges": {
+  "volumeRange": {
     "minimum": 4000000,
     "maximum": 7500000,
     "mean":    4250000,
     "mode":    5000000
   },
-  "massRanges": {
+  "massRange": {
     "minimum": 20000,
     "maximum": 70000,
     "mean":    27500,

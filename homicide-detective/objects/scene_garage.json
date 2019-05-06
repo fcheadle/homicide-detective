@@ -1,5 +1,5 @@
 ﻿{
-  "templateName": "garage",
+  "name": " garage",
   "description": "a place where {owner} stores or works on vehicles.",
   "containsClasses": [
     "vehicle",
@@ -14,6 +14,10 @@
   ],
   "cannotContain": [
     "sleeping_surface"
+  ],
+  "connectionTypes": [
+    "commonArea",
+    "kitchen"
   ],
   "widthRange": {
     "minimum": 5000,

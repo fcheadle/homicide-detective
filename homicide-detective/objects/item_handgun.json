@@ -1,13 +1,13 @@
 ﻿{
-  "name": "handgun",
+  "name": " handgun",
   "description": " a concealable firearm.",
-  "volumeRanges": {
+  "volumeRange": {
     "minimum": 10,
     "maximum": 25,
     "mean": 16,
     "mode": 16
   },
-  "massRanges": {
+  "massRange": {
     "minimum": 150,
     "maximum": 780,
     "mean": 375,

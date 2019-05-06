@@ -1,5 +1,5 @@
 ﻿{
-  "templateName": " bedroom",
+  "name": " bedroom",
   "description": " where {0} sleeps.",
   "classes": [
     "utility"

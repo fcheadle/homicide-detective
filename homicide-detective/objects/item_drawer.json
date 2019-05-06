@@ -1,13 +1,13 @@
 ﻿{
-  "name": "drawer",
+  "name": " drawer",
   "description": " a small thing used to contain other things.",
-  "volumeRanges": {
+  "volumeRange": {
     "minimum": 275000,
     "maximum": 400000,
     "mean":    270000,
     "mode":    310000
   },
-  "massRanges": {
+  "massRange": {
     "minimum": 200,
     "maximum": 2000,
     "mean":    500,

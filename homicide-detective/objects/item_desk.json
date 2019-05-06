@@ -1,13 +1,13 @@
 ﻿{
-  "name": "desk",
+  "name": " desk",
   "description": " a mid-sized piece of furniture used for writing.",
-  "volumeRanges": {
+  "volumeRange": {
     "minimum": 2750000,
     "maximum": 4000000,
     "mean":    3330000,
     "mode":    3400000
   },
-  "massRanges": {
+  "massRange": {
     "minimum": 22500,
     "maximum": 90000,
     "mean":    37500,

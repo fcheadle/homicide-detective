@@ -14,13 +14,12 @@ namespace unit_tests
         
         //system variables
         string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
-        static string personFolder = Directory.GetCurrentDirectory() + @"\objects\";
-        static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\";
-        static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\";
+        static string objectsFolder = Directory.GetCurrentDirectory() + @"\objects\";
+        string extension = ".json";
 
-        string[] personPaths = Directory.GetFiles(personFolder);
-        string[] itemPaths = Directory.GetFiles(itemFolder);
-        string[] scenePaths = Directory.GetFiles(sceneFolder);
+        string[] personPaths = Directory.GetFiles(objectsFolder);
+        string[] itemPaths = Directory.GetFiles(objectsFolder);
+        string[] scenePaths = Directory.GetFiles(objectsFolder);
 
         //TODO: get an example file
         List<PersonTemplate> knownPersons = new List<PersonTemplate>();
@@ -30,15 +29,10 @@ namespace unit_tests
         List<Case> knownSolvedCases = new List<Case>();
         List<Case> knownColdCases = new List<Case>();
 
-        //GameText knownText;
-        Text.PersonName knownNames;
         Case knownCase;
         Person knownVictim;
         Person knownMurderer;
-        int knownCaseIndex;
-        int knownSeed = 1372205;
         string knownName = "test";
-        string knownDescription;
 
         #endregion
 
@@ -61,17 +55,15 @@ namespace unit_tests
             }
 
             //knownText = Game.LoadTextFiles();
-            knownVictim = new Person(1);
-            knownVictim.firstName = " Chieko";
-            knownVictim.lastName = "Sutton";
-            knownVictim.name = knownVictim.firstName + " " + knownVictim.lastName;
-            knownMurderer = new Person(2);
-            knownMurderer.firstName = " Cathie";
-            knownMurderer.lastName = "Carson";
-            knownMurderer.name = knownMurderer.firstName + " " + knownMurderer.lastName;
-            knownCase = new Case();
-            knownCase.victim = knownVictim;
-            knownCase.murderer = knownMurderer;
+            knownVictim = new Person(1,0);
+            knownVictim.nameGiven = " Chieko";
+            knownVictim.nameFamily = "Sutton";
+            knownVictim.name = knownVictim.nameGiven + " " + knownVictim.nameFamily;
+            knownMurderer = new Person(1, 1);
+            knownMurderer.nameGiven = " Cathie";
+            knownMurderer.nameFamily = "Carson";
+            knownMurderer.name = knownMurderer.nameGiven + " " + knownMurderer.nameFamily;
+            knownCase = new Case(12345, 99);
         }
         #endregion
 
@@ -81,49 +73,24 @@ namespace unit_tests
             Random random = new Random();
             Game game = new Game(knownName);
 
-            Assert.AreEqual(knownName, game.detective);
+            Assert.AreEqual(knownName, game.detectiveName);
         }
 
         [TestMethod]
         public void SanitizeNameTest()
         {
-            Assert.AreEqual("MarjoryStJohnOneil", Game.SanitizeName("Marjory St. John-O'neil"));
-        }
-
-        [TestMethod]
-        public void AddCaseTest()
-        {
-            Game game = new Game("deacon-smythe");
-            game.AddCase();
-            Assert.AreEqual(" Cheyenne Bowden", game.activeCase.murderer.name);
-            Assert.AreEqual(" Lamont Xenakis", game.activeCase.victim.name);
+            Assert.AreEqual("MarjoryStJohnOneil", Game.Sanitize("Marjory St. John-O'neil"));
         }
 
         #region file io tests
-        [TestMethod]
-        public void SaveGame()
-        {
-            Random random = new Random();
-            Game game = new Game();
 
-            game.detective = knownName;
-            game.seed = knownSeed;
-            game.SaveGame();
-
-            string json = JsonConvert.SerializeObject(game);
-
-            //There is a file
-            string saveFileLocation = Directory.GetCurrentDirectory() + @"\saves\" + knownName + ".json";
-
-            Assert.IsTrue(File.Exists(saveFileLocation));
-        }
 
         [TestMethod]
         public void LoadGame()
         {
-            Game game = Game.LoadGame(knownName);
-            Assert.AreEqual(knownName, game.detective);
-            Assert.AreEqual(knownSeed, game.seed);
+            IO io = new IO();
+            Game game = io.Load(knownName);
+            Assert.AreEqual(knownName, game.detectiveName);
         }
         #endregion
     }

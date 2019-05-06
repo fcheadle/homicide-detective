@@ -1,0 +1,78 @@
+﻿{
+  "sentenceSimple": "{subject}{verb}{article}{object}",
+  "sentenceCompound": "{clauseIndependent}{conjunction}{sentenceSimple}",
+  "sentenceComplex": "{clauseIndependent}{preposition}{clauseDependent}",
+  "sentenceCompoundComplex": "{clauseIndependent}{preposition}{dependentClause}{conjunction}",
+  "clauseDependent": "{article}{object}",
+  "clauseIndependent": "{sentenceSimple}",
+  "pronouns": {
+    "he": "he",
+    "her": "her",
+    "his": "his",
+    "it": "it",
+    "she": "she",
+    "their": "their",
+    "them": "them",
+    "they": "they",
+    "you": "you",
+    "your": "your"
+  },
+  "nouns": {
+    "murderer": "murderer",
+    "name": "name",
+    "victim": "victim",
+    "will": "will"
+  },
+  "verbs": {
+    "be": "be",
+    "clean": "clean",
+    "dust": "dust",
+    "is": "is",
+    "look": "look",
+    "take": "take",
+    "talk": "talk"
+  },
+  "conjunctions": {
+    "and": "and",
+    "because": "because",
+    "but": "but",
+    "either": "either",
+    "neither": "neither",
+    "nor": "nor",
+    "or": "or"
+  },
+  "adjectives": {
+    "average": "average",
+    "larger": "larger",
+    "less": "less",
+    "much": "much",
+    "smaller": "smaller",
+    "than": "than"
+  },
+  "articles": {
+    "a": "a",
+    "an": "an",
+    "the": "the"
+  },
+  "adverbs": {
+    "angrily": "angrily",
+    "callously": "callously",
+    "quickly": "quickly",
+    "quietly": "quietly",
+    "softly": "softly",
+    "violently": "violently"
+  },
+  "prepositions": {
+    "after": "after",
+    "against": "against",
+    "at": "at",
+    "before": "before",
+    "for": "for",
+    "of": "of",
+    "on": "on",
+    "since": "since",
+    "to": "to",
+    "towards": "towards",
+    "until": "until"
+  }
+}

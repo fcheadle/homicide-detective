@@ -9,7 +9,7 @@ namespace unit_tests
         [TestMethod]
         public void NewSceneTest()
         {
-            Scene scene = new Scene(11);
+            Scene scene = new Scene(11, 55);
             Assert.AreEqual(" bedroom", scene.name);
             Assert.IsTrue(scene.length <= scene.lengthRange.maximum);
             Assert.IsTrue(scene.length >= scene.lengthRange.minimum);

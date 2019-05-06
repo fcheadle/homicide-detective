@@ -12,33 +12,30 @@ namespace unit_tests
     {
         static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\";
         string[] itemPaths = Directory.GetFiles(itemFolder);
-        Text text = new Text();
-        List<ItemTemplate> itemTemplates = new List<ItemTemplate>();
 
         [TestMethod]
         public void GenerateItemTest()
         {
             Random random = new Random(44); //arbitrary random seed
-            Item item = new Item(random.Next());
-            //item = item.GenerateItem(random.Next(), text.itemTemplates);
-            Assert.AreEqual("handgun", item.name); //idempotent
-            Assert.IsTrue(item.mass <= item.massRanges.maximum);
-            Assert.IsTrue(item.mass >= item.massRanges.minimum);
-            Assert.IsTrue(item.volume <= item.volumeRanges.maximum);
-            Assert.IsTrue(item.volume >= item.volumeRanges.minimum);
+            Item item = new Item(random.Next(), 0);
+            Assert.AreEqual(" handgun", item.name); //idempotent
+            Assert.IsTrue(item.mass <= item.massRange.maximum);
+            Assert.IsTrue(item.mass >= item.massRange.minimum);
+            Assert.IsTrue(item.volume <= item.volumeRange.maximum);
+            Assert.IsTrue(item.volume >= item.volumeRange.minimum);
         }
 
         [TestMethod]
         public void GenerateMurderWeaponTest()
         {
             Random random = new Random();
-            Item item = new Item(random.Next());
+            Item item = new Item(random.Next(), 55);
+            Case _case = new Case(44, 33);
             for(int i = 0; i < 10; i++)
             {
-                item = item.GenerateMurderWeapon(random.Next(), text.itemTemplates);
+                item = _case.GenerateMurderWeapon(random.Next(), 12, new IO().GetItemTemplates());
                 Assert.IsTrue(item.classes.Contains("weapon"));
             }
-
         }
     } 
 }

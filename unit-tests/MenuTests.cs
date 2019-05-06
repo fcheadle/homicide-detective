@@ -12,7 +12,7 @@ namespace unit_tests
     {
         #region variables
         //system variables
-        static string saveFolder = Directory.GetCurrentDirectory() + @"\saves\";
+        static string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
         static string personFolder = Directory.GetCurrentDirectory() + @"\objects\person";
         static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\item";
         static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\scene";
@@ -28,7 +28,7 @@ namespace unit_tests
         #region set up
         public MenuTests()
         {
-            knownCase = new Case(game, 1);
+            knownCase = new Case(game.seed, 1);
         }
         #endregion
 
@@ -37,20 +37,21 @@ namespace unit_tests
         public void GetDetectiveTest()
         {
             string answer = "What is your name, Detective?";
-            string result = Menu.GetDetective(true);
+            string result = Game.GetDetective(true);
             Assert.AreEqual(answer, result);
         }
 
         [TestMethod]
         public void BookmarkCaseTest()
         {
+            throw new NotImplementedException();
             //not working
             Game game = new Game("deacon-smythe");
             Case thisCase = new Case(33, 4); //arbitrarily chose seed / casenumber
-            game = Menu.BookmarkCase(thisCase, game);
+            //game = game.BookmarkCase(thisCase, game);
             Assert.AreEqual(1, game.bookmarkedCases.Count);
-            Assert.AreEqual(" Cara Niles", game.bookmarkedCases[0].victim.name);
-            Assert.AreEqual(" Joseph Yarborough", game.bookmarkedCases[0].murderer.name);
+            //Assert.AreEqual(" Cara Niles", game.bookmarkedCases[0].victim.name);
+            //Assert.AreEqual(" Joseph Yarborough", game.bookmarkedCases[0].murderer.name);
         }
         #endregion
 
@@ -58,33 +59,36 @@ namespace unit_tests
         [TestMethod]
         public void PrintCSIMenuCommandsTest()
         {
-            Menu.PrintMenuCommands(new Text.Menu(true).csi.ToList(), true);
-            string result = io.Get(true);
+            Game.PrintMenuCommands(Text.menu.csi.ToList(), true);
+            string result = io.Read(true);
             Assert.AreEqual("dust | leave | open | close | record | check | look | photograph | take", result);
         }
 
         [TestMethod]
         public void PrintCaseMenuCommandsTest()
         {
-            Menu.PrintMenuCommands(new Text.Menu(true)._case.ToList(), true);
-            string result = io.Get(true);
+            Game.PrintMenuCommands(Text.menu._case.ToList(), true);
+            string result = io.Read(true);
             Assert.AreEqual("take | review | next | bookmark | case", result);
         }
 
         [TestMethod]
         public void PrintCaseSynopsisTest()
         {
-            Menu.PrintCaseSynopsis(knownCase, true);
-            string result = io.Get(true);
-            string answer = "The next case on the docket is case number 1, ";
+            Game game = new Game();
+
+            //game.PrintCaseSynopsis(knownCase, true);
+            string result = io.Read(true);
+            string answer = "The next case on the docket is case number 534011718, Dedra O'Donnell";
             Assert.IsTrue(result.Contains(answer));
         }
 
         [TestMethod]
         public void PrintCaseReviewTest()
         {
-            Menu.PrintCaseReview(knownCase, true);
-            string result = io.Get(true);
+            Game game = new Game();
+            //game.PrintCaseReview(knownCase, true);
+            string result = io.Read(true);
             string answer = " was found dead in";
             Assert.IsTrue(result.Contains(answer));
         }
@@ -93,11 +97,11 @@ namespace unit_tests
         public void CheatTest()
         {
             Game game = new Game("test");
-            game.AddCase();
-            Case thisCase = game.activeCase;
-            Menu.Cheat(thisCase, true);
+            //game.AddCase();
+            Case thisCase = game.cases[1];
+            //game.Cheat(thisCase, true);
             string answer = "killed";
-            string result = io.Get(true);
+            string result = io.Read(true);
             Assert.IsTrue(result.Contains(answer));
 
             answer = "with";
@@ -110,15 +114,15 @@ namespace unit_tests
         [TestMethod]
         public void PrintTitleTest()
         {
-            Menu.PrintTitle(true);
-            Assert.AreEqual("Whenever two objects interact, some evidence of that interaction can be found and verified.", io.Get(true));
+            Game.PrintTitle(true);
+            Assert.AreEqual("Whenever two objects interact, some evidence of that interaction can be found and verified.", io.Read(true));
         }
 
         [TestMethod]
         public void PrintMainMenuCommandsTest()
         {
-            Menu.PrintMenuCommands(new Text.Menu(true).main.ToList(),true);
-            Assert.AreEqual("new | load | exit", io.Get(true));
+            Game.PrintMenuCommands(Text.menu.main.ToList(),true);
+            Assert.AreEqual("new | load | exit", io.Read(true));
         }
         #endregion
 
@@ -127,8 +131,8 @@ namespace unit_tests
         public void EvaluateMainMenuCommandNewTest()
         {
             Game game = new Game();
-            game = Menu.EvaluateMainMenuCommand("new", true);
-            Assert.AreEqual("What is your name, Detective?", game.detective, true);
+            game.caseIndex = game.EvaluateMainMenuCommand("new", true);
+            Assert.AreEqual("What is your name, Detective?", game.detectiveName, true);
         }
 
         [TestMethod]
@@ -136,8 +140,8 @@ namespace unit_tests
         {
             //Hanging on some io.Get() call somewhere?
             Game game = new Game();
-            game = Menu.EvaluateMainMenuCommand("load", true);
-            Assert.AreEqual("What is your name, Detective?", game.detective, true);
+            game.caseIndex = game.EvaluateMainMenuCommand("load", true);
+            Assert.AreEqual("What is your name, Detective?", game.detectiveName, true);
         }
 
         [TestMethod]
@@ -145,7 +149,7 @@ namespace unit_tests
         {
             //not implemented
             Game game = new Game();
-            game = Menu.EvaluateMainMenuCommand("exit", true);
+            game.caseIndex = game.EvaluateMainMenuCommand("exit", true);
             Assert.AreEqual(0, game.state);
         }
 
@@ -153,20 +157,21 @@ namespace unit_tests
         public void EvaluateCaseCommandNextTest()
         {
             Game game = new Game("deacon-smythe");
-            game.caseTaken = 1;
-            game = Menu.EvaluateCaseCommand(game, "next", true);
-            Assert.AreEqual(2, game.caseTaken);
+            game.caseIndex = 1;
+            //game = game.EvaluateCaseCommand(game.cases[game.caseIndex], "next", true);
+            Assert.AreEqual(2, game.caseIndex);
         }
 
         [TestMethod]
         public void EvaluateCaseCommandTakeTest()
         {
+            throw new NotImplementedException();
             Game game = new Game("deacon-smythe");
             game.state = 2; //case menu
-            game.caseTaken = 1;
-            game = Menu.EvaluateCaseCommand(game, "take", true);
+            game.caseIndex = 1;
+            //game = /game.EvaluateCaseCommand(game.cases[game.caseIndex], "take", true);
             Assert.AreEqual(3, game.state);
-            Assert.AreEqual(game.activeCase, game.activeCases[game.caseTaken]);
+            Assert.AreEqual(game.caseIndex, game.cases[game.caseIndex]);
         }
         
         //[TestMethod]
