@@ -23,7 +23,7 @@ namespace homicide_detective
      * 
      * The main mechanics are that a game object contains many lists of cases, and some utility methods, such as saving and loading.
      * 
-     * Cases contain a victim, a murderer, a murderweapon, all persons involved, even tangentially, all relevant scenes including things written of only once
+     * Cases contain a victim, a murderer, a murderweapon, all persons involved, and all relevant scenes including things written of only once
      * 
      * Persons are complicated and implemented yet beyond a name. They will have relationships, personalities, appearances, and voices as complex objects in future releases of their own
      * 
@@ -31,12 +31,12 @@ namespace homicide_detective
      * 
      * A user interface group of classes get and write from the console or file to the game, and should be used everytime something of that nature happens
      */
-     
+    
     class Program
     { 
         static void Main()
         {
-            Game game = new Game();
+            Game game = Game.Load();
             while (game.state != 0)
             {
                 game.Loop();
@@ -65,12 +65,8 @@ namespace homicide_detective
         //state = 4;        //talking to persons of interest
 
         //need a blank constructor because JSONConvert instantiates the object with no arguments
-        public Game()
-        {
-
-        }
-
-        //constructor - new game
+        public Game() { }
+        
         public Game(string name)
         {
             detectiveName = name;
@@ -108,7 +104,7 @@ namespace homicide_detective
 
                 default:
                     state = 0;
-                    io.Write("Unknown Game State. Press any key to exit");
+                    io.WriteLine("Unknown Game State. Press any key to exit");
                     io.Read();
                     break;
             }
@@ -134,66 +130,29 @@ namespace homicide_detective
 
             if (command == Text.menu.main.newGame)
             {
-                string detective = GetDetective(debug);      //ask for detective name
-
-                if (io.CheckThatFileExists(detective))
+                io.WriteLine("Creating a new save will erase an old save. Are you sure you want to do this?");
+                string[] confirm = { "y", "ye", "yes", "yea", "yeah" };
+                if (confirm.Contains(io.Read(debug)))
                 {
-                    io.WriteLine(Text.menu.response.duplicateDetective, detective, debug);
-
-                    bool existConfirmation = false;
-                    while (!existConfirmation)
-                    {
-                        string answer = io.Read(debug);
-                        try
-                        {
-                            if (answer.Trim().ToLower() == Text.menu.response.no)
-                            {
-                                game = new Game(detective);
-                                game.state = 2;
-                                existConfirmation = true;
-                                break;
-                            }
-                            else if (answer.Trim().ToLower() == Text.menu.response.yes)
-                            {
-                                game = io.Load(detective);
-                                existConfirmation = true;
-                                break;
-                            }
-                            else
-                            {
-                                io.WriteLine(Text.menu.response.yesNoOnly, debug);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            io.WriteLine(e.Message, debug);
-                        }
-                    }
+                    detectiveName = GetDetective(debug);      //ask for detective name
+                    seed = ToInt(detectiveName);
+                    random = new Random(seed);
+                    state = 2;
+                    io.Save(this);
                 }
-                else
-                {
-                    game = new Game(detective);
-                }
-                seed = ToInt(detective);
-                random = new Random(seed);
-                game.state = 2;
-                return game.state;
+                return state;
             }
             else if (command == Text.menu.main.loadGame)
             {
-
-                string detective = GetDetective(debug);
-
                 try
                 {
-                    game = io.Load(detective);
-                    game.state = 3;
+                    game = io.Load("save");
                     return game.state;
                 }
                 catch (Exception e)
                 {
                     io.WriteLine(e.Message, debug);
-                    return game.state;
+                    return state;
                 }
             }
             else if (command == Text.menu.main.exitGame)
@@ -223,23 +182,18 @@ namespace homicide_detective
 
         public void Cheat(Case _, bool debug = false)
         {
-            //this is an unsustainable form, and should be replaced with some REAL cheat codes soon
-            string sentence = _.persons[_.murderer].name;
-            sentence += " killed";
-            sentence += _.persons[_.victim].name;
-            sentence += " at";
-            //sentence += thisCase.murderScene.owners[0].name;
-            //sentence += "'s";
-            sentence += _.scenes[_.murderer].name;
-            sentence += " with";
-            sentence += _.items[_.murderWeapon].name;
-            sentence += ".";
-            io.WriteLine(sentence, debug);
-        }
-
-        internal void PrintQuery(string query, bool debug = false)
-        {
-            io.WriteLine(query);
+            ////this is an unsustainable form, and should be replaced with some REAL cheat codes soon
+            //string sentence = _.persons[_.murderer].name;
+            //sentence += " killed";
+            //sentence += _.persons[_.victim].name;
+            //sentence += " at";
+            ////sentence += thisCase.murderScene;
+            ////sentence += "'s";
+            //sentence += _.scenes[_.murderer].name;
+            //sentence += " with";
+            //sentence += _.items[_.murderWeapon].name;
+            //sentence += ".";
+            //io.WriteLine(sentence, debug);
         }
 
         public static void PrintTitle(bool debug = false)
@@ -256,10 +210,9 @@ namespace homicide_detective
             io.WriteLine(output, debug);
         }
         
-        public int EvaluateCaseCommand(Case thisCase, string command, bool debug = false)
+        public int EvaluateCaseCommand(string command, bool debug = false)
         {
-            IO io = new IO();
-            
+            Case thisCase = cases[caseIndex];
             //for debugging
             if (command.Contains(' '))
             {
@@ -296,14 +249,29 @@ namespace homicide_detective
         {
             int menuState = 1;
             CreateCaseIfNull();
-            while (menuState != 0)
+            Dictionary<string, string> _ = Language.GetWords();
+
+            string synopsis = "";
+            Case thisCase = cases[caseIndex];
+            int victim = thisCase.victim;
+            synopsis += _["the"] + " ";
+            synopsis += _["next"] + " ";
+            synopsis += _["case"] + " ";
+            synopsis += _["on"] + " ";
+            synopsis += _["the"] + " ";
+            synopsis += _["docket"] + " ";
+            synopsis += _["is"] + " ";
+            synopsis += thisCase.caseNumber + ",";
+            synopsis += thisCase.persons[victim];
+
+
+            io.WriteLine(synopsis);
+
+            PrintMenuCommands(Text.menu._case.ToList());
+            int newIndex = EvaluateCaseCommand(io.Read());
+            if((newIndex != caseIndex) && (newIndex != 0))
             {
-                PrintMenuCommands(Text.menu._case.ToList());
-                caseIndex = EvaluateCaseCommand(cases[caseIndex], io.Read());
-                if (caseIndex == 0)
-                {
-                    state = 0;
-                }
+                CaseMenu();
             }
         }
 
@@ -663,6 +631,12 @@ namespace homicide_detective
         #endregion
 
         #region utitlities
+
+        public override string ToString()
+        {
+            return "save";
+        }
+
         // From base36 to base10
         private static int ToInt(string input)
         {
@@ -693,12 +667,13 @@ namespace homicide_detective
             return output;
         }
 
-        private void CreateCaseIfNull()
+        public void CreateCaseIfNull()
         {
             if (caseIndex == 0)
             {
                 //case numbers start at 1
                 caseIndex++;
+                cases.Add(new Case());
             }
 
             if ((cases == null) || (cases.Count == 0))
@@ -707,7 +682,7 @@ namespace homicide_detective
             }
 
             int i = 0;
-            while (cases.Count <= caseIndex)
+            while (cases.Count <= caseIndex + 1)
             {
                 cases.Add(new Case(random.Next(), caseIndex + i));
                 i++;
@@ -719,6 +694,20 @@ namespace homicide_detective
             IO io = new IO();
             io.WriteLine(Text.menu.response.namePrompt, debug);
             return io.Read(debug);
+        }
+
+        internal static Game Load()
+        {
+            IO io = new IO();
+            if (io.CheckThatFileExists("save"))
+            {
+                Game game = JsonConvert.DeserializeObject<Game>(io.ReadFromFile("save.json"));
+                return game;
+            }
+            else
+            {
+                return new Game();
+            }
         }
         #endregion
     }

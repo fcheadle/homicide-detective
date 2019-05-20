@@ -1,7 +1,19 @@
 ﻿{
   "name": " sofa",
   "description": " a large piece of furniture used for sitting.",
-  "volumeRange": {
+  "lengthRange": {
+    "minimum": 6,
+    "maximum": 25,
+    "median": 10,
+    "mode": 10
+  },
+  "heightRange": {
+    "minimum": 6,
+    "maximum": 25,
+    "median": 10,
+    "mode": 10
+  },
+  "widthRange": {
     "minimum": 400,
     "maximum": 660,
     "mean": 530,

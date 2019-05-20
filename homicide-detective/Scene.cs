@@ -3,21 +3,7 @@ using System.Collections.Generic;
 
 namespace homicide_detective
 {
-    //the json files will be read into a scene template instead of a scene itself
-    public class SceneTemplate
-    {
-        public string name;
-        public string description;
-        public Range lengthRange;
-        public Range widthRange;
-        public List<Shape> shapes = new List<Shape>();
-        public List<string> classes = new List<string>();
-        public List<string> connectionTypes = new List<string>();
-        public List<string> containsTypes = new List<string>();
-        public List<string> mustContainTypes = new List<string>();
-    }
-
-    public class Scene : SceneTemplate
+    public class Scene : Substantive
     {
         public int id;
         public int caseNumber;
@@ -30,10 +16,7 @@ namespace homicide_detective
         public List<int> contains = new List<int>();       //names of items contained within this scene
         public List<int> owners = new List<int>();         //people associated with this scene
 
-        public Scene()
-        {
-
-        }
+        public Scene() { }
 
         public Scene(int caseNumber, int id)
         {
@@ -41,30 +24,20 @@ namespace homicide_detective
             this.id = id;
             random = new Random(caseNumber + id);
             IO io = new IO();
-            Generate(io.GetRandomSceneTemplate(random.Next()));
+            Generate(io.GetRandomTemplate(SubstantiveType.scene, random.Next()), id);
         }
 
-        public Scene(int caseNumber, int id, SceneTemplate template)
+        public Scene(int caseNumber, int id, Template template)
         {
             this.caseNumber = caseNumber;
             this.id = id;
             random = new Random(caseNumber + id);
-            Generate(template);
+            Generate(template, id);
         }
 
-        private void Generate(SceneTemplate template)
+        public override string Describe()
         {
-            name = template.name;
-            classes = template.classes;
-            lengthRange = template.lengthRange;
-            widthRange = template.widthRange;
-            length = lengthRange.GenerateFromRange(random.Next());
-            width = widthRange.GenerateFromRange(random.Next());
-        }
-
-        public override string ToString()
-        {
-            return name;
+            return "";
         }
     }
 }

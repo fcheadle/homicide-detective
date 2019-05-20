@@ -11,20 +11,14 @@ namespace homicide_detective
         public static string folder = Directory.GetCurrentDirectory() + @"\objects\";
         public static string extension = ".json";
         public static string menuRaw = File.ReadAllText(folder + "menu_english" + extension);
-        public static string caseDescriptionRaw = File.ReadAllText(folder + "description_case" + extension);
-        public static string itemDescriptionRaw = File.ReadAllText(folder + "description_item" + extension);
         public static string personNamesRaw = File.ReadAllText(folder + "names_default" + extension);
         public static string writtenRaw = File.ReadAllText(folder + "written_diary" + extension);
-        public static string dialogueRaw = File.ReadAllText(folder + "dialogue_default" + extension);
         public static string languageRaw = File.ReadAllText(folder + "language_english" + extension);
 
         //These objects are used to build the strings that are given to the user
         public static Menu menu = JsonConvert.DeserializeObject<Menu>(menuRaw);
-        public static Description.Item itemDescription = JsonConvert.DeserializeObject<Description.Item>(itemDescriptionRaw);    
-        public static Description.Case caseDescription = JsonConvert.DeserializeObject<Description.Case>(caseDescriptionRaw);
         public static PersonName personNames = JsonConvert.DeserializeObject<PersonName>(personNamesRaw);
         public static Written written = JsonConvert.DeserializeObject<Written>(writtenRaw);
-        public static Dialogue dialogue = JsonConvert.DeserializeObject<Dialogue>(dialogueRaw);
         public static Language language = JsonConvert.DeserializeObject<Language>(languageRaw);
 
     }

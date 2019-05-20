@@ -1,17 +1,29 @@
 ﻿{
   "name": " desk",
   "description": " a mid-sized piece of furniture used for writing.",
-  "volumeRange": {
-    "minimum": 2750000,
-    "maximum": 4000000,
-    "mean":    3330000,
-    "mode":    3400000
+  "lengthRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "widthRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "heightRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
   },
   "massRange": {
     "minimum": 22500,
     "maximum": 90000,
-    "mean":    37500,
-    "mode":    39000
+    "mean": 37500,
+    "mode": 39000
   },
   "hollowness": 60,
   "sharpPointNumber": 4,

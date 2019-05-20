@@ -41,18 +41,18 @@ namespace unit_tests
             Assert.AreEqual(answer, result);
         }
 
-        [TestMethod]
-        public void BookmarkCaseTest()
-        {
-            throw new NotImplementedException();
-            //not working
-            Game game = new Game("deacon-smythe");
-            Case thisCase = new Case(33, 4); //arbitrarily chose seed / casenumber
-            //game = game.BookmarkCase(thisCase, game);
-            Assert.AreEqual(1, game.bookmarkedCases.Count);
-            //Assert.AreEqual(" Cara Niles", game.bookmarkedCases[0].victim.name);
-            //Assert.AreEqual(" Joseph Yarborough", game.bookmarkedCases[0].murderer.name);
-        }
+        //[TestMethod]
+        //public void BookmarkCaseTest()
+        //{
+        //    throw new NotImplementedException();
+        //    //not working
+        //    Game game = new Game("deacon-smythe");
+        //    Case thisCase = new Case(33, 4); //arbitrarily chose seed / casenumber
+        //    //game = game.BookmarkCase(thisCase, game);
+        //    Assert.AreEqual(1, game.bookmarkedCases.Count);
+        //    //Assert.AreEqual(" Cara Niles", game.bookmarkedCases[0].victim.name);
+        //    //Assert.AreEqual(" Joseph Yarborough", game.bookmarkedCases[0].murderer.name);
+        //}
         #endregion
 
         #region print tests
@@ -73,43 +73,30 @@ namespace unit_tests
         }
 
         [TestMethod]
-        public void PrintCaseSynopsisTest()
-        {
-            Game game = new Game();
-
-            //game.PrintCaseSynopsis(knownCase, true);
-            string result = io.Read(true);
-            string answer = "The next case on the docket is case number 534011718, Dedra O'Donnell";
-            Assert.IsTrue(result.Contains(answer));
-        }
-
-        [TestMethod]
         public void PrintCaseReviewTest()
         {
             Game game = new Game();
-            //game.PrintCaseReview(knownCase, true);
             string result = io.Read(true);
             string answer = " was found dead in";
             Assert.IsTrue(result.Contains(answer));
         }
 
-        [TestMethod]
-        public void CheatTest()
-        {
-            Game game = new Game("test");
-            //game.AddCase();
-            Case thisCase = game.cases[1];
-            //game.Cheat(thisCase, true);
-            string answer = "killed";
-            string result = io.Read(true);
-            Assert.IsTrue(result.Contains(answer));
+        //[TestMethod]
+        //public void CheatTest()
+        //{
+            //Game game = new Game("test");
+            //Case thisCase = game.cases[1];
+            ////game.Cheat(thisCase, true);
+            //string answer = "killed";
+            //string result = io.Read(true);
+            //Assert.IsTrue(result.Contains(answer));
 
-            answer = "with";
-            Assert.IsTrue(result.Contains(answer));
+            //answer = "with";
+            //Assert.IsTrue(result.Contains(answer));
 
-            answer = "at";
-            Assert.IsTrue((result.Contains(answer) || result.Contains("in")));
-        }
+            //answer = "at";
+            //Assert.IsTrue((result.Contains(answer) || result.Contains("in")));
+        //}
 
         [TestMethod]
         public void PrintTitleTest()
@@ -138,7 +125,6 @@ namespace unit_tests
         [TestMethod]
         public void EvaluateMainMenuCommandLoadTest()
         {
-            //Hanging on some io.Get() call somewhere?
             Game game = new Game();
             game.caseIndex = game.EvaluateMainMenuCommand("load", true);
             Assert.AreEqual("What is your name, Detective?", game.detectiveName, true);
@@ -158,20 +144,20 @@ namespace unit_tests
         {
             Game game = new Game("deacon-smythe");
             game.caseIndex = 1;
-            //game = game.EvaluateCaseCommand(game.cases[game.caseIndex], "next", true);
+            game.caseIndex = game.EvaluateCaseCommand("next", true);
             Assert.AreEqual(2, game.caseIndex);
         }
 
         [TestMethod]
         public void EvaluateCaseCommandTakeTest()
         {
-            throw new NotImplementedException();
             Game game = new Game("deacon-smythe");
             game.state = 2; //case menu
-            game.caseIndex = 1;
-            //game = /game.EvaluateCaseCommand(game.cases[game.caseIndex], "take", true);
+            game.caseIndex = 45;
+            game.CreateCaseIfNull();
+            game.caseIndex = game.EvaluateCaseCommand("take", true);
             Assert.AreEqual(3, game.state);
-            Assert.AreEqual(game.caseIndex, game.cases[game.caseIndex]);
+            Assert.AreEqual(45, game.caseIndex);
         }
         
         //[TestMethod]

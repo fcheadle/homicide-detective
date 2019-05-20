@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    //a base class for persons to be read from the json
-    public class PersonTemplate
+    public class Person : Substantive
     {
-        public string description;
-        public Range heightRange;
-        public Range massRange;
+        public Gender? gender;          //2 for now
+        
+        public string nameGiven;                
+        public string nameFamily;
+        public string pronounDescriptive;       //he, she
+        public string pronounPossessive;        //his, her
 
         //percents 
         public int jealousy;
@@ -22,21 +24,6 @@ namespace homicide_detective
         public int creativity;
         public int attentionToDetail;
         public int familialImportance;
-    }
-
-    public class Person : PersonTemplate
-    {
-        public int id;
-        public int caseNumber;
-        public int gender;          //2 for now
-        public int mass;
-        public int height;          //in centimeters
-
-        public string name;                     //derived from firstname and lastname
-        public string nameGiven;                
-        public string nameFamily;
-        public string pronounDescriptive;       //he, she
-        public string pronounPossessive;        //his, her
 
         public List<string> motives;            //generated from percents
         public List<string> causeOfDeath;       //specific hardcoded values... for now
@@ -44,10 +31,7 @@ namespace homicide_detective
 
         private Random random;
 
-        public Person()
-        {
-
-        }
+        public Person() { }
 
         public Person(int caseNumber, int id)
         {
@@ -55,52 +39,45 @@ namespace homicide_detective
             this.id = id;
             random = new Random(caseNumber + id);
             IO io = new IO();
-            PersonTemplate template = io.GetRandomPersonTemplate(random.Next());
-            Generate(template);
+            Template template = io.GetRandomTemplate(SubstantiveType.person, random.Next());
+            Generate(template, id);
+            Personalize();
         }
 
-        public Person(int caseNumber, int id, PersonTemplate template)
+        public Person(int caseNumber, int id, Gender gender)
         {
             this.caseNumber = caseNumber;
             this.id = id;
             random = new Random(caseNumber + id);
-            Generate(template);
+            IO io = new IO();
+            Template template = io.GetRandomTemplate(SubstantiveType.person, random.Next());
+            this.gender = gender;
+            Generate(template, id);
+            Personalize();
         }
 
-        private void Generate(PersonTemplate template)
+        private void Personalize()
         {
-            jealousy = template.jealousy;
-            anger = template.anger;
-            pride = template.pride;
-            laziness = template.laziness;
-            ambition = template.ambition;
-            creativity = template.creativity;
-            attentionToDetail = template.attentionToDetail;
-            familialImportance = template.familialImportance;
-
-            heightRange = template.heightRange;
-            massRange = template.massRange;
-
             //Names depend on gender so we generate that first - only two for now
-            gender = (random.Next(0, 10));
-            height = heightRange.GenerateFromRange(random.Next());
+            if(gender == null) gender = (Gender) random.Next(Enum.GetNames(typeof(Gender)).Length);
 
             PersonName names = Text.personNames;
-            if (gender == 0)
+
+            if (gender == Gender.female)
             {
-                nameGiven = " " + names.givenFemale[random.Next(0, names.givenFemale.Count())];
+                nameGiven = names.givenFemale[random.Next(0, names.givenFemale.Count)];
                 pronounDescriptive = "she";
                 pronounPossessive = "her";
                 height *= (int) 0.9;
             }
             else
             {
-                nameGiven = " " + names.givenMale[random.Next(0, names.givenMale.Count())];
+                nameGiven = names.givenMale[random.Next(0, names.givenMale.Count)];
                 pronounDescriptive = "he";
                 pronounPossessive = "his";
             }
 
-            nameFamily = names.family[random.Next(0, names.family.Count())];
+            nameFamily = names.family[random.Next(0, names.family.Count)];
             name = nameGiven + " " + nameFamily;
             
             bodyMarks = new List<BodyMark>();
@@ -116,20 +93,15 @@ namespace homicide_detective
                 bodyMarks.Add(new BodyMark());
             }
         }
-        
-        public override string ToString()
-        {
-            return name;
-        }
 
-        public string Describe()
+        public override string Describe()
         {
             string output = "";
             output += name;
             output += " is";
-            output += heightRange.GetHeightDescription(height);
+            output += GetHeightDescription(height);
             output += " and";
-            output += massRange.GetMassDescription(mass);
+            output += GetMassDescription(mass);
             output += ".";
             return output;
         }

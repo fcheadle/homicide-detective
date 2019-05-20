@@ -1,5 +1,5 @@
 ﻿{
-  "name": " bedroom",
+  "name": "bedroom",
   "description": " where {0} sleeps.",
   "classes": [
     "utility"
@@ -36,5 +36,11 @@
     "maximum": 5000,
     "median": 2750,
     "mode": 2750
+  },
+  "heightRange": {
+    "minimum": 6,
+    "maximum": 25,
+    "median": 10,
+    "mode": 10
   }
 }

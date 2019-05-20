@@ -1,17 +1,29 @@
 ﻿{
   "name": " bed",
   "description": " a large piece of furniture used for sleeping.",
-  "volumeRange": {
+  "lengthRange": {
     "minimum": 4000000,
     "maximum": 7500000,
-    "mean":    4250000,
-    "mode":    5000000
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "widthRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "heightRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
   },
   "massRange": {
     "minimum": 20000,
     "maximum": 70000,
-    "mean":    27500,
-    "mode":    30000
+    "mean": 27500,
+    "mode": 30000
   },
   "hollowness": 80,
   "sharpPointNumberumber": 4,

@@ -18,6 +18,8 @@
     "your": "your"
   },
   "nouns": {
+    "case": "case",
+    "docket": "docket",
     "murderer": "murderer",
     "name": "name",
     "victim": "victim",
@@ -46,6 +48,7 @@
     "larger": "larger",
     "less": "less",
     "much": "much",
+    "next": "next",
     "smaller": "smaller",
     "than": "than"
   },

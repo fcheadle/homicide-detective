@@ -84,6 +84,14 @@ namespace homicide_detective
             File.WriteAllText(path, output);
         }
 
+        internal void LogError(string error)
+        {
+            string path = Directory.GetCurrentDirectory() + @"\error_log";
+            string allErrors = File.ReadAllText(path);
+            allErrors += "\n" + error;
+            File.WriteAllText(path, allErrors);
+        }
+
         internal void WriteLineDebug(string output, string name, bool objects = false)
         {
             string folder = objects ? objectsFolder : saveFolder;
@@ -109,90 +117,48 @@ namespace homicide_detective
         }
 
         //returns all person templates from the json
-        public List<PersonTemplate> GetPersonTemplates()
+        public List<Template> GetTemplates(SubstantiveType type)
         {
             string[] files = Directory.GetFiles(objectsFolder);
-            List<PersonTemplate> templates = new List<PersonTemplate>();
+            List<Template> templates = new List<Template>();
+            string prefix = "asdf";
+            switch(type)
+            {
+                case SubstantiveType.item: prefix = "item"; break;
+                case SubstantiveType.scene: prefix = "scene"; break;
+                case SubstantiveType.person: prefix = "person"; break;
+            }
+
             foreach (string file in files)
             {
-                if (file.Contains("person_"))
+                if (file.Contains(prefix))
                 {
                     string contents = File.ReadAllText(file);
-                    PersonTemplate template = JsonConvert.DeserializeObject<PersonTemplate>(contents);
+                    Template template = JsonConvert.DeserializeObject<Template>(contents);
                     templates.Add(template);
                 }
             }
             return templates;
         }
 
-        //gets a random person template from those in the json
-        public PersonTemplate GetRandomPersonTemplate(int seed)
+        //gets a random template from those in the json
+        public Template GetRandomTemplate(SubstantiveType type, int seed)
         {
-            List<PersonTemplate> templates = GetPersonTemplates();
+            List<Template> templates = GetTemplates(type);
             Random random = new Random(seed);
-            PersonTemplate template = templates[random.Next(0, templates.Count)];
+            Template template = templates[random.Next(0, templates.Count)];
             return template;
         }
-
-        //Gets a random scene template from those defined in the json
-        public SceneTemplate GetRandomSceneTemplate(int seed)
-        {
-            List<SceneTemplate> templates = GetSceneTemplates();
-            Random random = new Random(seed);
-            SceneTemplate template = templates[random.Next(0, templates.Count)];
-            return template;
-        }
-
-        //get all scene templates from the json
-        public List<SceneTemplate> GetSceneTemplates()
-        {
-            string[] files = Directory.GetFiles(objectsFolder);
-            List<SceneTemplate> templates = new List<SceneTemplate>();
-            foreach (string file in files)
-            {
-                if (file.Contains("scene_"))
-                {
-                    string contents = File.ReadAllText(file);
-                    SceneTemplate template = JsonConvert.DeserializeObject<SceneTemplate>(contents);
-                    templates.Add(template);
-                }
-            }
-            return templates;
-        }
-
-        public List<ItemTemplate> GetItemTemplates()
-        {
-            string[] files = Directory.GetFiles(objectsFolder);
-            List<ItemTemplate> templates = new List<ItemTemplate>();
-            foreach (string file in files)
-            {
-                if (file.Contains("item_"))
-                {
-                    string contents = File.ReadAllText(file);
-                    ItemTemplate template = JsonConvert.DeserializeObject<ItemTemplate>(contents);
-                    templates.Add(template);
-                }
-            }
-            return templates;
-        }
-
-        public ItemTemplate GetRandomItemTemplate(int seed)
-        {
-            List<ItemTemplate> templates = GetItemTemplates();
-            Random random = new Random(seed);
-            ItemTemplate template = templates[random.Next(0, templates.Count)];
-            return template;
-        }
+        
         #endregion
 
 
         #region utilities
-        //Check to see if a saved game exists for this string
+        //Check to see if a file exists
         internal bool CheckThatFileExists(string name, bool objects = false)
         {
             string folder = objects ? objectsFolder : saveFolder;
             string path = folder + name.ToLower();
-            if (path.Contains(".json"));
 
             // Get current directory of binary and create a save directory if it doesn't exist.
             if (!Directory.Exists(folder))
@@ -207,7 +173,7 @@ namespace homicide_detective
         public void Save(object thing)
         {
             string path = saveFolder + thing.ToString() + extension;
-            File.WriteAllText(path, JsonConvert.SerializeObject(this));
+            File.WriteAllText(path, JsonConvert.SerializeObject(thing));
         }
         
         //loads the game from a file

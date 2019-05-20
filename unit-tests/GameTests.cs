@@ -22,9 +22,9 @@ namespace unit_tests
         string[] scenePaths = Directory.GetFiles(objectsFolder);
 
         //TODO: get an example file
-        List<PersonTemplate> knownPersons = new List<PersonTemplate>();
-        List<ItemTemplate> knownItems = new List<ItemTemplate>();
-        List<SceneTemplate> knownScenes = new List<SceneTemplate>();
+        List<Template> knownPersons = new List<Template>();
+        List<Template> knownItems = new List<Template>();
+        List<Template> knownScenes = new List<Template>();
         List<Case> knownActiveCases = new List<Case>();
         List<Case> knownSolvedCases = new List<Case>();
         List<Case> knownColdCases = new List<Case>();
@@ -41,20 +41,19 @@ namespace unit_tests
         {
             foreach (string person in personPaths)
             {
-                knownPersons.Add(JsonConvert.DeserializeObject<PersonTemplate>(File.ReadAllText(person)));
+                knownPersons.Add(JsonConvert.DeserializeObject<Template>(File.ReadAllText(person)));
             }
 
             foreach (string item in itemPaths)
             {
-                knownItems.Add(JsonConvert.DeserializeObject<ItemTemplate>(File.ReadAllText(item)));
+                knownItems.Add(JsonConvert.DeserializeObject<Template>(File.ReadAllText(item)));
             }
 
             foreach (string scene in scenePaths)
             {
-                knownScenes.Add(JsonConvert.DeserializeObject<SceneTemplate>(File.ReadAllText(scene)));
+                knownScenes.Add(JsonConvert.DeserializeObject<Template>(File.ReadAllText(scene)));
             }
-
-            //knownText = Game.LoadTextFiles();
+            
             knownVictim = new Person(1,0);
             knownVictim.nameGiven = " Chieko";
             knownVictim.nameFamily = "Sutton";

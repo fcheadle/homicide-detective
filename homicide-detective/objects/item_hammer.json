@@ -1,11 +1,23 @@
 ﻿{
   "name": " hammer",
   "description": " a blunt instrument with a wooden handle and a metal head.",
-  "volumeRange": {
-    "minimum": 10,
-    "maximum": 25,
-    "mean": 16,
-    "mode": 16
+  "lengthRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "widthRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "heightRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
   },
   "massRange": {
     "minimum": 15,

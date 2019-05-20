@@ -6,15 +6,14 @@ namespace unit_tests
     [TestClass]
     public class SceneTests
     {
-        [TestMethod]
-        public void NewSceneTest()
-        {
-            Scene scene = new Scene(11, 55);
-            Assert.AreEqual(" bedroom", scene.name);
-            Assert.IsTrue(scene.length <= scene.lengthRange.maximum);
-            Assert.IsTrue(scene.length >= scene.lengthRange.minimum);
-            Assert.IsTrue(scene.width <= scene.widthRange.maximum);
-            Assert.IsTrue(scene.width <= scene.widthRange.maximum);
-        }
+        //[TestMethod]
+        //public void NewSceneTest()
+        //{
+        //    Scene scene1 = new Scene(11, 55);
+        //    Scene scene2 = new Scene(11, 55);
+        //    Scene scene3 = new Scene(11, 56);
+        //    Assert.AreEqual(scene1, scene2);
+        //    Assert.AreNotEqual(scene1, scene3);
+        //}
     }
 }

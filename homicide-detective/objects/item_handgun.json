@@ -1,7 +1,20 @@
 ﻿{
   "name": " handgun",
   "description": " a concealable firearm.",
-  "volumeRange": {
+  "lengthRange": {
+    "note: units": "centimeters",
+    "minimum": 10,
+    "maximum": 25,
+    "mean": 16,
+    "mode": 16
+  },
+  "widthRange": {
+    "minimum": 10,
+    "maximum": 25,
+    "mean": 16,
+    "mode": 16
+  },
+  "heightRange": {
     "minimum": 10,
     "maximum": 25,
     "mean": 16,

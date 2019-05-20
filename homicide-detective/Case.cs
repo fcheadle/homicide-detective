@@ -42,10 +42,11 @@ namespace homicide_detective
         public List<int> evidence { get; internal set; }                //int is the id of the item taken
         public List<List<int>> prints { get; internal set; }            //first int is id of person they come from, second int is the id of the finger the print comes from
 
-        //we need a blank constructor for JSONConvert :(
+        public List<Relationship> relationships = new List<Relationship>();
+
         public Case()
         {
-
+            //we need a blank constructor for JSONConvert
         }
 
         public Case (int seed, int caseNumber)
@@ -62,34 +63,89 @@ namespace homicide_detective
         {
             IO io = new IO();
             if(random == null) random = new Random(seed);
-            persons.Add(new Person(caseNumber, 0));
-            items.Add(GenerateMurderWeapon(caseNumber, 0, io.GetItemTemplates()));
-            scenes.Add(new Scene(caseNumber, 0));
+            persons.Add(new Person(seed + caseNumber, 0));
+            persons.Add(new Person(seed + caseNumber, 1));
+            items.Add(GenerateMurderWeapon(seed + caseNumber, 0));
+            scenes.Add(new Scene(seed + caseNumber, 0));
 
-            for (int i = 1; i < 5; i++)
-            {
-                persons.Add(new Person(caseNumber, i));
-                items.Add(new Item(caseNumber, i));
-                scenes.Add(new Scene(caseNumber, i));
-            }
+            victim = 0;
+            murderer = 1;
+            murderWeapon = 0;
+            crime = 0;
+            currentScene = 0;
 
+            GenerateFamilialRelationships(0); //Victim's Family
+            GenerateFamilialRelationships(1); //murderer's family
+            GenerateHouse(0); //generate the victim's house
             currentScene = crime;
         }
-        
+
+        private void GenerateHouse(int v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GenerateFamilialRelationships(int i)
+        {
+            int index = persons.Count;
+
+            //mother
+            persons.Add(new Person(seed + caseNumber, index, Gender.female));
+            relationships.Add(new Relationship(i, index, RelationshipType.child));
+            index++;
+
+            //father
+            persons.Add(new Person(seed + caseNumber, index, Gender.male));
+            relationships.Add(new Relationship(i, index, RelationshipType.child));
+            index++;
+
+            //siblings
+            while (random.Next() % 2 == 0)
+            {
+                persons.Add(new Person(seed + caseNumber, index));
+                relationships.Add(new Relationship(i, index, RelationshipType.sibling));
+                index++;
+            }
+
+            //aunt/uncle/cousin
+            while(random.Next() % 10 != 0)
+            {
+                persons.Add(new Person(seed + caseNumber, index));
+                relationships.Add(new Relationship(i, index, RelationshipType.distantFamily));
+                index++;
+            }
+
+            //coworkers
+            while(random.Next() % 10 != 0)
+            {
+                persons.Add(new Person(seed + caseNumber, index));
+                relationships.Add(new Relationship(i, index, RelationshipType.coworker));
+                index++;
+            }
+
+            //friends
+            while (random.Next() % 10 != 0)
+            {
+                persons.Add(new Person(seed + caseNumber, index));
+                relationships.Add(new Relationship(i, index, RelationshipType.friend));
+                index++;
+            }
+        }
+
         //returns an item that could be used to murder someone
-        public Item GenerateMurderWeapon(int seed, int id, List<ItemTemplate> templates)
+        public Item GenerateMurderWeapon(int seed, int id)
         {
             random = new Random(seed);
-            List<ItemTemplate> possibleMurderWeapons = new List<ItemTemplate>();
-
-            foreach (ItemTemplate itemTemplate in templates)
+            List<Template> possibleMurderWeapons = new List<Template>();
+            IO io = new IO();
+            foreach (Template _this in io.GetTemplates(SubstantiveType.item))
             {
-                if (itemTemplate.classes.Contains("weapon")) possibleMurderWeapons.Add(itemTemplate);
+                if (_this.classes.Contains("weapon")) possibleMurderWeapons.Add(_this);
             }
 
             int count = possibleMurderWeapons.Count;
-            ItemTemplate murderWeapon = possibleMurderWeapons[random.Next(0, count)];
-            Item item = new Item(caseNumber, items.Count, murderWeapon);
+            Template template = possibleMurderWeapons[random.Next(0, count)];
+            Item item = new Item(caseNumber, items.Count, template);
             item.bloodSpatter = true;
             return item;
         }
@@ -103,7 +159,7 @@ namespace homicide_detective
             output += persons[victim].Describe();
             output += persons[victim].pronounDescriptive;
             output += " was found dead in";
-            output += GetSceneOwner(scenes[crime]).ToString();
+            output += GetSceneOwners(scenes[crime]).ToString();
             output += "'s";
             output += scenes[crime].ToString();
             output += ".";
@@ -127,16 +183,14 @@ namespace homicide_detective
         // returns something like, Next on the docket is case number 000, Gracey Anderson. 
         public string Synopsis()
         {
-            string output = Text.caseDescription.intro;
-            output += caseNumber.ToString();
-            output += ",";
-            output += persons[victim].name;
-            return output;
+            return "";
         }
 
         //tells you who owns a particular scene
-        private List<Person> GetSceneOwner(Scene scene)
+        private List<Person> GetSceneOwners(Scene scene)
         {
+            List<Person> owners = new List<Person>();
+
             throw new NotImplementedException();
         }
     }

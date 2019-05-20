@@ -35,127 +35,13 @@ namespace homicide_detective
 
             return mean;
         }
-        
-        public string GetVolumeDescription(int volume)
-        {
-            //get a simplified standard deviation of 10%
-            int tenPercent = maximum - minimum / 10;
-
-            //todo: get strings from the json
-            if (volume < mode - tenPercent - tenPercent)
-            {
-                return " much smaller than average";
-            }
-            else if (volume < mode - tenPercent)
-            {
-                return " smaller than average";
-            }
-            else if (volume <= mode)
-            {
-                return " slightly smaller than average";
-            }
-            else if (volume >= mode + tenPercent + tenPercent)
-            {
-                return " much larger than average";
-            }
-            else if (volume >= mode + tenPercent)
-            {
-                return " larger than average";
-            }
-            else if (volume >= mode)
-            {
-                return " slightly larger than average";
-            }
-            else
-            {
-                return " average in size";
-            }
-        }
-
-        public string GetMassDescription(int mass)
-        {
-            //get a simplified standard deviation of 10%
-            int tenPercent = maximum - minimum / 10;
-
-            if (mass < mode - tenPercent - tenPercent)
-            {
-                return " much less heavy than average";
-            }
-            else if (mass < mode - tenPercent)
-            {
-                return " less heavy than average";
-            }
-            else if (mass < mode)
-            {
-                return " slightly less heavy than average";
-            }
-            else if (mass == mode)
-            {
-                return " is exactly average in weight";
-            }
-            else if (mass > mode + tenPercent + tenPercent)
-            {
-                return " much heavier than average";
-            }
-            else if (mass > mode + tenPercent)
-            {
-                return " heavier than average";
-            }
-            else if (mass > mode)
-            {
-                return " slightly heavier than average";
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        internal string GetHeightDescription(int height)
-        {
-            //get a simplified standard deviation of 10%
-            int tenPercent = maximum - minimum / 10;
-
-            if (height < mode - tenPercent - tenPercent)
-            {
-                return " much shorter than average";
-            }
-            else if (height < mode - tenPercent)
-            {
-                return " shorter than average";
-            }
-            else if (height < mode)
-            {
-                return " slightly shorter than average";
-            }
-            else if (height == mode)
-            {
-                return " is exactly average in height";
-            }
-            else if (height > mode + tenPercent + tenPercent)
-            {
-                return " much taller than average";
-            }
-            else if (height > mode + tenPercent)
-            {
-                return " taller than average";
-            }
-            else if (height > mode)
-            {
-                return " slightly taller than average";
-            }
-            else
-            {
-                return "";
-            }
-        }
     }
 
     //shape of the object or room or whatever
     public class Shape
     {
-        public string value;
-        public int percentile;
+        public string name;
+        public int probability;
 
         public Shape()
         {
@@ -167,20 +53,20 @@ namespace homicide_detective
             int total = 0;
             foreach(Shape shape in shapes)
             {
-                total += shape.percentile;
+                total += shape.probability;
             }
 
             int shapeIndex = random.Next(0, total);
             total = 0; 
             foreach(Shape shape in shapes)
             {
-                if(shapeIndex > shape.percentile)
+                if(shapeIndex > shape.probability)
                 {
-                    shapeIndex -= shape.percentile;
+                    shapeIndex -= shape.probability;
                 }
                 else
                 {
-                    value = shape.value;
+                    name = shape.name;
                     break;
                 }
             }

@@ -1,17 +1,29 @@
 ﻿{
   "name": " drawer",
   "description": " a small thing used to contain other things.",
-  "volumeRange": {
-    "minimum": 275000,
-    "maximum": 400000,
-    "mean":    270000,
-    "mode":    310000
+  "lengthRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "widthRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
+  },
+  "heightRange": {
+    "minimum": 4000000,
+    "maximum": 7500000,
+    "mean": 4250000,
+    "mode": 5000000
   },
   "massRange": {
-    "minimum": 200,
-    "maximum": 2000,
-    "mean":    500,
-    "mode":    550
+    "minimum": 20000,
+    "maximum": 70000,
+    "mean": 27500,
+    "mode": 30000
   },
   "hollowness": 95,
   "sharpPointNumber": 8,

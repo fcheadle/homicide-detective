@@ -30,5 +30,11 @@
     "maximum": 15000,
     "median": 12000,
     "mode": 10
+  },
+  "heightRange": {
+    "minimum": 6,
+    "maximum": 25,
+    "median": 10,
+    "mode": 10
   }
 }
