@@ -85,25 +85,25 @@ namespace homicide_detective
             throw new NotImplementedException();
         }
 
-        private void GenerateFamilialRelationships(int i)
+        private void GenerateFamilialRelationships(int basePerson)
         {
             int index = persons.Count;
 
             //mother
             persons.Add(new Person(seed + caseNumber, index, Gender.female));
-            relationships.Add(new Relationship(i, index, RelationshipType.child));
+            relationships.Add(new Relationship(basePerson, index, RelationshipType.child));
             index++;
 
             //father
             persons.Add(new Person(seed + caseNumber, index, Gender.male));
-            relationships.Add(new Relationship(i, index, RelationshipType.child));
+            relationships.Add(new Relationship(basePerson, index, RelationshipType.child));
             index++;
 
             //siblings
             while (random.Next() % 2 == 0)
             {
                 persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(i, index, RelationshipType.sibling));
+                relationships.Add(new Relationship(basePerson, index, RelationshipType.sibling));
                 index++;
             }
 
@@ -111,7 +111,7 @@ namespace homicide_detective
             while(random.Next() % 10 != 0)
             {
                 persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(i, index, RelationshipType.distantFamily));
+                relationships.Add(new Relationship(basePerson, index, RelationshipType.distantFamily));
                 index++;
             }
 
@@ -119,7 +119,7 @@ namespace homicide_detective
             while(random.Next() % 10 != 0)
             {
                 persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(i, index, RelationshipType.coworker));
+                relationships.Add(new Relationship(basePerson, index, RelationshipType.coworker));
                 index++;
             }
 
@@ -127,7 +127,7 @@ namespace homicide_detective
             while (random.Next() % 10 != 0)
             {
                 persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(i, index, RelationshipType.friend));
+                relationships.Add(new Relationship(basePerson, index, RelationshipType.friend));
                 index++;
             }
         }
