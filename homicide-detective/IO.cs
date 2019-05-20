@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace homicide_detective
 {
@@ -149,7 +150,17 @@ namespace homicide_detective
             Template template = templates[random.Next(0, templates.Count)];
             return template;
         }
-        
+
+        //gets a random template from those in the json that has a specific class
+        public Template GetRandomTemplate(SubstantiveType type, string _class, int seed)
+        {
+            List<Template> templates = GetTemplates(type);
+            templates = templates.Where(l => l.classes.Contains(_class)).ToList();
+            Random random = new Random(seed);
+            Template template = templates[random.Next(0, templates.Count)];
+            return template;
+        }
+
         #endregion
 
 

@@ -80,9 +80,25 @@ namespace homicide_detective
             currentScene = crime;
         }
 
-        private void GenerateHouse(int v)
+        private void GenerateHouse(int owner)
         {
-            throw new NotImplementedException();
+            int index = scenes.Count;
+            int i = index;
+            IO io = new IO();
+            Template t = io.GetRandomTemplate(SubstantiveType.scene, "parlor", random.Next());
+            Scene parlor = new Scene(seed + caseNumber, index, t);
+            scenes.Add(parlor);
+            relationships.Add(new Relationship(owner, index, RelationshipType.owns));
+
+            index++;
+
+            foreach (string _c in t.classes)
+            {
+                Template connection = io.GetRandomTemplate(SubstantiveType.scene, _c, random.Next());
+                relationships.Add(new Relationship(owner, index, RelationshipType.owns));
+                relationships.Add(new Relationship(i, index, RelationshipType.connectedTo));
+                index++;
+            }
         }
 
         private void GenerateFamilialRelationships(int basePerson)
