@@ -42,7 +42,12 @@ namespace homicide_detective
         public List<int> evidence { get; internal set; }                //int is the id of the item taken
         public List<List<int>> prints { get; internal set; }            //first int is id of person they come from, second int is the id of the finger the print comes from
 
-        public List<Relationship> relationships = new List<Relationship>();
+        public List<RInterPerson> rInterPersonal = new List<RInterPerson>();    //all interpersonal relationships
+        public List<RInterScene> rInterScene = new List<RInterScene>();         //all relationships between two scenes
+        public List<RInterItem> rInterItem = new List<RInterItem>();            //all relationships between two items
+        public List<RPersonScene> rPersonScene = new List<RPersonScene>();      //all relationships between people and scenes
+        public List<RPersonItem> rPersonItem = new List<RPersonItem>();         //all relationships between people and items
+        public List<RSceneItem> rSceneItem = new List<RSceneItem>();            //all relationships between scenes and items
 
         public Case()
         {
@@ -75,12 +80,40 @@ namespace homicide_detective
             currentScene = 0;
 
             GenerateFamilialRelationships(0); //Victim's Family
+            GenerateFriendNetworks(0);
             GenerateFamilialRelationships(1); //murderer's family
             GenerateHouse(0); //generate the victim's house
+            GenerateWorkPlace(0); //generate victim's place of work
             currentScene = crime;
         }
 
-        private void GenerateHouse(int owner)
+        private void GenerateFriendNetworks(int basePerson)
+        {
+            int index = persons.Count;
+
+            //coworkers
+            while (random.Next() % 10 != 0)
+            {
+                persons.Add(new Person(seed + caseNumber, index));
+                rInterPersonal.Add(new RInterPerson(basePerson, index, RInterPersonType.coworker));
+                index++;
+            }
+
+            //friends
+            while (random.Next() % 10 != 0)
+            {
+                persons.Add(new Person(seed + caseNumber, index));
+                rInterPersonal.Add(new RInterPerson(basePerson, index, RInterPersonType.friend));
+                index++;
+            }
+        }
+
+        private void GenerateWorkPlace(int basePerson)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GenerateHouse(int basePerson)
         {
             int index = scenes.Count;
             int i = index;
@@ -88,15 +121,15 @@ namespace homicide_detective
             Template t = io.GetRandomTemplate(SubstantiveType.scene, "parlor", random.Next());
             Scene parlor = new Scene(seed + caseNumber, index, t);
             scenes.Add(parlor);
-            relationships.Add(new Relationship(owner, index, RelationshipType.owns));
+            rPersonScene.Add(new RPersonScene(basePerson, index, RPersonSceneType.owns));
 
             index++;
 
             foreach (string _c in t.classes)
             {
                 Template connection = io.GetRandomTemplate(SubstantiveType.scene, _c, random.Next());
-                relationships.Add(new Relationship(owner, index, RelationshipType.owns));
-                relationships.Add(new Relationship(i, index, RelationshipType.connectedTo));
+                rPersonScene.Add(new RPersonScene(basePerson, index, RPersonSceneType.owns));
+                rInterScene.Add(new RInterScene(i, index, RInterSceneType.connectedTo));
                 index++;
             }
         }
@@ -107,19 +140,19 @@ namespace homicide_detective
 
             //mother
             persons.Add(new Person(seed + caseNumber, index, Gender.female));
-            relationships.Add(new Relationship(basePerson, index, RelationshipType.child));
+            rInterPersonal.Add(new RInterPerson(basePerson, index, RInterPersonType.child));
             index++;
 
             //father
             persons.Add(new Person(seed + caseNumber, index, Gender.male));
-            relationships.Add(new Relationship(basePerson, index, RelationshipType.child));
+            rInterPersonal.Add(new RInterPerson(basePerson, index, RInterPersonType.child));
             index++;
 
             //siblings
             while (random.Next() % 2 == 0)
             {
                 persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(basePerson, index, RelationshipType.sibling));
+                rInterPersonal.Add(new RInterPerson(basePerson, index, RInterPersonType.sibling));
                 index++;
             }
 
@@ -127,23 +160,7 @@ namespace homicide_detective
             while(random.Next() % 10 != 0)
             {
                 persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(basePerson, index, RelationshipType.distantFamily));
-                index++;
-            }
-
-            //coworkers
-            while(random.Next() % 10 != 0)
-            {
-                persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(basePerson, index, RelationshipType.coworker));
-                index++;
-            }
-
-            //friends
-            while (random.Next() % 10 != 0)
-            {
-                persons.Add(new Person(seed + caseNumber, index));
-                relationships.Add(new Relationship(basePerson, index, RelationshipType.friend));
+                rInterPersonal.Add(new RInterPerson(basePerson, index, RInterPersonType.distantFamily));
                 index++;
             }
         }
@@ -206,7 +223,11 @@ namespace homicide_detective
         private List<Person> GetSceneOwners(Scene scene)
         {
             List<Person> owners = new List<Person>();
-
+            var query =
+                from person in persons
+                join relationship in rInterPersonal
+                    on person.id equals relationship._is
+                select new { person };
             throw new NotImplementedException();
         }
     }

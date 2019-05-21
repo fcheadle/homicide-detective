@@ -13,9 +13,9 @@ namespace unit_tests
         #region variables
         //system variables
         static string saveFolder = Directory.GetCurrentDirectory() + @"\save\";
-        static string personFolder = Directory.GetCurrentDirectory() + @"\objects\person";
-        static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\item";
-        static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\scene";
+        static string personFolder = Directory.GetCurrentDirectory() + @"\objects\";
+        static string itemFolder = Directory.GetCurrentDirectory() + @"\objects\";
+        static string sceneFolder = Directory.GetCurrentDirectory() + @"\objects\";
 
         string[] personPaths = Directory.GetFiles(personFolder);
         string[] itemPaths = Directory.GetFiles(itemFolder);

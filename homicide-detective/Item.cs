@@ -5,16 +5,6 @@ namespace homicide_detective
 {
     public class Item : Substantive
     {
-        public int id;
-        public int caseNumber;
-        internal string aAn;                  //"a" or "an"
-        internal Shape shape;                 //shape of the item
-        internal bool murderWeapon;           //if it murdered the victim
-        internal bool bloodSpatter;           //if it contains bloodspatter of the victim
-        internal Random random;               //passed in during generation, to keep things idempotent
-        public int mass;
-        public int volume;
-
         public Item()
         {
 

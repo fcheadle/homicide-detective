@@ -29,8 +29,6 @@ namespace homicide_detective
         public List<string> causeOfDeath;       //specific hardcoded values... for now
         public List<BodyMark> bodyMarks;
 
-        private Random random;
-
         public Person() { }
 
         public Person(int caseNumber, int id)
@@ -124,51 +122,52 @@ namespace homicide_detective
     public class FingerPrint
     {
         public string description;
-        Random random = new Random();
-        private PrintType printType;
+        Random random;
+        private PrintType type;
 
         public FingerPrint(int seed)
         {
-
+            random = new Random(seed);
+            type = (PrintType)random.Next(Enum.GetNames(typeof(PrintType)).Length);
         }
 
         public override string ToString()
         {
-            Description _ = new Description();
+            Dictionary<string, string> _ = Language.GetWords();
             string output = "";
-            switch (printType)
+            switch (type)
             {
                 case PrintType.archPlain:
-                    output = _.arch + _.plain;
+                    output = _["arch"] + _["plain"];
                     return output;
 
                 case PrintType.archTented:
-                    output = _.arch + _.tented;
+                    output = _["arch"] + _["tented"];
                     return output;
 
 
                 case PrintType.loopUlnar:
-                    output = _.loop + _.ulner;
+                    output = _["loop"] + _["ulner"];
                     return output;
 
 
                 case PrintType.loopRadial:
-                    output = _.loop + _.radial;
+                    output = _["loop"] + _["radial"];
                     return output;
 
 
                 case PrintType.whorlCentralPocketLoop:
-                    output = _.loop + _._double;
+                    output = _["whorl"] + _["central"] + _["procket"] + _["loop"]; 
                     return output;
 
 
                 case PrintType.whorlPlain:
-                    output = _.whorl + _.plain;
+                    output = _["whorl"] + _["plain"];
                     return output;
 
 
                 case PrintType.whorlAccidental:
-                    output = _.whorl + _.accidental;
+                    output = _["whorl"] + _["accidental"];
                     return output;
             }
             return output;

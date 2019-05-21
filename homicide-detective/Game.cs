@@ -247,7 +247,6 @@ namespace homicide_detective
 
         private void CaseMenu()
         {
-            int menuState = 1;
             CreateCaseIfNull();
             Dictionary<string, string> _ = Language.GetWords();
 
@@ -687,6 +686,7 @@ namespace homicide_detective
                 cases.Add(new Case(random.Next(), caseIndex + i));
                 i++;
             }
+            io.Save(this);
         }
         
         public static string GetDetective(bool debug = false)

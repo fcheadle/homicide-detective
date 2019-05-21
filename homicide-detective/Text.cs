@@ -163,7 +163,7 @@ namespace homicide_detective
             }
         }
     }
-    public class Description
+    /*public class Description
     {
         internal string arch;
         internal string plain;
@@ -198,7 +198,7 @@ namespace homicide_detective
         {
 
         }
-    }
+    }*/
     public class PersonName
     {
         public List<string> givenMale;

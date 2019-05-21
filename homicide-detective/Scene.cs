@@ -5,12 +5,8 @@ namespace homicide_detective
 {
     public class Scene : Substantive
     {
-        public int id;
-        public int caseNumber;
-        public int length;                                  //in centimeters
-        public int width;                                   //in centimeters
         public int area;                                    //in centimeters
-        private Random random;
+
         public Shape shape = new Shape();
         public List<int> connections = new List<int>();    //ids of scenes that are connected to this scene
         public List<int> contains = new List<int>();       //names of items contained within this scene

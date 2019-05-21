@@ -122,7 +122,7 @@ namespace homicide_detective
         {
             string[] files = Directory.GetFiles(objectsFolder);
             List<Template> templates = new List<Template>();
-            string prefix = "asdf";
+            string prefix = "";
             switch(type)
             {
                 case SubstantiveType.item: prefix = "item"; break;
@@ -147,7 +147,7 @@ namespace homicide_detective
         {
             List<Template> templates = GetTemplates(type);
             Random random = new Random(seed);
-            Template template = templates[random.Next(0, templates.Count)];
+            Template template = templates[random.Next(0, templates.Count - 1)];
             return template;
         }
 
@@ -169,7 +169,7 @@ namespace homicide_detective
         internal bool CheckThatFileExists(string name, bool objects = false)
         {
             string folder = objects ? objectsFolder : saveFolder;
-            string path = folder + name.ToLower();
+            string path = folder + name.ToLower() + extension;
 
             // Get current directory of binary and create a save directory if it doesn't exist.
             if (!Directory.Exists(folder))

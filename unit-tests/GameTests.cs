@@ -35,8 +35,7 @@ namespace unit_tests
         string knownName = "test";
 
         #endregion
-
-        #region constructor
+        
         public GameTests()
         {
             foreach (string person in personPaths)
@@ -64,7 +63,6 @@ namespace unit_tests
             knownMurderer.name = knownMurderer.nameGiven + " " + knownMurderer.nameFamily;
             knownCase = new Case(12345, 99);
         }
-        #endregion
 
         [TestMethod]
         public void NewGameWithName()
@@ -80,10 +78,7 @@ namespace unit_tests
         {
             Assert.AreEqual("MarjoryStJohnOneil", Game.Sanitize("Marjory St. John-O'neil"));
         }
-
-        #region file io tests
-
-
+        
         [TestMethod]
         public void LoadGame()
         {
@@ -91,6 +86,5 @@ namespace unit_tests
             Game game = io.Load(knownName);
             Assert.AreEqual(knownName, game.detectiveName);
         }
-        #endregion
     }
 }

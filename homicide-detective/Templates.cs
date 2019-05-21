@@ -40,7 +40,7 @@ namespace homicide_detective
         public int mass;
         public bool bloodSpatter;
         public string aAn = "";
-        Random random;
+        public Random random;
         Shape shape;
 
         public abstract string Describe();
