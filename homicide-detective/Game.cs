@@ -55,9 +55,9 @@ namespace homicide_detective
         public List<int> bookmarkedCases = new List<int>();   //ones saved for later viewing
 
         private IO io = new IO();
-        private Random random;
+        public Random random;
 
-        public int state = 1;
+        public State state = State.mainMenu;
         //state = 0;        //turn off game
         //state = 1;        //show main menu
         //state = 2;        //show case menu
@@ -86,19 +86,19 @@ namespace homicide_detective
             IO io = new IO();
             switch (state)
             {
-                case 1:
+                case State.mainMenu:
                     MainMenu();
                     break;
 
-                case 2:
+                case State.caseMenu:
                     CaseMenu();
                     break;
 
-                case 3:
+                case State.csiMenu:
                     CsiMenu();
                     break;
 
-                case 4:
+                case State.witnessMenu:
                     WitnessDialogue();
                     break;
 
@@ -115,14 +115,14 @@ namespace homicide_detective
         private void MainMenu()
         {
             PrintTitle();
-            while (state == 1)
+            while (state == State.mainMenu)
             {
                 PrintMenuCommands(Text.menu.main.ToList());
                 state = EvaluateMainMenuCommand(io.Read());
             }
         }
 
-        public int EvaluateMainMenuCommand(string command, bool debug = false)
+        public State EvaluateMainMenuCommand(string command, bool debug = false)
         {
             Game game = new Game();
             IO io = new IO();
@@ -137,7 +137,7 @@ namespace homicide_detective
                     detectiveName = GetDetective(debug);      //ask for detective name
                     seed = ToInt(detectiveName);
                     random = new Random(seed);
-                    state = 2;
+                    state = State.caseMenu;
                     io.Save(this);
                 }
                 return state;
@@ -260,9 +260,11 @@ namespace homicide_detective
             synopsis += _["the"] + " ";
             synopsis += _["docket"] + " ";
             synopsis += _["is"] + " ";
-            synopsis += thisCase.caseNumber + ",";
+            synopsis += thisCase.caseNumber + ", ";
             synopsis += thisCase.persons[victim];
+            synopsis += ". ";
 
+            synopsis += thisCase.Review();
 
             io.WriteLine(synopsis);
 
@@ -276,7 +278,7 @@ namespace homicide_detective
 
         private void CsiMenu()
         {
-            while (state == 3)
+            while (state == State.csiMenu)
             {
                 //switch (menuState)
                 //{ }

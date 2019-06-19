@@ -25,22 +25,22 @@ namespace homicide_detective
         public bool active = true;
         public bool cold = false;
         public bool solved = false;
-        private Random random;
+        public Random random;
 
         //details about the case
-        public List<Person> persons { get; internal set; }              //start with the victim
-        public List<Scene> scenes { get; internal set; }                //start with the scene of the crime
-        public List<Item> items { get; internal set; }                  //start with the murderweapon
+        public List<Person> persons;              //start with the victim
+        public List<Scene> scenes;                //start with the scene of the crime
+        public List<Item> items;                  //start with the murderweapon
         public int victim = 0;
         public int murderer = 1;
         public int murderWeapon = 0;
         public int crime = 0;                                           //crime scene
 
         //details about the player's progress in the investigation
-        public int currentScene { get; internal set; }                  //id of the scene the player is currently investigating
-        public int currentPerson { get; internal set; }                 //id of the person being spoken to
-        public List<int> evidence { get; internal set; }                //int is the id of the item taken
-        public List<List<int>> prints { get; internal set; }            //first int is id of person they come from, second int is the id of the finger the print comes from
+        public int currentScene;                  //id of the scene the player is currently investigating
+        public int currentPerson;                 //id of the person being spoken to
+        public List<int> evidence;                //int is the id of the item taken
+        public List<List<int>> prints;            //first int is id of person they come from, second int is the id of the finger the print comes from
 
         public List<RInterPerson> rInterPersonal = new List<RInterPerson>();    //all interpersonal relationships
         public List<RInterScene> rInterScene = new List<RInterScene>();         //all relationships between two scenes
@@ -69,21 +69,19 @@ namespace homicide_detective
             IO io = new IO();
             if(random == null) random = new Random(seed);
             persons.Add(new Person(seed + caseNumber, 0));
-            persons.Add(new Person(seed + caseNumber, 1));
             items.Add(GenerateMurderWeapon(seed + caseNumber, 0));
-            scenes.Add(new Scene(seed + caseNumber, 0));
-
-            victim = 0;
-            murderer = 1;
-            murderWeapon = 0;
-            crime = 0;
-            currentScene = 0;
+            //scenes.Add(new Scene(seed + caseNumber, 0));
 
             GenerateFamilialRelationships(0); //Victim's Family
             GenerateFriendNetworks(0);
-            GenerateFamilialRelationships(1); //murderer's family
             GenerateHouse(0); //generate the victim's house
             GenerateWorkPlace(0); //generate victim's place of work
+            currentScene = crime;
+            
+            victim = 0;
+            murderer = random.Next(1, persons.Count);
+            murderWeapon = 0;
+            crime = random.Next(0, scenes.Count);
             currentScene = crime;
         }
 
@@ -110,7 +108,7 @@ namespace homicide_detective
 
         private void GenerateWorkPlace(int basePerson)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void GenerateHouse(int basePerson)
@@ -125,12 +123,20 @@ namespace homicide_detective
 
             index++;
 
-            foreach (string _c in t.classes)
+            foreach (string type in t.connectionTypes)
             {
-                Template connection = io.GetRandomTemplate(SubstantiveType.scene, _c, random.Next());
-                rPersonScene.Add(new RPersonScene(basePerson, index, RPersonSceneType.owns));
-                rInterScene.Add(new RInterScene(i, index, RInterSceneType.connectedTo));
-                index++;
+                try
+                {
+                    Template connection = io.GetRandomTemplate(SubstantiveType.scene, type, random.Next());
+                    scenes.Add(new Scene(caseNumber, index, connection));
+                    rPersonScene.Add(new RPersonScene(basePerson, index, RPersonSceneType.owns));
+                    rInterScene.Add(new RInterScene(i, index, RInterSceneType.connectedTo));
+                    index++;
+                }
+                catch(Exception e)
+                {
+
+                }
             }
         }
 
@@ -187,13 +193,28 @@ namespace homicide_detective
         public string Review()
         {
             //todo: move these hardcoded strings to the json
-            string output = persons[victim].ToString();
-            output += ", ";
-            output += persons[victim].Describe();
-            output += persons[victim].pronounDescriptive;
-            output += " was found dead in";
-            output += GetSceneOwners(scenes[crime]).ToString();
-            output += "'s";
+            string output = persons[victim].pronounDescriptive;
+            output += " was found dead in ";
+            List<Person> owners = GetSceneOwners(scenes[crime]);
+            for(int i = 0; i < owners.Count; i++)
+            {
+                Person owner = owners[i];
+                if(i > 0)
+                {
+                    output += " and ";
+                }
+
+                if (owner.name == persons[victim].name)
+                {
+                    output += persons[victim].pronounPossessive;
+                    output += " ";
+                }
+                else
+                {
+                    output += owner.name;
+                    output += "'s ";
+                }
+            }
             output += scenes[crime].ToString();
             output += ".";
 
@@ -222,13 +243,15 @@ namespace homicide_detective
         //tells you who owns a particular scene
         private List<Person> GetSceneOwners(Scene scene)
         {
-            List<Person> owners = new List<Person>();
-            var query =
+            IEnumerable<Person> query =
                 from person in persons
-                join relationship in rInterPersonal
+                join relationship in rPersonScene
                     on person.id equals relationship._is
-                select new { person };
-            throw new NotImplementedException();
+                where relationship._of == scene.id 
+                select person;
+
+            List<Person> owners = query.ToList();
+            return owners;
         }
     }
 }

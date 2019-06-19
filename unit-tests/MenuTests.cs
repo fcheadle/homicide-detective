@@ -118,7 +118,7 @@ namespace unit_tests
         public void EvaluateMainMenuCommandNewTest()
         {
             Game game = new Game();
-            game.caseIndex = game.EvaluateMainMenuCommand("new", true);
+            game.state = game.EvaluateMainMenuCommand("new", true);
             Assert.AreEqual("What is your name, Detective?", game.detectiveName, true);
         }
 
@@ -126,7 +126,7 @@ namespace unit_tests
         public void EvaluateMainMenuCommandLoadTest()
         {
             Game game = new Game();
-            game.caseIndex = game.EvaluateMainMenuCommand("load", true);
+            game.state = game.EvaluateMainMenuCommand("load", true);
             Assert.AreEqual("What is your name, Detective?", game.detectiveName, true);
         }
 
@@ -135,7 +135,7 @@ namespace unit_tests
         {
             //not implemented
             Game game = new Game();
-            game.caseIndex = game.EvaluateMainMenuCommand("exit", true);
+            game.state = game.EvaluateMainMenuCommand("exit", true);
             Assert.AreEqual(0, game.state);
         }
 
@@ -152,7 +152,7 @@ namespace unit_tests
         public void EvaluateCaseCommandTakeTest()
         {
             Game game = new Game("deacon-smythe");
-            game.state = 2; //case menu
+            game.state = State.caseMenu;
             game.caseIndex = 45;
             game.CreateCaseIfNull();
             game.caseIndex = game.EvaluateCaseCommand("take", true);

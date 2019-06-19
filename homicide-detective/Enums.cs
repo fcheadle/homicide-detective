@@ -6,14 +6,23 @@ using System.Threading.Tasks;
 
 namespace homicide_detective
 {
-    //R stands for Relationship
+    public enum State
+    {
+        off,
+        mainMenu,
+        caseMenu,
+        csiMenu,
+        witnessMenu
+    }
+
     public enum SubstantiveType
     {
         person,
         item,
         scene
     }
-    
+
+    //R stands for Relationship
     public enum RInterPersonType
     {
         //interpersonal
