@@ -6,7 +6,7 @@ _"When two objects meet, some evidence of that meeting can later be found and ve
 
 Homicide Detective is a text-based game where you are a detective who investigates homicides. These homicides are generated from the ranges given in the .json files. 
 
-[The JSON files have moved to their own repo in the interest of saving space](https://bitbucket.org/forrestudios/objects/src/master/)
+[The JSON files have moved to their own repo in the interest of saving space](https://github.com/fcheadle/homicide-detective-objects/src/master/)
 
 I recommend you clone that repo into bin/debug/ so that the game doesn't just crash with NullRef Exceptions everywhere
 
